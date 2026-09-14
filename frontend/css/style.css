@@ -395,8 +395,8 @@ select,
 .retro-gauge-name {
     width: 68px;
     flex-shrink: 0;
-    color: #334155;
-    font-weight: 600;
+    color: #0f172a;
+    font-weight: 700;
     font-size: 8px;
     letter-spacing: 0.03em;
     white-space: nowrap;
@@ -408,7 +408,7 @@ select,
     flex: 1;
     height: 9px;
     background: #ffffff;
-    border: 1px solid #64748b;
+    border: 1px solid #000000;
     position: relative;
     overflow: hidden;
     box-sizing: border-box;
@@ -416,36 +416,18 @@ select,
 
 .retro-gauge-bar-fill {
     height: 100%;
-    background-color: #334155;
+    background-color: #000000;
+    background-image: none !important;
     transition: width 0.08s linear;
-    /* Space shuttle style discrete block segments */
-    background-image: repeating-linear-gradient(
-        90deg,
-        rgba(0, 0, 0, 0.4) 0px,
-        rgba(0, 0, 0, 0.4) 2px,
-        transparent 2px,
-        transparent 7px
-    );
 }
 
-.retro-gauge-bar-fill.fill-cyan {
-    background-color: #0284c7;
-}
-
-.retro-gauge-bar-fill.fill-green {
-    background-color: #16a34a;
-}
-
-.retro-gauge-bar-fill.fill-red {
-    background-color: #dc2626;
-}
-
-.retro-gauge-bar-fill.fill-orange {
-    background-color: #d97706;
-}
-
+.retro-gauge-bar-fill.fill-cyan,
+.retro-gauge-bar-fill.fill-green,
+.retro-gauge-bar-fill.fill-red,
+.retro-gauge-bar-fill.fill-orange,
 .retro-gauge-bar-fill.fill-purple {
-    background-color: #7c3aed;
+    background-color: #000000;
+    background-image: none !important;
 }
 
 .retro-gauge-val {
