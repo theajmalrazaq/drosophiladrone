@@ -325,45 +325,81 @@ select,
     font-weight: 600;
 }
 
-.brain-card {
-    height: 230px;
-    flex-shrink: 0;
+.connectome-section-box {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1;
+    padding: 0 !important;
+    overflow: hidden;
+}
+
+.connectome-section-box .section-title {
+    padding: 5px 8px;
+    background: #eaeaea;
+    border-bottom: 1px solid #cbd5e1;
+    margin-bottom: 0;
 }
 
 .viewport-brain {
     width: 100%;
-    height: 155px;
+    height: 180px;
     position: relative;
-    background: #0a0f18; /* Embedded Dark CRT Screen */
-    border-top: 1px solid #777777;
-    border-bottom: 1px solid #777777;
+    background: #090d16; /* Deep dark CRT viewport for bright somas */
+    border-bottom: 1px solid #cbd5e1;
+    box-sizing: border-box;
 }
 
 .circuit-legend {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 3px;
-    padding: 5px 8px;
-    background: #dfdfdf;
-    border-top: 1px solid #b0b0b0;
+    gap: 4px 6px;
+    padding: 6px 8px;
+    background: #ffffff;
     font-size: 8px;
+    box-sizing: border-box;
 }
 
 .circuit-legend .legend-item {
-    color: #334155;
-    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--font-mono);
+    font-size: 7.5px;
+    font-weight: 700;
+    line-height: 1;
 }
 
-.dot {
-    width: 6px;
-    height: 6px;
+.circuit-legend .dot {
+    width: 8px;
+    height: 8px;
+    flex-shrink: 0;
+    border: 1px solid #000000;
+    box-sizing: border-box;
 }
+
 .dot-retina { background: #00f0ff; }
+.item-retina .legend-label { color: #0284c7; }
+
 .dot-cx { background: #f59e0b; }
+.item-cx .legend-label { color: #d97706; }
+
 .dot-kc { background: #d946ef; }
-.dot-pam { background: #00ff88; }
-.dot-ppl { background: #ff3366; }
-.dot-dn { background: #38bdf8; }
+.item-kc .legend-label { color: #c026d3; }
+
+.dot-pam { background: #10b981; }
+.item-pam .legend-label { color: #059669; }
+
+.dot-ppl { background: #ef4444; }
+.item-ppl .legend-label { color: #dc2626; }
+
+.dot-dn { background: #3b82f6; }
+.item-dn .legend-label { color: #2563eb; }
+
+.legend-count {
+    margin-left: auto;
+    font-size: 7px;
+    color: #64748b;
+    font-weight: 600;
+}
 
 .telemetry-card {
     flex: 1;

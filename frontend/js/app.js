@@ -220,6 +220,12 @@ function switchTab(tabId) {
         if (btn) btn.classList.toggle("active", id === tabId);
         if (content) content.classList.toggle("active", id === tabId);
     });
+
+    if (tabId === "synapses" && brainVis) {
+        setTimeout(() => {
+            brainVis.onResize();
+        }, 50);
+    }
 }
 
 // =========================================================================
@@ -341,6 +347,10 @@ function toggleLearning() {
         btn.textContent = isLearningEnabled ? "FREEZE SYNAPSES" : "RESUME LEARNING";
         btn.classList.toggle("btn-secondary", isLearningEnabled);
         btn.classList.toggle("btn-primary", !isLearningEnabled);
+    }
+    const badge = document.getElementById("synLearningBadge");
+    if (badge) {
+        badge.textContent = isLearningEnabled ? "STDP ACTIVE" : "STDP FROZEN";
     }
 }
 

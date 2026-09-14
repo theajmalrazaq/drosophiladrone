@@ -6,8 +6,8 @@ class Brain3DVisualizer {
     constructor(containerId) {
         this.container = document.getElementById(containerId);
         this.scene = new THREE.Scene();
-        const width = this.container.clientWidth || window.innerWidth;
-        const height = this.container.clientHeight || window.innerHeight;
+        const width = (this.container && this.container.clientWidth > 0) ? this.container.clientWidth : 280;
+        const height = (this.container && this.container.clientHeight > 0) ? this.container.clientHeight : 180;
         this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
         this.camera.position.set(0, 30, 75);
         
@@ -15,7 +15,9 @@ class Brain3DVisualizer {
         this.renderer.setClearColor(0x000000, 0);
         this.renderer.setSize(width, height);
         this.renderer.setPixelRatio(window.devicePixelRatio);
-        this.container.appendChild(this.renderer.domElement);
+        if (this.container) {
+            this.container.appendChild(this.renderer.domElement);
+        }
         
         this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
         this.controls.enableDamping = true;
@@ -151,8 +153,9 @@ class Brain3DVisualizer {
 
     onResize() {
         if (!this.container) return;
-        const width = this.container.clientWidth || window.innerWidth;
-        const height = this.container.clientHeight || window.innerHeight;
+        const width = this.container.clientWidth;
+        const height = this.container.clientHeight;
+        if (width <= 0 || height <= 0) return;
         this.camera.aspect = width / height;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(width, height);

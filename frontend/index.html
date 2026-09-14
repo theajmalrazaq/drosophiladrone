@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DrosophilaDrone GCS — Google 3D Area Explorer & Drosophila Connectome</title>
-    <link rel="stylesheet" href="/static/css/style.css?v=34.0">
+    <link rel="stylesheet" href="/static/css/style.css?v=35.0">
     <!-- CesiumJS Photorealistic 3D Globe -->
     <link href="https://cesium.com/downloads/cesiumjs/releases/1.125/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
     <script src="https://cesium.com/downloads/cesiumjs/releases/1.125/Build/Cesium/Cesium.js"></script>
@@ -45,25 +45,8 @@
 
         <!-- Main 3-Column Glassmorphic HUD Grid -->
         <main class="dashboard-grid">
-            <!-- Left Column: 3D Brain Connectome & Avionics Telemetry -->
+            <!-- Left Column: Flight Avionics & Biological Motor Telemetry -->
             <aside class="left-panel">
-                <!-- 3D Connectome Spiking Activity -->
-                <div class="card brain-card hud-panel">
-                    <div class="card-header">
-                        <h2>CONNECTOME DYNAMICS</h2>
-                        <span class="card-tag" id="neuronCountTag">1,398 SOMAS</span>
-                    </div>
-                    <div id="brain3dContainer" class="viewport-brain"></div>
-                    <div class="circuit-legend">
-                        <div class="legend-item"><span class="dot dot-retina"></span> Retina / LPTC</div>
-                        <div class="legend-item"><span class="dot dot-cx"></span> Central Complex</div>
-                        <div class="legend-item"><span class="dot dot-kc"></span> Kenyon Cells</div>
-                        <div class="legend-item"><span class="dot dot-pam"></span> PAM11 Reward</div>
-                        <div class="legend-item"><span class="dot dot-ppl"></span> PPL101 Penalty</div>
-                        <div class="legend-item"><span class="dot dot-dn"></span> Descending DNs</div>
-                    </div>
-                </div>
-
                 <!-- Real-Time Drone Avionics Telemetry (Retro Space Shuttle / Aircraft Style Bars) -->
                 <div class="card telemetry-card hud-panel">
                     <div class="card-header">
@@ -309,10 +292,55 @@
                             </div>
                         </div>
 
-                        <!-- Tab 3: Synaptic Plasticity & STDP Parameters -->
+                        <!-- Tab 3: Synaptic Plasticity & Connectome Dynamics -->
                         <div class="tab-content" id="tabContent-synapses">
+                            <!-- 3D Connectome Dynamics Viewport Box -->
+                            <div class="section-box connectome-section-box">
+                                <div class="section-title">
+                                    <span>CONNECTOME DYNAMICS</span>
+                                    <span class="badge" id="neuronCountTag">1,398 SOMAS</span>
+                                </div>
+                                <div id="brain3dContainer" class="viewport-brain"></div>
+                                <div class="circuit-legend">
+                                    <div class="legend-item item-retina">
+                                        <span class="dot dot-retina"></span>
+                                        <span class="legend-label">RETINA / LPTC</span>
+                                        <span class="legend-count">240</span>
+                                    </div>
+                                    <div class="legend-item item-cx">
+                                        <span class="dot dot-cx"></span>
+                                        <span class="legend-label">CENTRAL COMPLEX</span>
+                                        <span class="legend-count">48</span>
+                                    </div>
+                                    <div class="legend-item item-kc">
+                                        <span class="dot dot-kc"></span>
+                                        <span class="legend-label">KENYON CELLS</span>
+                                        <span class="legend-count">800</span>
+                                    </div>
+                                    <div class="legend-item item-pam">
+                                        <span class="dot dot-pam"></span>
+                                        <span class="legend-label">PAM11 REWARD</span>
+                                        <span class="legend-count">24</span>
+                                    </div>
+                                    <div class="legend-item item-ppl">
+                                        <span class="dot dot-ppl"></span>
+                                        <span class="legend-label">PPL101 PENALTY</span>
+                                        <span class="legend-count">24</span>
+                                    </div>
+                                    <div class="legend-item item-dn">
+                                        <span class="dot dot-dn"></span>
+                                        <span class="legend-label">DESCENDING DNS</span>
+                                        <span class="legend-count">262</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Synaptic Plasticity State Metrics -->
                             <div class="section-box">
-                                <div class="section-title">SYNAPTIC PLASTICITY STATE</div>
+                                <div class="section-title">
+                                    <span>SYNAPTIC PLASTICITY STATE</span>
+                                    <span class="badge" id="synLearningBadge">STDP ACTIVE</span>
+                                </div>
                                 <div class="telemetry-mini-grid" style="grid-template-columns: 1fr 1fr;">
                                     <div class="stat-cell">
                                         <span class="stat-cell-label">TOTAL SPIKES</span>
