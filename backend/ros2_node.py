@@ -186,8 +186,8 @@ class FruitFlyPX4ROS2Node(Node if RCLPY_AVAILABLE else object):
         self.current_yaw_rad = 0.0
         self.current_roll_rad = 0.0
         self.current_pitch_rad = 0.0
-        # Initialize with Real-World Manhattan Chelsea 3D Obstacles & POIs
-        self.obstacles = [dict(obs) for obs in NYC_LANDMARKS]
+        # Initialize obstacles list (empty by default so no hardcoded obstacles block the drone)
+        self.obstacles = []
         
         # Start Web Bridge Server in background thread
         if self.enable_web_server:
@@ -301,8 +301,8 @@ class FruitFlyPX4ROS2Node(Node if RCLPY_AVAILABLE else object):
         elif cmd == "reset_pos":
             self.reset_position()
         elif cmd == "reset_obstacles":
-            self.obstacles = [dict(obs) for obs in NYC_LANDMARKS]
-            print(f"[DrosophilaDrone] Reset obstacles to {len(self.obstacles)} Manhattan Chelsea Landmarks & POIs.")
+            self.obstacles.clear()
+            print("[DrosophilaDrone] Reset obstacles (empty).")
         elif cmd == "clear_obstacles":
             self.obstacles.clear()
             print("[DrosophilaDrone] Cleared all obstacles.")

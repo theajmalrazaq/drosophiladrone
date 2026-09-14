@@ -564,76 +564,8 @@ class Drone3DVisualizer {
     setupNewYorkLandmarks() {
         if (!this.viewer) return;
 
-        NYC_URBAN_LANDMARKS.forEach((lm) => {
-            const centerCart = Cesium.Cartesian3.fromDegrees(
-                lm.lng,
-                lm.lat,
-                lm.height / 2.0
-            );
-            const topCart = Cesium.Cartesian3.fromDegrees(
-                lm.lng,
-                lm.lat,
-                lm.height + 14.0
-            );
-
-            // 1. 3D Volumetric Tower Cylinder
-            const towerEntity = this.viewer.entities.add({
-                name: lm.name,
-                position: centerCart,
-                cylinder: {
-                    length: lm.height,
-                    topRadius: lm.radius * 0.9,
-                    bottomRadius: lm.radius,
-                    material: Cesium.Color.fromCssColorString("rgba(0, 240, 255, 0.22)"),
-                    outline: true,
-                    outlineColor: Cesium.Color.fromCssColorString("rgba(0, 240, 255, 0.75)"),
-                    outlineWidth: 2
-                }
-            });
-
-            // 2. Base Hazard Warning Ring
-            const ringEntity = this.viewer.entities.add({
-                position: Cesium.Cartesian3.fromDegrees(lm.lng, lm.lat, 2.0),
-                ellipse: {
-                    semiMinorAxis: lm.radius + 10.0,
-                    semiMajorAxis: lm.radius + 10.0,
-                    material: Cesium.Color.fromCssColorString("rgba(255, 51, 102, 0.12)"),
-                    outline: true,
-                    outlineColor: Cesium.Color.fromCssColorString("rgba(255, 51, 102, 0.6)"),
-                    outlineWidth: 2
-                }
-            });
-
-            // 3. 3D Billboard Pin Label (Clean & Legible)
-            const labelEntity = this.viewer.entities.add({
-                position: topCart,
-                label: {
-                    text: `${lm.name}\n${lm.height}M • RATE: ${lm.rating} [${lm.category.toUpperCase()}]`,
-                    font: "10px 'Departure Mono', monospace",
-                    style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-                    fillColor: Cesium.Color.fromCssColorString("#ffffff"),
-                    outlineColor: Cesium.Color.fromCssColorString("#080c10"),
-                    outlineWidth: 3,
-                    verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                    pixelOffset: new Cesium.Cartesian2(0, -12),
-                    scaleByDistance: new Cesium.NearFarScalar(100, 1.0, 3000, 0.65),
-                    distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 3500)
-                },
-                point: {
-                    pixelSize: 8,
-                    color: Cesium.Color.fromCssColorString("#00f0ff"),
-                    outlineColor: Cesium.Color.WHITE,
-                    outlineWidth: 2
-                }
-            });
-
-            this.landmarkEntities.set(lm.id, {
-                tower: towerEntity,
-                ring: ringEntity,
-                label: labelEntity,
-                data: lm
-            });
-        });
+        // Hardcoded 3D obstacle cylinders and hazard rings removed from map
+        this.landmarkEntities.clear();
     }
 
     getDroneCartesian() {
@@ -900,26 +832,7 @@ class Drone3DVisualizer {
     }
 
     updateLandmarkProximities() {
-        NYC_URBAN_LANDMARKS.forEach((lm) => {
-            const entityObj = this.landmarkEntities.get(lm.id);
-            if (!entityObj || !entityObj.tower) return;
-
-            const dx = lm.x - this.dronePos[0];
-            const dy = lm.y - this.dronePos[1];
-            const dist = Math.hypot(dx, dy);
-
-            const warningDist = lm.radius + 20.0;
-            if (dist < warningDist && this.dronePos[2] <= lm.height) {
-                entityObj.tower.cylinder.material = Cesium.Color.fromCssColorString("rgba(255, 51, 102, 0.45)");
-                entityObj.tower.cylinder.outlineColor = Cesium.Color.fromCssColorString("#ff3366");
-            } else if (dist < warningDist + 40.0) {
-                entityObj.tower.cylinder.material = Cesium.Color.fromCssColorString("rgba(245, 158, 11, 0.3)");
-                entityObj.tower.cylinder.outlineColor = Cesium.Color.fromCssColorString("#f59e0b");
-            } else {
-                entityObj.tower.cylinder.material = Cesium.Color.fromCssColorString("rgba(0, 240, 255, 0.22)");
-                entityObj.tower.cylinder.outlineColor = Cesium.Color.fromCssColorString("rgba(0, 240, 255, 0.75)");
-            }
-        });
+        // No-op: hardcoded obstacle cylinders removed from map
     }
 
 
