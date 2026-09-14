@@ -1,5 +1,5 @@
 /**
- * FruitDrone GCS — Google 3D Area Explorer & CesiumJS Photorealistic Digital Twin
+ * DrosophilaDrone GCS — Google 3D Area Explorer & CesiumJS Photorealistic Digital Twin
  * 
  * User Config:
  * - Location: { lat: 40.74244, lng: -74.006144 } (Chelsea / High Line / Meatpacking District, Manhattan, NYC)
@@ -644,7 +644,7 @@ class Drone3DVisualizer {
         const initialQuat = Cesium.Transforms.headingPitchRollQuaternion(initialPos, hpr);
 
         this.droneEntity = this.viewer.entities.add({
-            name: "FruitDrone Drosophila Quadcopter",
+            name: "DrosophilaDrone Quadcopter",
             position: initialPos,
             orientation: initialQuat,
             model: {

@@ -24,5 +24,5 @@ echo "==========================================================="
 echo "  🪰 Launching Drosophila Connectome Flight Controller..."
 echo "  🌐 Serving Web Dashboard at http://localhost:8080"
 echo "==========================================================="
-cd /fruitdrone
+cd /drosophiladrone
 python3 backend/main.py

@@ -197,7 +197,7 @@ class FruitFlyPX4ROS2Node(Node if RCLPY_AVAILABLE else object):
             t.start()
 
         if not RCLPY_AVAILABLE:
-            print("[FruitDrone ROS 2] Running in standalone dashboard mode (rclpy not detected on host).")
+            print("[DrosophilaDrone ROS 2] Running in standalone dashboard mode (rclpy not detected on host).")
             return
             
         super().__init__("fruitfly_px4_controller")
@@ -294,18 +294,18 @@ class FruitFlyPX4ROS2Node(Node if RCLPY_AVAILABLE else object):
                 self.target_position[1] = float(val[1])
                 if len(val) >= 3:
                     self.target_position[2] = float(val[2])
-            print(f"[FruitDrone] Target Waypoint set to: X={self.target_position[0]:.1f}, Y={self.target_position[1]:.1f}, Z={self.target_position[2]:.1f}m")
+            print(f"[DrosophilaDrone] Target Waypoint set to: X={self.target_position[0]:.1f}, Y={self.target_position[1]:.1f}, Z={self.target_position[2]:.1f}m")
         elif cmd == "set_altitude":
             self.target_position[2] = max(0.5, min(10.0, float(val)))
-            print(f"[FruitDrone] Target Altitude set to: {self.target_position[2]:.1f}m")
+            print(f"[DrosophilaDrone] Target Altitude set to: {self.target_position[2]:.1f}m")
         elif cmd == "reset_pos":
             self.reset_position()
         elif cmd == "reset_obstacles":
             self.obstacles = [dict(obs) for obs in NYC_LANDMARKS]
-            print(f"[FruitDrone] Reset obstacles to {len(self.obstacles)} Manhattan Chelsea Landmarks & POIs.")
+            print(f"[DrosophilaDrone] Reset obstacles to {len(self.obstacles)} Manhattan Chelsea Landmarks & POIs.")
         elif cmd == "clear_obstacles":
             self.obstacles.clear()
-            print("[FruitDrone] Cleared all obstacles.")
+            print("[DrosophilaDrone] Cleared all obstacles.")
         elif cmd == "fly_to_landmark":
             landmark_id = int(val) if val is not None else 1
             matching = [lm for lm in NYC_LANDMARKS if lm["id"] == landmark_id]
@@ -315,10 +315,10 @@ class FruitFlyPX4ROS2Node(Node if RCLPY_AVAILABLE else object):
                 self.target_position[0] = float(lm["x"] - (lm["radius"] + 15.0))
                 self.target_position[1] = float(lm["y"])
                 self.target_position[2] = min(60.0, float(lm.get("height", 50.0) * 0.5))
-                print(f"[FruitDrone] Flight Mission set to NYC Landmark: {lm['name']} at X={self.target_position[0]:.1f}m, Y={self.target_position[1]:.1f}m, Z={self.target_position[2]:.1f}m")
+                print(f"[DrosophilaDrone] Flight Mission set to NYC Landmark: {lm['name']} at X={self.target_position[0]:.1f}m, Y={self.target_position[1]:.1f}m, Z={self.target_position[2]:.1f}m")
         elif cmd == "set_sugar_intensity":
             self.sugar_intensity = max(0.1, min(5.0, float(val)))
-            print(f"[FruitDrone] Odor plume intensity set to: {self.sugar_intensity:.2f}x")
+            print(f"[DrosophilaDrone] Odor plume intensity set to: {self.sugar_intensity:.2f}x")
         elif cmd == "sugar_odor":
             self.agent.i_ext[self.agent.circuit.dan_reward_indices] += 50.0
             n_mbon_half = len(self.agent.circuit.mbon_indices) // 2
@@ -409,12 +409,12 @@ class FruitFlyPX4ROS2Node(Node if RCLPY_AVAILABLE else object):
             self.velocity_ned = np.zeros(3, dtype=np.float32)
             self.current_roll_rad = 0.0
             self.current_pitch_rad = 0.0
-        print(f"[FruitDrone] Drone {'ARMED' if state else 'DISARMED'}")
+        print(f"[DrosophilaDrone] Drone {'ARMED' if state else 'DISARMED'}")
 
     def set_offboard_mode(self):
         self.send_vehicle_command(176, param1=1.0, param2=6.0)
         self.is_offboard = True
-        print("[FruitDrone] Switched to OFFBOARD flight mode")
+        print("[DrosophilaDrone] Switched to OFFBOARD flight mode")
 
     def publish_offboard_control_mode(self):
         if not RCLPY_AVAILABLE or px4_msgs is None or not hasattr(px4_msgs, "OffboardControlMode"):
@@ -435,7 +435,7 @@ class FruitFlyPX4ROS2Node(Node if RCLPY_AVAILABLE else object):
         self.current_yaw_rad = 0.0
         self.current_roll_rad = 0.0
         self.current_pitch_rad = 0.0
-        print("[FruitDrone] Reset drone position to Origin (0, 0, 1.5m)")
+        print("[DrosophilaDrone] Reset drone position to Origin (0, 0, 1.5m)")
 
     def control_loop_timer_callback(self):
         """50 Hz Closed-Loop Step."""

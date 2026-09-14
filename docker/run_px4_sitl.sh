@@ -2,7 +2,7 @@
 set -e
 
 echo "========================================================="
-echo "  🚀 FruitDrone Real PX4 SITL + ROS 2 Humble + Connectome"
+echo "  🚀 DrosophilaDrone Real PX4 SITL + ROS 2 Humble + Connectome"
 echo "  • Real PX4 SITL Firmware Execution"
 echo "  • Real Micro-XRCE-DDS uORB Bridge (UDP 8888)"
 echo "  • Real ROS 2 Humble Topics (/fmu/in/*, /fmu/out/*)"

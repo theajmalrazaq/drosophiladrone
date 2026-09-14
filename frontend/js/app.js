@@ -1,5 +1,5 @@
 /**
- * FruitDrone GCS — Google 3D Area Explorer & Drosophila Connectome Controller
+ * DrosophilaDrone GCS — Google 3D Area Explorer & Drosophila Connectome Controller
  * Font & Typography: Departure Mono
  */
 

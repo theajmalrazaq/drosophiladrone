@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-FruitDrone Main Entry Point.
+DrosophilaDrone Main Entry Point.
 
-Runs the Fruit Fly Connectome Spiking Brain and serves the 3D Web Dashboard.
+Runs the Drosophila Connectome Spiking Brain and serves the 3D Web Dashboard.
 """
 
 import sys
@@ -27,7 +27,7 @@ def main(args=None):
         rclpy.init(args=args)
         node = FruitFlyPX4ROS2Node(enable_web_server=True)
         print("\n===========================================================")
-        print("  🪰 FruitDrone Real PX4 SITL + ROS 2 Node Active!")
+        print("  🪰 DrosophilaDrone Real PX4 SITL + ROS 2 Node Active!")
         print("  🌐 Web Dashboard Live at: http://localhost:8080")
         print("===========================================================\n")
         try:
@@ -39,14 +39,14 @@ def main(args=None):
             rclpy.shutdown()
     else:
         node = FruitFlyPX4ROS2Node(enable_web_server=True)
-        print("[FruitDrone] Running Connectome Brain & Web Dashboard on http://localhost:8080...")
-        print("[FruitDrone] Press Ctrl+C to stop.")
+        print("[DrosophilaDrone] Running Connectome Brain & Web Dashboard on http://localhost:8080...")
+        print("[DrosophilaDrone] Press Ctrl+C to stop.")
         try:
             while True:
                 node.control_loop_timer_callback()
                 time.sleep(0.02)
         except KeyboardInterrupt:
-            print("\n[FruitDrone] Server stopped.")
+            print("\n[DrosophilaDrone] Server stopped.")
 
 
 if __name__ == "__main__":

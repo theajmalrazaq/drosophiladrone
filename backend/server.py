@@ -1,5 +1,5 @@
 """
-Async Web & WebSocket Bridge Server for FruitDrone.
+Async Web & WebSocket Bridge Server for DrosophilaDrone.
 
 Serves the frontend 3D dashboard on http://localhost:8080 and streams real-time
 ROS 2 / Drosophila Connectome telemetry over WebSockets.
@@ -13,7 +13,7 @@ from typing import Any, Dict, Set
 from aiohttp import web
 
 FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
-logger = logging.getLogger("FruitDroneServer")
+logger = logging.getLogger("DrosophilaDroneServer")
 
 
 @web.middleware
@@ -27,7 +27,7 @@ async def no_cache_middleware(request, handler):
 
 class BridgeServer:
     """
-    HTTP Web Server + WebSocket Streamer for FruitDrone Frontend.
+    HTTP Web Server + WebSocket Streamer for DrosophilaDrone Frontend.
     """
     def __init__(self, host: str = "0.0.0.0", port: int = 8080):
         self.host = host
@@ -42,31 +42,25 @@ class BridgeServer:
             "position": [0.0, 0.0, 1.5],
             "velocity": [0.0, 0.0, 0.0],
             "euler": [0.0, 0.0, 0.0],
-            "sim_time_ms": 0.0,
-            "total_spikes": 0,
-            "mean_firing_rate_hz": 0.0,
-            "pam11_reward_hz": 0.0,
-            "ppl101_aversive_hz": 0.0,
-            "kc_firing_hz": 0.0,
-            "lptc_hs_hz": 0.0,
-            "lptc_vs_hz": 0.0,
-            "cmd_vx": 0.0,
-            "cmd_vy": 0.0,
-            "cmd_vz": 0.0,
-            "cmd_yaw_rate": 0.0,
-            "weight_drift": 0.0,
-            "learning_enabled": True,
+            "target": [5.0, 0.0, 1.5],
+            "sugar_intensity": 1.0,
             "active_somas": [],
+            "dopamine": {
+                "pam11_hz": 0.0,
+                "ppl101_hz": 0.0,
+                "reward_signal": 0.0,
+                "mean_kc_rate": 0.0,
+                "total_spikes": 0,
+                "weight_drift": 0.0
+            }
         }
-        
         self.command_callback = None
         self.app = web.Application(middlewares=[no_cache_middleware])
-        self.setup_routes()
+        self._setup_routes()
 
-    def setup_routes(self):
-        if FRONTEND_DIR.exists():
-            self.app.router.add_static("/static/", path=FRONTEND_DIR, name="static")
-            self.app.router.add_get("/", self.handle_index)
+    def _setup_routes(self):
+        self.app.router.add_get("/", self.handle_index)
+        self.app.router.add_static("/static/", FRONTEND_DIR, name="static")
         self.app.router.add_get("/ws", self.handle_websocket)
         self.app.router.add_get("/api/telemetry", self.handle_api_telemetry)
 
@@ -74,7 +68,7 @@ class BridgeServer:
         index_file = FRONTEND_DIR / "index.html"
         if index_file.exists():
             return web.FileResponse(index_file)
-        return web.Response(text="<h1>FruitDrone Frontend</h1>", content_type="text/html")
+        return web.Response(text="<h1>DrosophilaDrone Frontend</h1>", content_type="text/html")
 
     async def handle_api_telemetry(self, request):
         return web.json_response(self.latest_telemetry)
@@ -118,5 +112,5 @@ class BridgeServer:
         site = web.TCPSite(runner, self.host, self.port)
         await site.start()
         print(f"\n===========================================================")
-        print(f"  🪰 FruitDrone 3D Web Dashboard Live at: http://localhost:{self.port}")
+        print(f"  🪰 DrosophilaDrone 3D Web Dashboard Live at: http://localhost:{self.port}")
         print(f"===========================================================\n")

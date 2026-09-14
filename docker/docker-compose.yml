@@ -1,16 +1,16 @@
 version: '3.8'
 
 services:
-  fruitdrone-real:
+  drosophiladrone-real:
     build:
       context: ..
       dockerfile: docker/Dockerfile
-    image: fruitdrone-real-px4:latest
-    container_name: fruitdrone_real_px4
+    image: drosophiladrone-real-px4:latest
+    container_name: drosophiladrone_real_px4
     privileged: true
     network_mode: host
     volumes:
-      - ..:/fruitdrone
+      - ..:/drosophiladrone
     environment:
       - HEADLESS=1
       - PX4_SYS_AUTOSTART=4001
