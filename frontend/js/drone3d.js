@@ -677,9 +677,9 @@ class Drone3DVisualizer {
             orientation: initialQuat,
             model: {
                 uri: modelUri,
-                minimumPixelSize: 64,
-                maximumScale: 80,
-                scale: this.currentAirframe === "quad_x" ? 3.0 : 3.5,
+                minimumPixelSize: 32,
+                maximumScale: 15,
+                scale: this.currentAirframe === "quad_x" ? 0.12 : 0.15,
                 runAnimations: true,
                 nodeTransformations: nodeTransformations
             },
