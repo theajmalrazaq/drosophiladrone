@@ -401,79 +401,201 @@ select,
     font-weight: 600;
 }
 
+/* ==========================================================================
+   Retro NASA / Apollo Style Modular Left Panel Chassis
+   ========================================================================== */
 .telemetry-card {
     flex: 1;
-    padding: 6px 10px;
-    gap: 5px;
+    display: flex;
+    flex-direction: column;
+    padding: 8px 10px;
+    gap: 8px;
     overflow-y: auto;
+    background: #eaeaea !important;
+    box-sizing: border-box;
 }
 
-/* ==========================================================================
-   Retro Space Shuttle & CRT Style Block Bar Gauges (Departure Mono on #eaeaea)
-   ========================================================================== */
-.retro-gauges-group {
+.retro-module {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-bottom: 1px dashed #b8b8b8;
+    padding-bottom: 6px;
+}
+
+.retro-module:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.retro-module-header {
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.retro-subgroup {
     display: flex;
     flex-direction: column;
     gap: 3px;
-    padding: 2px 0;
 }
 
-.retro-gauge-row {
+.retro-sublabel {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    font-weight: 700;
+    color: #334155;
+    letter-spacing: 0.03em;
+}
+
+/* Chunky Retro Bar Rows matching OMS HE TANK P in reference */
+.retro-bar-row {
     display: flex;
     align-items: center;
     gap: 6px;
     font-family: var(--font-mono);
     font-size: 8.5px;
-    line-height: 1;
 }
 
-.retro-gauge-name {
-    width: 68px;
-    flex-shrink: 0;
-    color: #0f172a;
+.retro-bar-sublabel {
+    width: 18px;
     font-weight: 700;
     font-size: 8px;
-    letter-spacing: 0.03em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    color: #475569;
+    flex-shrink: 0;
 }
 
-.retro-gauge-bar-track {
-    flex: 1;
-    height: 9px;
+.retro-bar-track-chunky {
+    width: 110px;
+    height: 12px;
     background: #ffffff;
-    border: 1px solid #000000;
+    border: 1px solid #111111;
+    box-sizing: border-box;
     position: relative;
     overflow: hidden;
-    box-sizing: border-box;
+    flex-shrink: 0;
 }
 
-.retro-gauge-bar-fill {
+.retro-bar-fill-chunky {
     height: 100%;
-    background-color: #000000;
-    background-image: none !important;
+    background: #262626;
     transition: width 0.08s linear;
 }
 
-.retro-gauge-bar-fill.fill-cyan,
-.retro-gauge-bar-fill.fill-green,
-.retro-gauge-bar-fill.fill-red,
-.retro-gauge-bar-fill.fill-orange,
-.retro-gauge-bar-fill.fill-purple {
-    background-color: #000000;
-    background-image: none !important;
+.retro-bar-num {
+    flex: 1;
+    text-align: right;
+    font-weight: 700;
+    font-size: 8.5px;
+    color: #0f172a;
+    font-variant-numeric: tabular-nums;
 }
 
-.retro-gauge-val {
-    width: 52px;
+/* Bi-directional Balance Track for Steering */
+.retro-balance-track {
+    width: 110px;
+    height: 12px;
+    background: #ffffff;
+    border: 1px solid #111111;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
     flex-shrink: 0;
-    text-align: right;
-    font-size: 8.5px;
+}
+
+.retro-balance-center-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: #000000;
+    z-index: 2;
+}
+
+.retro-balance-fill {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    background: #262626;
+    transition: all 0.08s linear;
+}
+
+/* Analog Needle Semicircle Dial Gauge matching OS AUDIO in reference */
+.retro-dial-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #f1f2f4;
+    border: 1px solid #c0c0c0;
+    padding: 6px 4px;
+    gap: 3px;
+}
+
+.retro-semi-dial {
+    width: 110px;
+    height: 60px;
+    overflow: visible;
+}
+
+.retro-dial-readouts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+    font-family: var(--font-mono);
+}
+
+.retro-dial-val {
+    font-size: 9px;
     font-weight: 700;
     color: #0f172a;
-    letter-spacing: 0.02em;
-    font-variant-numeric: tabular-nums;
+}
+
+.retro-dial-subval {
+    font-size: 7.5px;
+    color: #64748b;
+    font-weight: 600;
+}
+
+/* Retro Square Selector Button Group matching VID INPUT [A][B][C] */
+.retro-square-btn-group {
+    display: flex;
+    gap: 4px;
+    margin-top: 2px;
+}
+
+.retro-square-btn {
+    flex: 1;
+    height: 24px;
+    background: #4b5563;
+    color: #ffffff;
+    border: 1px solid #111111;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.08s ease;
+    border-radius: 0px;
+}
+
+.retro-square-btn:hover {
+    background: #1f2937;
+}
+
+.retro-square-btn.active {
+    background: #000000;
+    color: #ffffff;
+    box-shadow: inset 0 0 0 1px #ffffff;
 }
 
 .section-title {

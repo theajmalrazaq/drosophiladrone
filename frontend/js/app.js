@@ -137,6 +137,7 @@ function updateTelemetryUI(data) {
 
         setBar("barFillPosX", x, -500, 500);
         setBar("barFillPosY", y, -500, 500);
+        setBar("barFillPosZ", z, 0, 150);
         
         // Update vertical scrolling altitude tape
         updateAltitudeTape(z);
@@ -157,20 +158,27 @@ function updateTelemetryUI(data) {
         setText("valSimTime", `${(data.sim_time_ms / 1000).toFixed(1)}s`);
     }
 
-    // 4. Orientation
+    // 4. Orientation & Analog Needle Gyro Dial
     if (data.euler) {
         const rollDeg = (data.euler[0] * 180) / Math.PI;
         const pitchDeg = (data.euler[1] * 180) / Math.PI;
         const yawDeg = ((((data.euler[2] * 180) / Math.PI) % 360) + 360) % 360;
 
-        setText("telemetryRoll", `${rollDeg.toFixed(1)}°`);
-        setText("telemetryPitch", `${pitchDeg.toFixed(1)}°`);
-        setText("valYawRate", `${yawDeg.toFixed(0)}°`);
+        setText("telemetryRoll", `R: ${rollDeg >= 0 ? "+" : ""}${rollDeg.toFixed(1)}°`);
+        setText("telemetryPitch", `P: ${pitchDeg >= 0 ? "+" : ""}${pitchDeg.toFixed(1)}°`);
+        setText("valYawRate", `HDG: ${String(Math.round(yawDeg)).padStart(3, "0")}°`);
 
-        setBar("barFillRoll", rollDeg, -45, 45);
-        setBar("barFillPitch", pitchDeg, -45, 45);
-        setBar("barFillYaw", yawDeg, 0, 360);
+        const needle = document.getElementById("dialNeedleHeading");
+        if (needle) {
+            const needleAngle = -90 + (yawDeg / 360) * 180;
+            needle.setAttribute("transform", `rotate(${needleAngle.toFixed(1)}, 60, 60)`);
+        }
     }
+
+    const btnOff = document.getElementById("btnGateOffboard");
+    if (btnOff) btnOff.classList.toggle("active", Boolean(data.is_offboard));
+    const btnLearn = document.getElementById("btnGateLearn");
+    if (btnLearn) btnLearn.classList.toggle("active", Boolean(isLearningEnabled));
 
     // 5. Descending Motor Neurons
     const thrustHz = data.dn_thrust_hz || 0.0;

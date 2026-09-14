@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DrosophilaDrone GCS — Google 3D Area Explorer & Drosophila Connectome</title>
-    <link rel="stylesheet" href="/static/css/style.css?v=35.0">
+    <link rel="stylesheet" href="/static/css/style.css?v=36.0">
     <!-- CesiumJS Photorealistic 3D Globe -->
     <link href="https://cesium.com/downloads/cesiumjs/releases/1.125/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
     <script src="https://cesium.com/downloads/cesiumjs/releases/1.125/Build/Cesium/Cesium.js"></script>
@@ -47,129 +47,161 @@
         <main class="dashboard-grid">
             <!-- Left Column: Flight Avionics & Biological Motor Telemetry -->
             <aside class="left-panel">
-                <!-- Real-Time Drone Avionics Telemetry (Retro Space Shuttle / Aircraft Style Bars) -->
                 <div class="card telemetry-card hud-panel">
                     <div class="card-header">
                         <h2>┌── FLIGHT AVIONICS ──┐</h2>
                         <span class="card-tag" id="valSimTime">0.0s</span>
                     </div>
 
-                    <!-- Avionics Retro Block Gauges -->
-                    <div class="retro-gauges-group">
-                        <div class="retro-gauge-row">
-                            <span class="retro-gauge-name">POS X</span>
-                            <div class="retro-gauge-bar-track">
-                                <div class="retro-gauge-bar-fill fill-cyan" id="barFillPosX" style="width: 50%;"></div>
+                    <!-- Module 1: Position (X/Y/Z) -->
+                    <div class="retro-module">
+                        <div class="retro-module-header">┌── POSITION (XYZ) ──┐</div>
+                        <div class="retro-subgroup">
+                            <div class="retro-bar-row">
+                                <span class="retro-bar-sublabel">X</span>
+                                <div class="retro-bar-track-chunky">
+                                    <div class="retro-bar-fill-chunky" id="barFillPosX" style="width: 50%;"></div>
+                                </div>
+                                <span class="retro-bar-num" id="telemetryX">+0.0m</span>
                             </div>
-                            <span class="retro-gauge-val" id="telemetryX">+0.0m</span>
-                        </div>
-                        <div class="retro-gauge-row">
-                            <span class="retro-gauge-name">POS Y</span>
-                            <div class="retro-gauge-bar-track">
-                                <div class="retro-gauge-bar-fill fill-cyan" id="barFillPosY" style="width: 50%;"></div>
+                            <div class="retro-bar-row">
+                                <span class="retro-bar-sublabel">Y</span>
+                                <div class="retro-bar-track-chunky">
+                                    <div class="retro-bar-fill-chunky" id="barFillPosY" style="width: 50%;"></div>
+                                </div>
+                                <span class="retro-bar-num" id="telemetryY">+0.0m</span>
                             </div>
-                            <span class="retro-gauge-val" id="telemetryY">+0.0m</span>
-                        </div>
-                        <div class="retro-gauge-row">
-                            <span class="retro-gauge-name">ALT Z</span>
-                            <div class="retro-gauge-bar-track">
-                                <div class="retro-gauge-bar-fill fill-cyan" id="barFillPosZ" style="width: 15%;"></div>
+                            <div class="retro-bar-row">
+                                <span class="retro-bar-sublabel">Z</span>
+                                <div class="retro-bar-track-chunky">
+                                    <div class="retro-bar-fill-chunky" id="barFillPosZ" style="width: 15%;"></div>
+                                </div>
+                                <span class="retro-bar-num" id="telemetryZ">1.5m</span>
                             </div>
-                            <span class="retro-gauge-val" id="telemetryZ">1.5m</span>
-                        </div>
-                        <div class="retro-gauge-row">
-                            <span class="retro-gauge-name">VEL VX</span>
-                            <div class="retro-gauge-bar-track">
-                                <div class="retro-gauge-bar-fill fill-cyan" id="barFillVelX" style="width: 50%;"></div>
-                            </div>
-                            <span class="retro-gauge-val" id="valVx">+0.00</span>
-                        </div>
-                        <div class="retro-gauge-row">
-                            <span class="retro-gauge-name">VEL VY</span>
-                            <div class="retro-gauge-bar-track">
-                                <div class="retro-gauge-bar-fill fill-cyan" id="barFillVelY" style="width: 50%;"></div>
-                            </div>
-                            <span class="retro-gauge-val" id="valVy">+0.00</span>
-                        </div>
-                        <div class="retro-gauge-row">
-                            <span class="retro-gauge-name">CLIMB VZ</span>
-                            <div class="retro-gauge-bar-track">
-                                <div class="retro-gauge-bar-fill fill-cyan" id="barFillVelZ" style="width: 50%;"></div>
-                            </div>
-                            <span class="retro-gauge-val" id="valVz">+0.00</span>
-                        </div>
-                        <div class="retro-gauge-row">
-                            <span class="retro-gauge-name">ROLL</span>
-                            <div class="retro-gauge-bar-track">
-                                <div class="retro-gauge-bar-fill fill-cyan" id="barFillRoll" style="width: 50%;"></div>
-                            </div>
-                            <span class="retro-gauge-val" id="telemetryRoll">0.0°</span>
-                        </div>
-                        <div class="retro-gauge-row">
-                            <span class="retro-gauge-name">PITCH</span>
-                            <div class="retro-gauge-bar-track">
-                                <div class="retro-gauge-bar-fill fill-cyan" id="barFillPitch" style="width: 50%;"></div>
-                            </div>
-                            <span class="retro-gauge-val" id="telemetryPitch">0.0°</span>
-                        </div>
-                        <div class="retro-gauge-row">
-                            <span class="retro-gauge-name">YAW</span>
-                            <div class="retro-gauge-bar-track">
-                                <div class="retro-gauge-bar-fill fill-cyan" id="barFillYaw" style="width: 0%;"></div>
-                            </div>
-                            <span class="retro-gauge-val" id="valYawRate">0.0°</span>
                         </div>
                     </div>
 
-                    <!-- Biological Descending Motor Rates -->
-                    <div class="section-title">┌── DESCENDING MOTORS ──┐</div>
-                    <div class="retro-gauges-group">
-                        <div class="retro-gauge-row" title="Forward wingbeat power descending neuron">
-                            <span class="retro-gauge-name">DNp09 THRUST</span>
-                            <div class="retro-gauge-bar-track">
-                                <div class="retro-gauge-bar-fill fill-orange" id="barFillDnp09" style="width: 35%;"></div>
+                    <!-- Module 2: Velocity (VX/VY/VZ) -->
+                    <div class="retro-module">
+                        <div class="retro-module-header">┌── VELOCITY (MPS) ──┐</div>
+                        <div class="retro-subgroup">
+                            <div class="retro-bar-row">
+                                <span class="retro-bar-sublabel">VX</span>
+                                <div class="retro-bar-track-chunky">
+                                    <div class="retro-bar-fill-chunky" id="barFillVelX" style="width: 50%;"></div>
+                                </div>
+                                <span class="retro-bar-num" id="valVx">+0.00</span>
                             </div>
-                            <span class="retro-gauge-val" id="valDnp09">0.0 Hz</span>
-                        </div>
-                        <div class="retro-gauge-row" title="Climbing / elevation descending neuron">
-                            <span class="retro-gauge-name">DN_ALT CLIMB</span>
-                            <div class="retro-gauge-bar-track">
-                                <div class="retro-gauge-bar-fill fill-orange" id="barFillDnAlt" style="width: 10%;"></div>
+                            <div class="retro-bar-row">
+                                <span class="retro-bar-sublabel">VY</span>
+                                <div class="retro-bar-track-chunky">
+                                    <div class="retro-bar-fill-chunky" id="barFillVelY" style="width: 50%;"></div>
+                                </div>
+                                <span class="retro-bar-num" id="valVy">+0.00</span>
                             </div>
-                            <span class="retro-gauge-val" id="valDnAlt">0.0 Hz</span>
-                        </div>
-                        <div class="retro-gauge-row" title="Steering descending neurons (Left vs Right)">
-                            <span class="retro-gauge-name">DNa02 L / R</span>
-                            <div class="retro-gauge-bar-track">
-                                <div class="retro-gauge-bar-fill fill-orange" id="barFillDna02" style="width: 50%;"></div>
+                            <div class="retro-bar-row">
+                                <span class="retro-bar-sublabel">VZ</span>
+                                <div class="retro-bar-track-chunky">
+                                    <div class="retro-bar-fill-chunky" id="barFillVelZ" style="width: 50%;"></div>
+                                </div>
+                                <span class="retro-bar-num" id="valVz">+0.00</span>
                             </div>
-                            <span class="retro-gauge-val" id="valDna02">0 / 0 Hz</span>
-                        </div>
-                        <div class="retro-gauge-row" title="Olfactory sugar concentration gradient">
-                            <span class="retro-gauge-name">ODOR PLUME</span>
-                            <div class="retro-gauge-bar-track">
-                                <div class="retro-gauge-bar-fill fill-green" id="barFillOdor" style="width: 28%;"></div>
-                            </div>
-                            <span class="retro-gauge-val" id="valOdorPlume">1.00x</span>
                         </div>
                     </div>
 
-                    <!-- Dopaminergic Activity Progress Bars -->
-                    <div class="section-title">┌── DOPAMINERGIC PLASTICITY ──┐</div>
-                    <div class="retro-gauges-group">
-                        <div class="retro-gauge-row">
-                            <span class="retro-gauge-name">PAM11 REWARD</span>
-                            <div class="retro-gauge-bar-track">
-                                <div class="retro-gauge-bar-fill fill-green" id="pamBar" style="width: 50%;"></div>
+                    <!-- Module 3: Attitude Gyro (Analog Semicircle Dial Gauge) -->
+                    <div class="retro-module">
+                        <div class="retro-module-header">┌── ATTITUDE GYRO ──┐</div>
+                        <div class="retro-dial-container">
+                            <span class="retro-sublabel">HEADING (YAW)</span>
+                            <svg class="retro-semi-dial" viewBox="0 0 120 70">
+                                <!-- Outer Semicircle Arc matching reference image -->
+                                <path d="M 15 60 A 45 45 0 0 1 105 60" fill="none" stroke="#222222" stroke-width="2" />
+                                <!-- Tick marks at 0, 45, 90, 135, 180 degrees -->
+                                <line x1="15" y1="60" x2="22" y2="60" stroke="#222222" stroke-width="1.5" />
+                                <line x1="28" y1="28" x2="33" y2="33" stroke="#222222" stroke-width="1.5" />
+                                <line x1="60" y1="15" x2="60" y2="22" stroke="#222222" stroke-width="1.5" />
+                                <line x1="92" y1="28" x2="87" y2="33" stroke="#222222" stroke-width="1.5" />
+                                <line x1="105" y1="60" x2="98" y2="60" stroke="#222222" stroke-width="1.5" />
+                                <!-- Needle line pivot at (60, 60) -->
+                                <line id="dialNeedleHeading" x1="60" y1="60" x2="60" y2="20" stroke="#111111" stroke-width="2" stroke-linecap="round" />
+                                <circle cx="60" cy="60" r="3" fill="#111111" />
+                            </svg>
+                            <div class="retro-dial-readouts">
+                                <span class="retro-dial-val" id="valYawRate">HDG: 000°</span>
+                                <span class="retro-dial-subval"><span id="telemetryRoll">R: 0.0°</span> &nbsp; <span id="telemetryPitch">P: 0.0°</span></span>
                             </div>
-                            <span class="retro-gauge-val" id="pamHzVal">0.0 Hz</span>
                         </div>
-                        <div class="retro-gauge-row">
-                            <span class="retro-gauge-name">PPL101 AVERS</span>
-                            <div class="retro-gauge-bar-track">
-                                <div class="retro-gauge-bar-fill fill-red" id="pplBar" style="width: 25%;"></div>
+                    </div>
+
+                    <!-- Module 4: Descending Motors & Odor -->
+                    <div class="retro-module">
+                        <div class="retro-module-header">┌── DESCENDING MOTORS ──┐</div>
+                        <div class="retro-subgroup">
+                            <span class="retro-sublabel">DNp09 THRUST</span>
+                            <div class="retro-bar-row">
+                                <div class="retro-bar-track-chunky">
+                                    <div class="retro-bar-fill-chunky" id="barFillDnp09" style="width: 35%;"></div>
+                                </div>
+                                <span class="retro-bar-num" id="valDnp09">0.0 Hz</span>
                             </div>
-                            <span class="retro-gauge-val" id="pplHzVal">0.0 Hz</span>
+
+                            <span class="retro-sublabel" style="margin-top: 3px;">DN_ALT CLIMB</span>
+                            <div class="retro-bar-row">
+                                <div class="retro-bar-track-chunky">
+                                    <div class="retro-bar-fill-chunky" id="barFillDnAlt" style="width: 10%;"></div>
+                                </div>
+                                <span class="retro-bar-num" id="valDnAlt">0.0 Hz</span>
+                            </div>
+
+                            <span class="retro-sublabel" style="margin-top: 3px;">DNa02 STEERING (L ◄► R)</span>
+                            <div class="retro-bar-row">
+                                <div class="retro-balance-track">
+                                    <div class="retro-balance-center-line"></div>
+                                    <div class="retro-balance-fill" id="barFillDna02" style="left: 0; width: 50%;"></div>
+                                </div>
+                                <span class="retro-bar-num" id="valDna02">0 / 0 Hz</span>
+                            </div>
+
+                            <span class="retro-sublabel" style="margin-top: 3px;">ODOR GRADIENT</span>
+                            <div class="retro-bar-row">
+                                <div class="retro-bar-track-chunky">
+                                    <div class="retro-bar-fill-chunky" id="barFillOdor" style="width: 28%;"></div>
+                                </div>
+                                <span class="retro-bar-num" id="valOdorPlume">1.00x</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Module 5: Dopaminergic Plasticity Activity -->
+                    <div class="retro-module">
+                        <div class="retro-module-header">┌── DOPAMINERGIC DANs ──┐</div>
+                        <div class="retro-subgroup">
+                            <div class="retro-bar-row">
+                                <span class="retro-bar-sublabel" style="width: 45px;">PAM11</span>
+                                <div class="retro-bar-track-chunky">
+                                    <div class="retro-bar-fill-chunky" id="pamBar" style="width: 50%;"></div>
+                                </div>
+                                <span class="retro-bar-num" id="pamHzVal">0.0 Hz</span>
+                            </div>
+                            <div class="retro-bar-row">
+                                <span class="retro-bar-sublabel" style="width: 45px;">PPL101</span>
+                                <div class="retro-bar-track-chunky">
+                                    <div class="retro-bar-fill-chunky" id="pplBar" style="width: 25%;"></div>
+                                </div>
+                                <span class="retro-bar-num" id="pplHzVal">0.0 Hz</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Module 6: Neural Control Gates (Square Buttons like VID INPUT [A][B][C]) -->
+                    <div class="retro-module">
+                        <div class="retro-module-header">┌── NEURAL GATES ──┐</div>
+                        <div class="retro-square-btn-group">
+                            <button class="retro-square-btn active" id="btnGateOffboard" onclick="sendCmd('offboard')" title="Offboard Mode">OFF</button>
+                            <button class="retro-square-btn" id="btnGateReward" onclick="sendCmd('stimulate_reward')" title="Stimulate PAM11 Reward DAN">REW</button>
+                            <button class="retro-square-btn" id="btnGatePenalty" onclick="sendCmd('stimulate_aversive')" title="Stimulate PPL101 Penalty DAN">PEN</button>
+                            <button class="retro-square-btn" id="btnGateLearn" onclick="toggleLearning()" title="Toggle Synaptic Plasticity">STDP</button>
                         </div>
                     </div>
                 </div>
