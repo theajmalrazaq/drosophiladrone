@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DrosophilaDrone GCS — Google 3D Area Explorer & Drosophila Connectome</title>
-    <link rel="stylesheet" href="/static/css/style.css?v=44.0">
+    <link rel="stylesheet" href="/static/css/style.css?v=45.0">
     <!-- CesiumJS Photorealistic 3D Globe -->
     <link href="https://cesium.com/downloads/cesiumjs/releases/1.125/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
     <script src="https://cesium.com/downloads/cesiumjs/releases/1.125/Build/Cesium/Cesium.js"></script>
@@ -40,6 +40,10 @@
                 <div class="status-badge arm-badge" id="armStateBadge">ARMED</div>
                 <div class="status-badge" id="gpsStatusBadge">GPS: 3D FIX (18 SV)</div>
                 <div class="status-badge" id="batteryBadge">PWR: 98% 16.4V</div>
+                <button class="theme-toggle-btn" id="btnThemeToggle" onclick="toggleTheme()" title="Toggle Light / Dark UI Theme">
+                    <span class="theme-icon" id="themeIcon">◐</span>
+                    <span id="themeToggleText">THEME: LIGHT</span>
+                </button>
             </div>
         </header>
 
@@ -116,16 +120,16 @@
                             <span class="retro-sublabel">HEADING (YAW)</span>
                             <svg class="retro-semi-dial" viewBox="0 0 120 70">
                                 <!-- Outer Semicircle Arc matching reference image -->
-                                <path d="M 15 60 A 45 45 0 0 1 105 60" fill="none" stroke="#222222" stroke-width="2" />
+                                <path class="dial-arc" d="M 15 60 A 45 45 0 0 1 105 60" fill="none" stroke-width="2" />
                                 <!-- Tick marks at 0, 45, 90, 135, 180 degrees -->
-                                <line x1="15" y1="60" x2="22" y2="60" stroke="#222222" stroke-width="1.5" />
-                                <line x1="28" y1="28" x2="33" y2="33" stroke="#222222" stroke-width="1.5" />
-                                <line x1="60" y1="15" x2="60" y2="22" stroke="#222222" stroke-width="1.5" />
-                                <line x1="92" y1="28" x2="87" y2="33" stroke="#222222" stroke-width="1.5" />
-                                <line x1="105" y1="60" x2="98" y2="60" stroke="#222222" stroke-width="1.5" />
+                                <line class="dial-tick" x1="15" y1="60" x2="22" y2="60" stroke-width="1.5" />
+                                <line class="dial-tick" x1="28" y1="28" x2="33" y2="33" stroke-width="1.5" />
+                                <line class="dial-tick" x1="60" y1="15" x2="60" y2="22" stroke-width="1.5" />
+                                <line class="dial-tick" x1="92" y1="28" x2="87" y2="33" stroke-width="1.5" />
+                                <line class="dial-tick" x1="105" y1="60" x2="98" y2="60" stroke-width="1.5" />
                                 <!-- Needle line pivot at (60, 60) -->
-                                <line id="dialNeedleHeading" x1="60" y1="60" x2="60" y2="20" stroke="#111111" stroke-width="2" stroke-linecap="round" />
-                                <circle cx="60" cy="60" r="3" fill="#111111" />
+                                <line id="dialNeedleHeading" class="dial-needle" x1="60" y1="60" x2="60" y2="20" stroke-width="2" stroke-linecap="round" />
+                                <circle class="dial-pivot" cx="60" cy="60" r="3" />
                             </svg>
                             <div class="retro-dial-readouts">
                                 <span class="retro-dial-val" id="valYawRate">HDG: 000°</span>
@@ -443,6 +447,6 @@
     <!-- Scripts -->
     <script src="/static/js/brain3d.js?v=31.0"></script>
     <script src="/static/js/drone3d.js?v=31.0"></script>
-    <script src="/static/js/app.js?v=31.0"></script>
+    <script src="/static/js/app.js?v=32.0"></script>
 </body>
 </html>

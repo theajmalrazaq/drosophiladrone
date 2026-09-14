@@ -1,7 +1,7 @@
 /* ==========================================================================
    DrosophilaDrone GCS — Drosophila Connectome Flight Deck UI Stylesheet
    Typography: Departure Mono (SIL Open Font License)
-   Theme: Completely Square, Ultra-Transparent Glassmorphic Industrial UI
+   Theme: Square Industrial Instrumentation (Light / Dark Mode Supported)
    ========================================================================== */
 
 @font-face {
@@ -13,30 +13,269 @@
     font-display: swap;
 }
 
-:root {
-    --bg-dark: #080c10;
-    --bg-glass: rgba(10, 14, 22, 0.30);
-    --bg-glass-card: rgba(10, 14, 22, 0.35);
-    --bg-glass-sub: rgba(255, 255, 255, 0.03);
-    --bg-glass-hover: rgba(0, 240, 255, 0.12);
+/* ==========================================================================
+   CSS Custom Properties (Light vs Dark Themes)
+   ========================================================================== */
+:root,
+body[data-theme="light"],
+[data-theme="light"] {
+    --theme-name: 'light';
+    --bg-dark: #d8dbe0;
     
-    --border-glass: rgba(255, 255, 255, 0.14);
-    --border-highlight: rgba(0, 240, 255, 0.5);
+    /* Panel Surfaces */
+    --hud-panel-bg: #eaeaea;
+    --hud-panel-header-bg: #d4d4d4;
+    --hud-panel-border: #b0b0b0;
+    --hud-panel-subtle-border: #b8b8b8;
+    --hud-panel-text: #0f172a;
+    --hud-panel-text-muted: #475569;
+    --hud-panel-text-dim: #64748b;
     
-    --text-main: #f8fafc;
-    --text-muted: #cbd5e1;
-    --text-dim: #94a3b8;
+    /* Inner Box Surfaces & Modules */
+    --hud-module-header: #0f172a;
+    --hud-sublabel: #334155;
+    --hud-box-bg: #ffffff;
+    --hud-box-border: #111111;
+    
+    /* Meters & Chunky Progress Bars */
+    --hud-bar-track-bg: #ffffff;
+    --hud-bar-track-border: #111111;
+    --hud-bar-fill: #262626;
+    --hud-bar-num: #0f172a;
+    --hud-balance-center-line: #000000;
+    
+    /* Attitude Gyro Dial */
+    --hud-dial-bg: #f1f2f4;
+    --hud-dial-border: #c0c0c0;
+    --hud-dial-stroke: #222222;
+    --hud-dial-needle: #111111;
+    --hud-dial-val: #0f172a;
+    --hud-dial-subval: #64748b;
+    
+    /* Buttons & Interactive Elements */
+    --hud-btn-bg: #ffffff;
+    --hud-btn-text: #0f172a;
+    --hud-btn-border: #111111;
+    --hud-btn-hover-bg: #000000;
+    --hud-btn-hover-text: #ffffff;
+    --hud-btn-active-bg: #000000;
+    --hud-btn-active-text: #ffffff;
+    
+    /* Square Toggle Buttons (e.g. Neural Gates) */
+    --hud-square-btn-bg: #4b5563;
+    --hud-square-btn-text: #ffffff;
+    --hud-square-btn-border: #111111;
+    --hud-square-btn-hover: #1f2937;
+    --hud-square-btn-active: #000000;
+    --hud-square-btn-active-text: #ffffff;
+    
+    /* Badges & Tags */
+    --hud-badge-bg: #ffffff;
+    --hud-badge-text: #0284c7;
+    --hud-badge-border: #0284c7;
+    --hud-status-badge-bg: #ffffff;
+    --hud-status-badge-text: #0f172a;
+    --hud-status-badge-border: #111111;
+    --hud-arm-badge-bg: #000000;
+    --hud-arm-badge-text: #00ff88;
+    --hud-arm-badge-border: #000000;
+    --hud-disarm-badge-bg: #ef4444;
+    --hud-disarm-badge-text: #ffffff;
+    --hud-disarm-badge-border: #b91c1c;
+    
+    /* Range Sliders */
+    --hud-slider-track-bg: #ffffff;
+    --hud-slider-track-border: #000000;
+    --hud-slider-thumb-bg: #000000;
+    --hud-slider-thumb-border: #000000;
+    --hud-slider-val: #000000;
+    
+    /* Altitude Tape */
+    --hud-tape-bg: #eaeaea;
+    --hud-tape-border: #111111;
+    --hud-tape-header: #0f172a;
+    --hud-tape-sub: #475569;
+    --hud-tape-window-bg: #ffffff;
+    --hud-tape-pointer: #000000;
+    --hud-tape-major-text: #000000;
+    --hud-tape-minor-text: #64748b;
+    --hud-tape-tick-major: #000000;
+    --hud-tape-tick-minor: #cbd5e1;
+    
+    /* POI List */
+    --hud-poi-bg: #ffffff;
+    --hud-poi-border: #111111;
+    --hud-poi-name: #0f172a;
+    --hud-poi-meta: #64748b;
+    --hud-poi-hover-bg: #111111;
+    --hud-poi-hover-border: #000000;
+    --hud-poi-hover-name: #ffffff;
+    --hud-poi-hover-meta: #cbd5e1;
+    
+    /* Connectome Inspector & Circuit Legend */
+    --hud-brain-viewport-bg: #090d16;
+    --hud-legend-bg: #ffffff;
+    --hud-legend-border: #111111;
+    --hud-stat-cell-bg: #ffffff;
+    --hud-stat-cell-border: #111111;
+    --hud-stat-cell-label: #64748b;
+    --hud-stat-cell-val: #0f172a;
+    
+    /* Pilot Deck Buttons */
+    --hud-deck-btn-bg: #383838;
+    --hud-deck-btn-text: #ffffff;
+    --hud-deck-btn-border: #111111;
+    --hud-deck-btn-primary-bg: #1f2937;
+    --hud-deck-btn-danger-bg: #2b2b2b;
+    --hud-deck-btn-action-bg: #374151;
+    --hud-deck-btn-reward-bg: #4b5563;
+    --hud-deck-btn-penalty-bg: #4b5563;
+    --hud-deck-btn-secondary-bg: #ffffff;
+    --hud-deck-btn-secondary-text: #0f172a;
+    
+    /* Modals */
+    --hud-modal-bg: #eaeaea;
+    --hud-modal-border: #111111;
+    --hud-modal-header: #0f172a;
+    --hud-modal-input-bg: #ffffff;
+    --hud-modal-input-border: #111111;
+    --hud-modal-input-text: #0f172a;
     
     --accent: #00f0ff;
-    --accent-glow: rgba(0, 240, 255, 0.35);
-    --success: #00ff88;
-    --destructive: #ff3366;
-    --warning: #f59e0b;
-    --purple: #a78bfa;
-    
     --font-mono: 'Departure Mono', 'JetBrains Mono', monospace;
 }
 
+body[data-theme="dark"],
+[data-theme="dark"] {
+    --theme-name: 'dark';
+    --bg-dark: #080c10;
+    
+    /* Panel Surfaces */
+    --hud-panel-bg: rgba(13, 17, 23, 0.95);
+    --hud-panel-header-bg: #182232;
+    --hud-panel-border: #26354a;
+    --hud-panel-subtle-border: #1e293b;
+    --hud-panel-text: #f1f5f9;
+    --hud-panel-text-muted: #94a3b8;
+    --hud-panel-text-dim: #64748b;
+    
+    /* Inner Box Surfaces & Modules */
+    --hud-module-header: #38bdf8;
+    --hud-sublabel: #94a3b8;
+    --hud-box-bg: #131b28;
+    --hud-box-border: #26354a;
+    
+    /* Meters & Chunky Progress Bars */
+    --hud-bar-track-bg: #0d131d;
+    --hud-bar-track-border: #26354a;
+    --hud-bar-fill: #00f0ff;
+    --hud-bar-num: #f1f5f9;
+    --hud-balance-center-line: #00f0ff;
+    
+    /* Attitude Gyro Dial */
+    --hud-dial-bg: #0d131d;
+    --hud-dial-border: #26354a;
+    --hud-dial-stroke: #475569;
+    --hud-dial-needle: #00f0ff;
+    --hud-dial-val: #f1f5f9;
+    --hud-dial-subval: #94a3b8;
+    
+    /* Buttons & Interactive Elements */
+    --hud-btn-bg: #151e2c;
+    --hud-btn-text: #f1f5f9;
+    --hud-btn-border: #26354a;
+    --hud-btn-hover-bg: #00f0ff;
+    --hud-btn-hover-text: #050b14;
+    --hud-btn-active-bg: #00f0ff;
+    --hud-btn-active-text: #050b14;
+    
+    /* Square Toggle Buttons (e.g. Neural Gates) */
+    --hud-square-btn-bg: #1a2433;
+    --hud-square-btn-text: #cbd5e1;
+    --hud-square-btn-border: #26354a;
+    --hud-square-btn-hover: #26354a;
+    --hud-square-btn-active: #00f0ff;
+    --hud-square-btn-active-text: #050b14;
+    
+    /* Badges & Tags */
+    --hud-badge-bg: #0f172a;
+    --hud-badge-text: #38bdf8;
+    --hud-badge-border: #0284c7;
+    --hud-status-badge-bg: #151e2c;
+    --hud-status-badge-text: #f1f5f9;
+    --hud-status-badge-border: #26354a;
+    --hud-arm-badge-bg: #052e16;
+    --hud-arm-badge-text: #00ff88;
+    --hud-arm-badge-border: #10b981;
+    --hud-disarm-badge-bg: #450a0a;
+    --hud-disarm-badge-text: #f87171;
+    --hud-disarm-badge-border: #dc2626;
+    
+    /* Range Sliders */
+    --hud-slider-track-bg: #0d131d;
+    --hud-slider-track-border: #26354a;
+    --hud-slider-thumb-bg: #00f0ff;
+    --hud-slider-thumb-border: #00f0ff;
+    --hud-slider-val: #00f0ff;
+    
+    /* Altitude Tape */
+    --hud-tape-bg: rgba(13, 17, 23, 0.95);
+    --hud-tape-border: #26354a;
+    --hud-tape-header: #00f0ff;
+    --hud-tape-sub: #94a3b8;
+    --hud-tape-window-bg: #090d16;
+    --hud-tape-pointer: #00f0ff;
+    --hud-tape-major-text: #00f0ff;
+    --hud-tape-minor-text: #64748b;
+    --hud-tape-tick-major: #00f0ff;
+    --hud-tape-tick-minor: #26354a;
+    
+    /* POI List */
+    --hud-poi-bg: #131b28;
+    --hud-poi-border: #1e293b;
+    --hud-poi-name: #f1f5f9;
+    --hud-poi-meta: #94a3b8;
+    --hud-poi-hover-bg: #1e293b;
+    --hud-poi-hover-border: #00f0ff;
+    --hud-poi-hover-name: #00f0ff;
+    --hud-poi-hover-meta: #cbd5e1;
+    
+    /* Connectome Inspector & Circuit Legend */
+    --hud-brain-viewport-bg: #090d16;
+    --hud-legend-bg: #131b28;
+    --hud-legend-border: #26354a;
+    --hud-stat-cell-bg: #131b28;
+    --hud-stat-cell-border: #1e293b;
+    --hud-stat-cell-label: #94a3b8;
+    --hud-stat-cell-val: #00f0ff;
+    
+    /* Pilot Deck Buttons */
+    --hud-deck-btn-bg: #1e293b;
+    --hud-deck-btn-text: #f1f5f9;
+    --hud-deck-btn-border: #334155;
+    --hud-deck-btn-primary-bg: #0284c7;
+    --hud-deck-btn-danger-bg: #b91c1c;
+    --hud-deck-btn-action-bg: #334155;
+    --hud-deck-btn-reward-bg: #059669;
+    --hud-deck-btn-penalty-bg: #dc2626;
+    --hud-deck-btn-secondary-bg: #151e2c;
+    --hud-deck-btn-secondary-text: #38bdf8;
+    
+    /* Modals */
+    --hud-modal-bg: #0f172a;
+    --hud-modal-border: #38bdf8;
+    --hud-modal-header: #f1f5f9;
+    --hud-modal-input-bg: #1e293b;
+    --hud-modal-input-border: #334155;
+    --hud-modal-input-text: #f1f5f9;
+    
+    --accent: #00f0ff;
+    --font-mono: 'Departure Mono', 'JetBrains Mono', monospace;
+}
+
+/* ==========================================================================
+   Global Reset & Body
+   ========================================================================== */
 * {
     margin: 0;
     padding: 0;
@@ -49,13 +288,14 @@ html, body {
     height: 100vh;
     overflow: hidden;
     background-color: var(--bg-dark);
-    color: var(--text-main);
+    color: var(--hud-panel-text);
     font-family: var(--font-mono);
     font-size: 11.5px;
     line-height: 1.4;
     letter-spacing: 0.03em;
     -webkit-font-smoothing: none;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 /* Scrollbar */
@@ -67,7 +307,7 @@ html, body {
     background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.15);
+    background: var(--hud-panel-border);
 }
 ::-webkit-scrollbar-thumb:hover {
     background: var(--accent);
@@ -134,26 +374,28 @@ select,
 .tab-trigger,
 .action-btn,
 .vtool-btn,
-.btn {
+.btn,
+.theme-toggle-btn {
     pointer-events: auto;
 }
 
 /* ==========================================================================
-   Header Bar (Solid Retro Chassis)
+   Header Bar
    ========================================================================== */
 .header-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #d4d4d4;
+    background: var(--hud-panel-header-bg);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     border: none;
-    border-bottom: 1px solid #b0b0b0;
+    border-bottom: 1px solid var(--hud-panel-border);
     padding: 6px 14px;
     flex-shrink: 0;
     width: 100vw;
     box-sizing: border-box;
+    transition: background 0.15s ease, border-color 0.15s ease;
 }
 
 .logo-group {
@@ -166,7 +408,7 @@ select,
     font-size: 13px;
     font-weight: 700;
     letter-spacing: 0.1em;
-    color: #0f172a;
+    color: var(--hud-panel-text);
     display: flex;
     align-items: center;
     gap: 8px;
@@ -176,9 +418,9 @@ select,
     font-size: 9px;
     font-weight: 700;
     padding: 2px 6px;
-    background: #ffffff;
-    color: #0284c7;
-    border: 1px solid #0284c7;
+    background: var(--hud-badge-bg);
+    color: var(--hud-badge-text);
+    border: 1px solid var(--hud-badge-border);
     letter-spacing: 0.06em;
 }
 
@@ -190,7 +432,7 @@ select,
 
 .subtitle {
     font-size: 9px;
-    color: #475569;
+    color: var(--hud-panel-text-muted);
     letter-spacing: 0.05em;
 }
 
@@ -206,7 +448,7 @@ select,
     gap: 6px;
     font-size: 9.5px;
     font-weight: 700;
-    color: #1e293b;
+    color: var(--hud-panel-text);
 }
 
 .status-dot {
@@ -227,21 +469,50 @@ select,
     font-size: 9px;
     font-weight: 700;
     padding: 3px 7px;
-    background: #ffffff;
-    border: 1px solid #111111;
-    color: #0f172a;
+    background: var(--hud-status-badge-bg);
+    border: 1px solid var(--hud-status-badge-border);
+    color: var(--hud-status-badge-text);
 }
 
 .status-badge.arm-badge {
-    background: #000000;
-    color: #00ff88;
-    border-color: #000000;
+    background: var(--hud-arm-badge-bg);
+    color: var(--hud-arm-badge-text);
+    border-color: var(--hud-arm-badge-border);
 }
 
 .status-badge.disarm-badge {
-    background: #ef4444;
-    color: #ffffff;
-    border-color: #b91c1c;
+    background: var(--hud-disarm-badge-bg);
+    color: var(--hud-disarm-badge-text);
+    border-color: var(--hud-disarm-badge-border);
+}
+
+/* Header Theme Toggle Button */
+.theme-toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    font-weight: 700;
+    padding: 3px 8px;
+    background: var(--hud-btn-bg);
+    color: var(--hud-btn-text);
+    border: 1px solid var(--hud-btn-border);
+    cursor: pointer;
+    transition: all 0.1s ease;
+    letter-spacing: 0.05em;
+    user-select: none;
+}
+
+.theme-toggle-btn:hover {
+    background: var(--hud-btn-hover-bg);
+    color: var(--hud-btn-hover-text);
+    border-color: var(--hud-btn-hover-bg);
+}
+
+.theme-icon {
+    font-size: 10px;
+    line-height: 1;
 }
 
 /* ==========================================================================
@@ -256,12 +527,10 @@ select,
     width: 100vw;
 }
 
-/* Card Shell (Square & Transparent Glass) */
+/* Card Shell */
 .card {
-    background: var(--bg-glass-card);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border: 1px solid var(--border-glass);
+    background: var(--hud-panel-bg);
+    border: 1px solid var(--hud-panel-border);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -272,15 +541,15 @@ select,
     justify-content: space-between;
     align-items: center;
     padding: 6px 10px;
-    border-bottom: 1px solid var(--border-glass);
-    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid var(--hud-panel-border);
+    background: var(--hud-panel-header-bg);
     flex-shrink: 0;
 }
 
 .card-header h2 {
     font-size: 10.5px;
-    font-weight: 600;
-    color: var(--text-main);
+    font-weight: 700;
+    color: var(--hud-panel-text);
     letter-spacing: 0.06em;
 }
 
@@ -288,9 +557,9 @@ select,
     font-size: 8.5px;
     font-weight: 700;
     padding: 2px 6px;
-    background: #ffffff;
-    border: 1px solid #111111;
-    color: #0f172a;
+    background: var(--hud-box-bg);
+    border: 1px solid var(--hud-box-border);
+    color: var(--hud-panel-text);
 }
 
 .card-tag.target-tag {
@@ -300,7 +569,7 @@ select,
 }
 
 /* ==========================================================================
-   Left Column: Solid Retro Chassis (#eaeaea) & Avionics
+   Left Column: Flight Avionics
    ========================================================================== */
 .left-panel {
     display: flex;
@@ -312,35 +581,830 @@ select,
 }
 
 .left-panel .card {
-    background: #eaeaea !important;
+    background: var(--hud-panel-bg) !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
     border: none !important;
-    border-right: 1px solid #b0b0b0 !important;
-    color: #111827 !important;
+    border-right: 1px solid var(--hud-panel-border) !important;
+    color: var(--hud-panel-text) !important;
     box-shadow: none !important;
     height: 100%;
 }
 
 .left-panel .card-header {
-    background: #d4d4d4;
-    border-bottom: 1px solid #b0b0b0;
+    background: var(--hud-panel-header-bg);
+    border-bottom: 1px solid var(--hud-panel-border);
 }
 
 .left-panel .card-header h2 {
-    color: #0f172a;
+    color: var(--hud-panel-text);
     font-weight: 700;
 }
 
 .left-panel .card-tag {
-    background: #ffffff;
-    border: 1px solid #94a3b8;
-    color: #0f172a;
+    background: var(--hud-box-bg);
+    border: 1px solid var(--hud-box-border);
+    color: var(--hud-panel-text);
     font-weight: 600;
 }
 
+.telemetry-card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 8px 10px;
+    gap: 8px;
+    overflow-y: auto;
+    background: var(--hud-panel-bg) !important;
+    box-sizing: border-box;
+}
+
+.retro-module {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-bottom: 1px dashed var(--hud-panel-subtle-border);
+    padding-bottom: 6px;
+}
+
+.retro-module:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.retro-module-header {
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    font-weight: 700;
+    color: var(--hud-module-header);
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.retro-subgroup {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.retro-sublabel {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    font-weight: 700;
+    color: var(--hud-sublabel);
+    letter-spacing: 0.03em;
+}
+
+/* Chunky Retro Bar Rows */
+.retro-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+}
+
+.retro-bar-sublabel {
+    width: 18px;
+    font-weight: 700;
+    font-size: 8px;
+    color: var(--hud-panel-text-muted);
+    flex-shrink: 0;
+}
+
+.retro-bar-track-chunky {
+    width: 110px;
+    height: 12px;
+    background: var(--hud-bar-track-bg);
+    border: 1px solid var(--hud-bar-track-border);
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.retro-bar-fill-chunky {
+    height: 100%;
+    background: var(--hud-bar-fill);
+    transition: width 0.08s linear;
+}
+
+.retro-bar-num {
+    flex: 1;
+    text-align: right;
+    font-weight: 700;
+    font-size: 8.5px;
+    color: var(--hud-bar-num);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Bi-directional Balance Track for Steering */
+.retro-balance-track {
+    width: 110px;
+    height: 12px;
+    background: var(--hud-bar-track-bg);
+    border: 1px solid var(--hud-bar-track-border);
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.retro-balance-center-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: var(--hud-balance-center-line);
+    z-index: 2;
+}
+
+.retro-balance-fill {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    background: var(--hud-bar-fill);
+    transition: all 0.08s linear;
+}
+
+/* Analog Needle Semicircle Dial Gauge */
+.retro-dial-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--hud-dial-bg);
+    border: 1px solid var(--hud-dial-border);
+    padding: 6px 4px;
+    gap: 3px;
+}
+
+.retro-semi-dial {
+    width: 110px;
+    height: 60px;
+    overflow: visible;
+}
+
+.retro-semi-dial .dial-arc,
+.retro-semi-dial .dial-tick {
+    stroke: var(--hud-dial-stroke);
+}
+
+.retro-semi-dial .dial-needle {
+    stroke: var(--hud-dial-needle);
+}
+
+.retro-semi-dial .dial-pivot {
+    fill: var(--hud-dial-needle);
+}
+
+.retro-dial-readouts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+    font-family: var(--font-mono);
+}
+
+.retro-dial-val {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--hud-dial-val);
+}
+
+.retro-dial-subval {
+    font-size: 7.5px;
+    color: var(--hud-dial-subval);
+    font-weight: 600;
+}
+
+/* Retro Square Selector Button Group */
+.retro-square-btn-group {
+    display: flex;
+    gap: 4px;
+    margin-top: 2px;
+}
+
+.retro-square-btn {
+    flex: 1;
+    height: 24px;
+    background: var(--hud-square-btn-bg);
+    color: var(--hud-square-btn-text);
+    border: 1px solid var(--hud-square-btn-border);
+    font-family: var(--font-mono);
+    font-size: 8px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.08s ease;
+    border-radius: 0px;
+}
+
+.retro-square-btn:hover {
+    background: var(--hud-square-btn-hover);
+}
+
+.retro-square-btn.active {
+    background: var(--hud-square-btn-active);
+    color: var(--hud-square-btn-active-text);
+    box-shadow: inset 0 0 0 1px var(--hud-square-btn-border);
+}
+
+/* ==========================================================================
+   Center Column: Floating Viewport Controls & Overlays
+   ========================================================================== */
+.center-viewport {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    pointer-events: none;
+}
+
+.center-floating-header {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+}
+
+.center-header-tags {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+/* Top-Right: Auto Orbit Control */
+.auto-orbit-control {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--hud-panel-bg);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 1px solid var(--hud-panel-border);
+    padding: 4px 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    z-index: 10;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.orbit-label {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--hud-panel-text);
+    letter-spacing: 0.05em;
+}
+
+/* Switch Toggle */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 24px;
+    height: 12px;
+}
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+    position: absolute; cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: var(--hud-panel-subtle-border);
+    border: 1px solid var(--hud-box-border);
+    box-sizing: border-box;
+    transition: .15s;
+}
+.slider:before {
+    position: absolute; content: "";
+    height: 6px; width: 6px;
+    left: 2px; bottom: 2px;
+    background-color: #ffffff;
+    transition: .15s;
+}
+input:checked + .slider { background-color: var(--hud-box-border); }
+input:checked + .slider:before { transform: translateX(12px); background-color: var(--accent); }
+
+/* Top-Left: Viewport Tools */
+.viewport-tools-bar {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    gap: 4px;
+    z-index: 10;
+}
+
+.vtool-btn {
+    background: var(--hud-btn-bg);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 1px solid var(--hud-btn-border);
+    color: var(--hud-btn-text);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 700;
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: all 0.08s ease;
+    letter-spacing: 0.04em;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.vtool-btn:hover {
+    background: var(--hud-btn-hover-bg);
+    border-color: var(--hud-btn-hover-bg);
+    color: var(--hud-btn-hover-text);
+}
+
+.vtool-btn.active {
+    background: var(--hud-btn-active-bg);
+    border-color: var(--hud-btn-active-bg);
+    color: var(--hud-btn-active-text);
+    font-weight: 700;
+}
+
+/* ==========================================================================
+   Center HUD Vertical Altitude Tape
+   ========================================================================== */
+.hud-altitude-tape {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 90px;
+    background: var(--hud-tape-bg) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid var(--hud-tape-border) !important;
+    padding: 6px 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 15;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+    pointer-events: none;
+    user-select: none;
+    box-sizing: border-box;
+}
+
+.hud-tape-header {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--hud-tape-header);
+    text-align: center;
+    line-height: 1;
+    margin-bottom: 5px;
+    letter-spacing: 0.1em;
+    border-bottom: 1px solid var(--hud-tape-border);
+    width: 100%;
+    padding-bottom: 3px;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 4px;
+    text-shadow: none;
+}
+
+.hud-tape-sub {
+    font-size: 8.5px;
+    font-weight: 700;
+    color: var(--hud-tape-sub);
+    text-shadow: none;
+}
+
+.hud-tape-window {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    background: var(--hud-tape-window-bg);
+    border: 1px solid var(--hud-tape-border);
+    box-sizing: border-box;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 1) 8%, rgba(0, 0, 0, 1) 92%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 1) 8%, rgba(0, 0, 0, 1) 92%, transparent 100%);
+}
+
+.hud-tape-pointer {
+    position: absolute;
+    top: 50%;
+    right: 2px;
+    transform: translateY(-50%);
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--hud-tape-pointer);
+    z-index: 5;
+    pointer-events: none;
+    line-height: 1;
+    filter: none;
+}
+
+.hud-tape-ladder {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    transition: transform 0.08s linear;
+    will-change: transform;
+    pointer-events: none;
+}
+
+.hud-tape-row {
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 16px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--hud-tape-minor-text);
+    line-height: 1;
+    box-sizing: border-box;
+    letter-spacing: 0.04em;
+    width: 100%;
+    text-shadow: none;
+}
+
+.hud-tape-row.major {
+    color: var(--hud-tape-major-text);
+    font-size: 12.5px;
+    font-weight: 800;
+    text-shadow: none;
+}
+
+.hud-tape-num {
+    display: inline-block;
+    min-width: 32px;
+    text-align: right;
+}
+
+.hud-tape-tick {
+    display: inline-block;
+    width: 6px;
+    height: 1.5px;
+    background: var(--hud-tape-tick-minor);
+    margin-left: 4px;
+    box-shadow: none;
+}
+
+.hud-tape-tick.major {
+    width: 10px;
+    height: 2px;
+    background: var(--hud-tape-tick-major);
+    box-shadow: none;
+}
+
+/* Bottom-Right: 3D Engine Selector */
+.engine-switch-bar {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    display: flex;
+    gap: 4px;
+    z-index: 10;
+}
+
+.engine-select {
+    background: var(--hud-btn-bg);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 1px solid var(--hud-btn-border);
+    color: var(--hud-btn-text);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 700;
+    padding: 3px 6px;
+    outline: none;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+/* ==========================================================================
+   Right Column: Mission Deck & Inspectors
+   ========================================================================== */
+.right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    overflow: hidden;
+    height: 100%;
+    min-height: 0;
+}
+
+.right-panel .card {
+    background: var(--hud-panel-bg) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: none !important;
+    border-left: 1px solid var(--hud-panel-border) !important;
+    color: var(--hud-panel-text) !important;
+    box-shadow: none !important;
+    height: 100%;
+}
+
+.control-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.right-panel .tabs-header-bar {
+    background: var(--hud-panel-header-bg);
+    border-bottom: 1px solid var(--hud-panel-border);
+    padding: 4px 6px;
+}
+
+.tabs-list {
+    display: flex;
+    gap: 3px;
+}
+
+.right-panel .tab-trigger {
+    flex: 1;
+    background: var(--hud-btn-bg);
+    border: 1px solid var(--hud-btn-border);
+    color: var(--hud-btn-text);
+    font-family: var(--font-mono);
+    font-size: 8px;
+    padding: 5px 4px;
+    cursor: pointer;
+    transition: all 0.08s ease;
+    letter-spacing: 0.04em;
+    font-weight: 700;
+    border-radius: 0px;
+}
+
+.right-panel .tab-trigger:hover {
+    color: var(--hud-btn-hover-text);
+    background: var(--hud-btn-hover-bg);
+}
+
+.right-panel .tab-trigger.active {
+    background: var(--hud-btn-active-bg);
+    border-color: var(--hud-btn-active-bg);
+    color: var(--hud-btn-active-text);
+    font-weight: 700;
+}
+
+.tabs-content-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 10px;
+    background: var(--hud-panel-bg) !important;
+    min-height: 0;
+}
+
+.tab-content {
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    background: var(--hud-panel-bg);
+}
+
+.tab-content.active {
+    display: flex;
+}
+
+.right-panel .section-box {
+    background: var(--hud-panel-bg);
+    border: none;
+    border-bottom: 1px dashed var(--hud-panel-subtle-border);
+    padding: 0 0 6px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    border-radius: 0px;
+}
+
+.right-panel .section-box:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.right-panel .section-title {
+    color: var(--hud-module-header);
+    font-weight: 700;
+    font-size: 8.5px;
+    letter-spacing: 0.05em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.slider-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 3px;
+}
+
+.slider-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 8.5px;
+}
+
+.right-panel .slider-row label {
+    width: 95px;
+    color: var(--hud-panel-text);
+    font-weight: 700;
+    font-family: var(--font-mono);
+}
+
+.right-panel .slider-row input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    flex: 1;
+    height: 16px;
+    background: transparent;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    outline: none;
+}
+
+/* Range Slider Tracks & Thumbs */
+.right-panel .slider-row input[type="range"]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 4px;
+    background: var(--hud-slider-track-bg);
+    border: 1px solid var(--hud-slider-track-border);
+    border-radius: 0px;
+    box-sizing: border-box;
+}
+
+.right-panel .slider-row input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 10px;
+    height: 14px;
+    background: var(--hud-slider-thumb-bg);
+    border: 1px solid var(--hud-slider-thumb-border);
+    border-radius: 0px;
+    margin-top: -6px;
+    cursor: pointer;
+    box-shadow: none;
+    transition: background 0.05s ease;
+}
+
+.right-panel .slider-row input[type="range"]::-moz-range-track {
+    width: 100%;
+    height: 4px;
+    background: var(--hud-slider-track-bg);
+    border: 1px solid var(--hud-slider-track-border);
+    border-radius: 0px;
+    box-sizing: border-box;
+}
+
+.right-panel .slider-row input[type="range"]::-moz-range-thumb {
+    width: 10px;
+    height: 14px;
+    background: var(--hud-slider-thumb-bg);
+    border: 1px solid var(--hud-slider-thumb-border);
+    border-radius: 0px;
+    cursor: pointer;
+    box-shadow: none;
+}
+
+.right-panel .slider-val {
+    width: 48px;
+    text-align: right;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    color: var(--hud-slider-val);
+    font-size: 8.5px;
+}
+
+.preset-btn-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3px;
+}
+
+.right-panel .action-btn {
+    background: var(--hud-btn-bg);
+    border: 1px solid var(--hud-btn-border);
+    padding: 5px 8px;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    color: var(--hud-btn-text);
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.08s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: 0.03em;
+    font-weight: 700;
+    border-radius: 0px;
+}
+
+.right-panel .action-btn:hover {
+    background: var(--hud-btn-hover-bg);
+    border-color: var(--hud-btn-hover-bg);
+    color: var(--hud-btn-hover-text);
+}
+
+.right-panel .action-btn-accent {
+    background: var(--hud-box-border);
+    border: 1px solid var(--hud-box-border);
+    color: #ffffff;
+    text-align: center;
+    font-weight: 700;
+    margin-top: 3px;
+    border-radius: 0px;
+}
+
+.right-panel .action-btn-accent:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000000;
+}
+
+/* POIs List */
+.poi-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.right-panel .poi-list-item {
+    background: var(--hud-poi-bg);
+    border: 1px solid var(--hud-poi-border);
+    padding: 5px 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.08s ease;
+    border-radius: 0px;
+}
+
+.right-panel .poi-list-item:hover {
+    border-color: var(--hud-poi-hover-border);
+    background: var(--hud-poi-hover-bg);
+}
+
+.right-panel .poi-list-item:hover .poi-name {
+    color: var(--hud-poi-hover-name);
+}
+
+.right-panel .poi-list-item:hover .poi-meta {
+    color: var(--hud-poi-hover-meta);
+}
+
+.right-panel .poi-list-item:hover .badge {
+    background: var(--hud-badge-bg);
+    color: var(--hud-badge-text);
+}
+
+.poi-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.right-panel .poi-name {
+    font-size: 8.5px;
+    font-weight: 700;
+    color: var(--hud-poi-name);
+}
+
+.right-panel .poi-meta {
+    font-size: 7.5px;
+    color: var(--hud-poi-meta);
+    font-weight: 500;
+}
+
+.right-panel .badge {
+    background: var(--hud-badge-bg);
+    color: var(--hud-badge-text);
+    border: 1px solid var(--hud-badge-border);
+    border-radius: 0px;
+    font-weight: 700;
+}
+
+/* Connectome Somatic Inspector */
 .connectome-section-box {
-    background: #eaeaea !important;
+    background: var(--hud-panel-bg) !important;
     border: none !important;
     padding: 0 0 6px 0 !important;
     overflow: hidden;
@@ -357,8 +1421,8 @@ select,
     width: 100%;
     height: 180px;
     position: relative;
-    background: #090d16; /* Deep dark CRT viewport for bright somas */
-    border-bottom: 1px solid #cbd5e1;
+    background: var(--hud-brain-viewport-bg);
+    border-bottom: 1px solid var(--hud-panel-border);
     box-sizing: border-box;
 }
 
@@ -367,7 +1431,8 @@ select,
     grid-template-columns: 1fr 1fr;
     gap: 4px 6px;
     padding: 6px 8px;
-    background: #ffffff;
+    background: var(--hud-legend-bg);
+    border: 1px solid var(--hud-legend-border);
     font-size: 8px;
     box-sizing: border-box;
 }
@@ -411,845 +1476,44 @@ select,
 .legend-count {
     margin-left: auto;
     font-size: 7px;
-    color: #64748b;
+    color: var(--hud-panel-text-dim);
     font-weight: 600;
 }
 
-/* ==========================================================================
-   Retro NASA / Apollo Style Modular Left Panel Chassis
-   ========================================================================== */
-.telemetry-card {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    padding: 8px 10px;
-    gap: 8px;
-    overflow-y: auto;
-    background: #eaeaea !important;
-    box-sizing: border-box;
-}
-
-.retro-module {
-    display: flex;
-    flex-direction: column;
+/* Synaptic Plasticity Stat Cells */
+.telemetry-mini-grid {
+    display: grid;
     gap: 4px;
-    border-bottom: 1px dashed #b8b8b8;
-    padding-bottom: 6px;
+    margin-top: 4px;
 }
 
-.retro-module:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-}
-
-.retro-module-header {
-    font-family: var(--font-mono);
-    font-size: 8.5px;
-    font-weight: 700;
-    color: #0f172a;
-    letter-spacing: 0.05em;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-}
-
-.retro-subgroup {
+.stat-cell {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    padding: 4px 6px;
+    background: var(--hud-stat-cell-bg);
+    border: 1px solid var(--hud-stat-cell-border);
+    gap: 1px;
 }
 
-.retro-sublabel {
-    font-family: var(--font-mono);
-    font-size: 8px;
+.stat-cell-label {
+    font-size: 7.5px;
     font-weight: 700;
-    color: #334155;
-    letter-spacing: 0.03em;
+    color: var(--hud-stat-cell-label);
+    letter-spacing: 0.04em;
 }
 
-/* Chunky Retro Bar Rows matching OMS HE TANK P in reference */
-.retro-bar-row {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-family: var(--font-mono);
-    font-size: 8.5px;
-}
-
-.retro-bar-sublabel {
-    width: 18px;
+.stat-cell-val {
+    font-size: 10.5px;
     font-weight: 700;
-    font-size: 8px;
-    color: #475569;
-    flex-shrink: 0;
-}
-
-.retro-bar-track-chunky {
-    width: 110px;
-    height: 12px;
-    background: #ffffff;
-    border: 1px solid #111111;
-    box-sizing: border-box;
-    position: relative;
-    overflow: hidden;
-    flex-shrink: 0;
-}
-
-.retro-bar-fill-chunky {
-    height: 100%;
-    background: #262626;
-    transition: width 0.08s linear;
-}
-
-.retro-bar-num {
-    flex: 1;
-    text-align: right;
-    font-weight: 700;
-    font-size: 8.5px;
-    color: #0f172a;
+    color: var(--hud-stat-cell-val);
     font-variant-numeric: tabular-nums;
 }
 
-/* Bi-directional Balance Track for Steering */
-.retro-balance-track {
-    width: 110px;
-    height: 12px;
-    background: #ffffff;
-    border: 1px solid #111111;
-    box-sizing: border-box;
-    position: relative;
-    overflow: hidden;
-    flex-shrink: 0;
-}
-
-.retro-balance-center-line {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    width: 1px;
-    background: #000000;
-    z-index: 2;
-}
-
-.retro-balance-fill {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    height: 100%;
-    background: #262626;
-    transition: all 0.08s linear;
-}
-
-/* Analog Needle Semicircle Dial Gauge matching OS AUDIO in reference */
-.retro-dial-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: #f1f2f4;
-    border: 1px solid #c0c0c0;
-    padding: 6px 4px;
-    gap: 3px;
-}
-
-.retro-semi-dial {
-    width: 110px;
-    height: 60px;
-    overflow: visible;
-}
-
-.retro-dial-readouts {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1px;
-    font-family: var(--font-mono);
-}
-
-.retro-dial-val {
-    font-size: 9px;
-    font-weight: 700;
-    color: #0f172a;
-}
-
-.retro-dial-subval {
-    font-size: 7.5px;
-    color: #64748b;
-    font-weight: 600;
-}
-
-/* Retro Square Selector Button Group matching VID INPUT [A][B][C] */
-.retro-square-btn-group {
-    display: flex;
-    gap: 4px;
-    margin-top: 2px;
-}
-
-.retro-square-btn {
-    flex: 1;
-    height: 24px;
-    background: #4b5563;
-    color: #ffffff;
-    border: 1px solid #111111;
-    font-family: var(--font-mono);
-    font-size: 8px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.08s ease;
-    border-radius: 0px;
-}
-
-.retro-square-btn:hover {
-    background: #1f2937;
-}
-
-.retro-square-btn.active {
-    background: #000000;
-    color: #ffffff;
-    box-shadow: inset 0 0 0 1px #ffffff;
-}
-
-.section-title {
-    font-size: 8.5px;
-    font-weight: 700;
-    color: #0f172a;
-    letter-spacing: 0.05em;
-    margin-top: 4px;
-    padding-top: 3px;
-    border-top: 1px dashed #94a3b8;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-/* ==========================================================================
-   Center Column: Floating Viewport Controls & Overlays
-   ========================================================================== */
-.center-viewport {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    pointer-events: none;
-}
-
-.center-floating-header {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 10;
-    display: flex;
-    justify-content: center;
-}
-
-.center-header-tags {
-    display: flex;
-    gap: 6px;
-    align-items: center;
-}
-
-/* Top-Right: Auto Orbit Control */
-.auto-orbit-control {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: #eaeaea;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    border: 1px solid #111111;
-    padding: 4px 8px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    z-index: 10;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
-}
-
-.orbit-label {
-    font-size: 9px;
-    font-weight: 700;
-    color: #0f172a;
-    letter-spacing: 0.05em;
-}
-
-/* Switch Toggle (Square) */
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 24px;
-    height: 12px;
-}
-.switch input { opacity: 0; width: 0; height: 0; }
-.slider {
-    position: absolute; cursor: pointer;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-color: #94a3b8;
-    border: 1px solid #111111;
-    box-sizing: border-box;
-    transition: .15s;
-}
-.slider:before {
-    position: absolute; content: "";
-    height: 6px; width: 6px;
-    left: 2px; bottom: 2px;
-    background-color: #ffffff;
-    transition: .15s;
-}
-input:checked + .slider { background-color: #000000; }
-input:checked + .slider:before { transform: translateX(12px); background-color: #00f0ff; }
-
-/* Top-Left: Viewport Tools */
-.viewport-tools-bar {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    display: flex;
-    gap: 4px;
-    z-index: 10;
-}
-
-.vtool-btn {
-    background: #eaeaea;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    border: 1px solid #111111;
-    color: #0f172a;
-    font-family: var(--font-mono);
-    font-size: 9px;
-    font-weight: 700;
-    padding: 4px 8px;
-    cursor: pointer;
-    transition: all 0.08s ease;
-    letter-spacing: 0.04em;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
-}
-
-.vtool-btn:hover {
-    background: #000000;
-    border-color: #000000;
-    color: #ffffff;
-}
-
-.vtool-btn.active {
-    background: #000000;
-    border-color: #000000;
-    color: #00f0ff;
-    font-weight: 700;
-}
-
-/* ==========================================================================
-   Center HUD Vertical Altitude Tape (Retro Instrumentation Chassis)
-   ========================================================================== */
-.hud-altitude-tape {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 90px;
-    background: #eaeaea !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    border: 1px solid #111111 !important;
-    padding: 6px 5px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    z-index: 15;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
-    pointer-events: none;
-    user-select: none;
-    box-sizing: border-box;
-}
-
-.hud-tape-header {
-    font-family: var(--font-mono);
-    font-size: 10.5px;
-    font-weight: 700;
-    color: #0f172a;
-    text-align: center;
-    line-height: 1;
-    margin-bottom: 5px;
-    letter-spacing: 0.1em;
-    border-bottom: 1px solid #111111;
-    width: 100%;
-    padding-bottom: 3px;
-    display: flex;
-    align-items: baseline;
-    justify-content: center;
-    gap: 4px;
-    text-shadow: none;
-}
-
-.hud-tape-sub {
-    font-size: 8.5px;
-    font-weight: 700;
-    color: #475569;
-    text-shadow: none;
-}
-
-.hud-tape-window {
-    position: relative;
-    width: 100%;
-    height: 280px;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    background: #ffffff;
-    border: 1px solid #111111;
-    box-sizing: border-box;
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 1) 8%, rgba(0, 0, 0, 1) 92%, transparent 100%);
-    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 1) 8%, rgba(0, 0, 0, 1) 92%, transparent 100%);
-}
-
-.hud-tape-pointer {
-    position: absolute;
-    top: 50%;
-    right: 2px;
-    transform: translateY(-50%);
-    font-size: 14px;
-    font-weight: 900;
-    color: #000000;
-    z-index: 5;
-    pointer-events: none;
-    line-height: 1;
-    filter: none;
-}
-
-.hud-tape-ladder {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    transition: transform 0.08s linear;
-    will-change: transform;
-    pointer-events: none;
-}
-
-.hud-tape-row {
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding-right: 16px;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 700;
-    color: #64748b;
-    line-height: 1;
-    box-sizing: border-box;
-    letter-spacing: 0.04em;
-    width: 100%;
-    text-shadow: none;
-}
-
-.hud-tape-row.major {
-    color: #000000;
-    font-size: 12.5px;
-    font-weight: 800;
-    text-shadow: none;
-}
-
-.hud-tape-num {
-    display: inline-block;
-    min-width: 32px;
-    text-align: right;
-}
-
-.hud-tape-tick {
-    display: inline-block;
-    width: 6px;
-    height: 1.5px;
-    background: #cbd5e1;
-    margin-left: 4px;
-    box-shadow: none;
-}
-
-.hud-tape-tick.major {
-    width: 10px;
-    height: 2px;
-    background: #000000;
-    box-shadow: none;
-}
-
-
-
-/* Bottom-Right: 3D Engine Selector */
-.engine-switch-bar {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    display: flex;
-    gap: 4px;
-    z-index: 10;
-}
-
-.engine-select {
-    background: #eaeaea;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    border: 1px solid #111111;
-    color: #0f172a;
-    font-family: var(--font-mono);
-    font-size: 9px;
-    font-weight: 700;
-    padding: 3px 6px;
-    outline: none;
-    cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
-}
-
-/* ==========================================================================
-   Right Column: Solid Retro Chassis (#eaeaea) & Mission Deck
-   ========================================================================== */
-.right-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    overflow: hidden;
-    height: 100%;
-    min-height: 0;
-}
-
-.right-panel .card {
-    background: #eaeaea !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    border: none !important;
-    border-left: 1px solid #b0b0b0 !important;
-    color: #111827 !important;
-    box-shadow: none !important;
-    height: 100%;
-}
-
-.control-card {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-
-.right-panel .tabs-header-bar {
-    background: #d4d4d4;
-    border-bottom: 1px solid #b0b0b0;
-    padding: 4px 6px;
-}
-
-.tabs-list {
-    display: flex;
-    gap: 3px;
-}
-
-.right-panel .tab-trigger {
-    flex: 1;
-    background: #ffffff;
-    border: 1px solid #111111;
-    color: #1a1a1a;
-    font-family: var(--font-mono);
-    font-size: 8px;
-    padding: 5px 4px;
-    cursor: pointer;
-    transition: all 0.08s ease;
-    letter-spacing: 0.04em;
-    font-weight: 700;
-    border-radius: 0px;
-}
-
-.right-panel .tab-trigger:hover {
-    color: #000000;
-    background: #e5e5e5;
-}
-
-.right-panel .tab-trigger.active {
-    background: #000000;
-    border-color: #000000;
-    color: #ffffff;
-    font-weight: 700;
-    box-shadow: inset 0 0 0 1px #ffffff;
-}
-
-.tabs-content-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 8px 10px;
-    background: #eaeaea !important;
-    min-height: 0;
-}
-
-.tab-content {
-    display: none;
-    flex-direction: column;
-    gap: 8px;
-    background: #eaeaea;
-}
-
-.tab-content.active {
-    display: flex;
-}
-
-.right-panel .section-box {
-    background: #eaeaea;
-    border: none;
-    border-bottom: 1px dashed #b8b8b8;
-    padding: 0 0 6px 0;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    border-radius: 0px;
-}
-
-.right-panel .section-box:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-}
-
-.right-panel .section-title {
-    color: #0f172a;
-    font-weight: 700;
-    font-size: 8.5px;
-    letter-spacing: 0.05em;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.slider-group {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    margin-top: 3px;
-}
-
-.slider-row {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 8.5px;
-}
-
-.right-panel .slider-row label {
-    width: 95px;
-    color: #0f172a;
-    font-weight: 700;
-    font-family: var(--font-mono);
-}
-
-.right-panel .slider-row input[type="range"] {
-    -webkit-appearance: none;
-    appearance: none;
-    flex: 1;
-    height: 16px;
-    background: transparent;
-    cursor: pointer;
-    margin: 0;
-    padding: 0;
-    outline: none;
-}
-
-/* Chrome / Safari / Edge / Webkit Track */
-.right-panel .slider-row input[type="range"]::-webkit-slider-runnable-track {
-    width: 100%;
-    height: 4px;
-    background: #ffffff;
-    border: 1px solid #000000;
-    border-radius: 0px;
-    box-sizing: border-box;
-}
-
-/* Chrome / Safari / Edge / Webkit Thumb */
-.right-panel .slider-row input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 10px;
-    height: 14px;
-    background: #000000;
-    border: 1px solid #000000;
-    border-radius: 0px;
-    margin-top: -6px;
-    cursor: pointer;
-    box-shadow: none;
-    transition: background 0.05s ease;
-}
-
-.right-panel .slider-row input[type="range"]:hover::-webkit-slider-thumb {
-    background: #262626;
-}
-
-.right-panel .slider-row input[type="range"]:active::-webkit-slider-thumb {
-    background: #000000;
-    outline: 1px solid #ffffff;
-    outline-offset: -2px;
-}
-
-/* Firefox Track */
-.right-panel .slider-row input[type="range"]::-moz-range-track {
-    width: 100%;
-    height: 4px;
-    background: #ffffff;
-    border: 1px solid #000000;
-    border-radius: 0px;
-    box-sizing: border-box;
-}
-
-/* Firefox Thumb */
-.right-panel .slider-row input[type="range"]::-moz-range-thumb {
-    width: 10px;
-    height: 14px;
-    background: #000000;
-    border: 1px solid #000000;
-    border-radius: 0px;
-    cursor: pointer;
-    box-shadow: none;
-}
-
-.right-panel .slider-row input[type="range"]:hover::-moz-range-thumb {
-    background: #262626;
-}
-
-.right-panel .slider-row input[type="range"]:active::-moz-range-thumb {
-    background: #000000;
-    outline: 1px solid #ffffff;
-    outline-offset: -2px;
-}
-
-.right-panel .slider-val {
-    width: 48px;
-    text-align: right;
-    font-weight: 700;
-    font-family: var(--font-mono);
-    color: #000000;
-    font-size: 8.5px;
-}
-
-.preset-btn-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 3px;
-}
-
-.right-panel .action-btn {
-    background: #ffffff;
-    border: 1px solid #111111;
-    padding: 5px 8px;
-    font-family: var(--font-mono);
-    font-size: 8px;
-    color: #0f172a;
-    text-align: left;
-    cursor: pointer;
-    transition: all 0.08s ease;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    letter-spacing: 0.03em;
-    font-weight: 700;
-    border-radius: 0px;
-}
-
-.right-panel .action-btn:hover {
-    background: #000000;
-    border-color: #000000;
-    color: #ffffff;
-}
-
-.right-panel .action-btn-accent {
-    background: #111111;
-    border: 1px solid #000000;
-    color: #ffffff;
-    text-align: center;
-    font-weight: 700;
-    margin-top: 3px;
-    border-radius: 0px;
-}
-
-.right-panel .action-btn-accent:hover {
-    background: #333333;
-    border-color: #000000;
-    color: #ffffff;
-    box-shadow: inset 0 0 0 1px #ffffff;
-}
-
-.poi-list-container {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    max-height: 280px;
-    overflow-y: auto;
-}
-
-.right-panel .poi-list-item {
-    background: #ffffff;
-    border: 1px solid #111111;
-    padding: 5px 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    transition: all 0.08s ease;
-    border-radius: 0px;
-}
-
-.right-panel .poi-list-item:hover {
-    border-color: #000000;
-    background: #111111;
-}
-
-.right-panel .poi-list-item:hover .poi-name {
-    color: #ffffff;
-}
-
-.right-panel .poi-list-item:hover .poi-meta {
-    color: #cbd5e1;
-}
-
-.right-panel .poi-list-item:hover .badge {
-    background: #ffffff;
-    color: #000000;
-}
-
-.poi-info {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-}
-
-.right-panel .poi-name {
-    font-size: 8.5px;
-    font-weight: 700;
-    color: #0f172a;
-}
-
-.right-panel .poi-meta {
-    font-size: 7.5px;
-    color: #64748b;
-    font-weight: 500;
-}
-
-.right-panel .badge {
-    background: #ffffff;
-    color: #0f172a;
-    border: 1px solid #0f172a;
-    border-radius: 0px;
-    font-weight: 700;
-}
-
-.right-panel .poi-list-item .badge {
-    background: #ffffff;
-    color: #0f172a;
-    border: 1px solid #0f172a;
-    border-radius: 0px;
-    font-weight: 700;
-}
-
-/* Flight Controls Deck in Solid Retro Chassis */
+/* Pilot Flight Controls Deck */
 .right-panel .flight-controls-deck {
-    background: #eaeaea;
-    border-top: 1px dashed #b8b8b8;
+    background: var(--hud-panel-bg);
+    border-top: 1px dashed var(--hud-panel-subtle-border);
     padding: 8px;
     flex-shrink: 0;
 }
@@ -1266,9 +1530,9 @@ input:checked + .slider:before { transform: translateX(12px); background-color: 
     font-size: 8px;
     font-weight: 700;
     cursor: pointer;
-    border: 1px solid #111111;
-    background: #383838;
-    color: #ffffff;
+    border: 1px solid var(--hud-deck-btn-border);
+    background: var(--hud-deck-btn-bg);
+    color: var(--hud-deck-btn-text);
     transition: all 0.08s ease;
     letter-spacing: 0.04em;
     text-align: center;
@@ -1279,7 +1543,8 @@ input:checked + .slider:before { transform: translateX(12px); background-color: 
 }
 
 .right-panel .btn:hover {
-    background: #111111;
+    background: var(--hud-btn-hover-bg);
+    color: var(--hud-btn-hover-text);
 }
 
 .right-panel .btn:active {
@@ -1288,68 +1553,67 @@ input:checked + .slider:before { transform: translateX(12px); background-color: 
 }
 
 .right-panel .btn-primary {
-    background: #1f2937;
-    border-color: #111111;
+    background: var(--hud-deck-btn-primary-bg);
+    border-color: var(--hud-deck-btn-border);
     color: #ffffff;
 }
 .right-panel .btn-primary:hover {
-    background: #000000;
-    box-shadow: inset 0 0 0 1px #ffffff;
+    background: var(--accent);
+    color: #000000;
 }
 
 .right-panel .btn-danger {
-    background: #2b2b2b;
-    border-color: #111111;
+    background: var(--hud-deck-btn-danger-bg);
+    border-color: var(--hud-deck-btn-border);
     color: #ffffff;
 }
 .right-panel .btn-danger:hover {
-    background: #000000;
-    box-shadow: inset 0 0 0 1px #ffffff;
+    background: #dc2626;
+    color: #ffffff;
 }
 
 .right-panel .btn-action {
-    background: #374151;
-    border-color: #111111;
+    background: var(--hud-deck-btn-action-bg);
+    border-color: var(--hud-deck-btn-border);
     color: #ffffff;
 }
 .right-panel .btn-action:hover {
-    background: #000000;
-    box-shadow: inset 0 0 0 1px #ffffff;
+    background: var(--accent);
+    color: #000000;
 }
 
 .right-panel .btn-reward {
-    background: #4b5563;
-    border-color: #111111;
+    background: var(--hud-deck-btn-reward-bg);
+    border-color: var(--hud-deck-btn-border);
     color: #ffffff;
 }
 .right-panel .btn-reward:hover {
-    background: #000000;
-    box-shadow: inset 0 0 0 1px #ffffff;
+    background: #10b981;
+    color: #ffffff;
 }
 
 .right-panel .btn-penalty {
-    background: #4b5563;
-    border-color: #111111;
+    background: var(--hud-deck-btn-penalty-bg);
+    border-color: var(--hud-deck-btn-border);
     color: #ffffff;
 }
 .right-panel .btn-penalty:hover {
-    background: #000000;
-    box-shadow: inset 0 0 0 1px #ffffff;
-}
-
-.right-panel .btn-secondary {
-    background: #ffffff;
-    border-color: #111111;
-    color: #0f172a;
-}
-.right-panel .btn-secondary:hover {
-    background: #000000;
-    border-color: #000000;
+    background: #ef4444;
     color: #ffffff;
 }
 
+.right-panel .btn-secondary {
+    background: var(--hud-deck-btn-secondary-bg);
+    border-color: var(--hud-deck-btn-border);
+    color: var(--hud-deck-btn-secondary-text);
+}
+.right-panel .btn-secondary:hover {
+    background: var(--accent);
+    color: #000000;
+}
+
 /* ==========================================================================
-   Modal Dialog (Square & Transparent Glass)
+   Modal Dialog
    ========================================================================== */
 .modal-backdrop {
     position: fixed;
@@ -1363,10 +1627,10 @@ input:checked + .slider:before { transform: translateX(12px); background-color: 
 }
 
 .modal-card {
-    background: #eaeaea;
+    background: var(--hud-modal-bg);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
-    border: 2px solid #111111;
+    border: 2px solid var(--hud-modal-border);
     width: 440px;
     max-width: 90%;
     padding: 16px;
@@ -1380,21 +1644,21 @@ input:checked + .slider:before { transform: translateX(12px); background-color: 
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #b0b0b0;
+    border-bottom: 1px solid var(--hud-panel-border);
     padding-bottom: 8px;
 }
 
 .modal-header h3 {
     font-size: 11px;
     font-weight: 700;
-    color: #0f172a;
+    color: var(--hud-modal-header);
     letter-spacing: 0.06em;
 }
 
 .modal-close-btn {
     background: transparent;
     border: none;
-    color: #0f172a;
+    color: var(--hud-modal-header);
     font-size: 13px;
     font-weight: 700;
     cursor: pointer;
@@ -1404,16 +1668,16 @@ input:checked + .slider:before { transform: translateX(12px); background-color: 
 .modal-input {
     width: 100%;
     height: 30px;
-    background: #ffffff;
-    border: 1px solid #111111;
+    background: var(--hud-modal-input-bg);
+    border: 1px solid var(--hud-modal-input-border);
     padding: 0 8px;
     font-family: var(--font-mono);
     font-size: 10px;
-    color: #0f172a;
+    color: var(--hud-modal-input-text);
     outline: none;
 }
 
 .modal-input:focus {
-    border-color: #000000;
-    box-shadow: inset 0 0 0 1px #000000;
+    border-color: var(--accent);
+    box-shadow: inset 0 0 0 1px var(--accent);
 }

@@ -31,7 +31,39 @@ const NYC_LANDMARKS = [
     { id: 18, name: "Chelsea Piers Sports Complex", x: 450.0, y: -280.0, z: 30.0, height: 30, cat: "Park / Pier", rating: 4.7 }
 ];
 
+// =========================================================================
+// UI Theme Management (Light / Dark Modes)
+// =========================================================================
+function initTheme() {
+    const savedTheme = localStorage.getItem("gcs_theme") || "light";
+    setTheme(savedTheme);
+}
+
+function setTheme(theme) {
+    const activeTheme = (theme === "dark") ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", activeTheme);
+    document.body.setAttribute("data-theme", activeTheme);
+    localStorage.setItem("gcs_theme", activeTheme);
+
+    const txt = document.getElementById("themeToggleText");
+    const icon = document.getElementById("themeIcon");
+    if (txt) txt.textContent = `THEME: ${activeTheme.toUpperCase()}`;
+    if (icon) icon.textContent = activeTheme === "light" ? "☀" : "🌙";
+}
+
+function toggleTheme() {
+    const current = document.body.getAttribute("data-theme") || "light";
+    const next = current === "light" ? "dark" : "light";
+    setTheme(next);
+}
+
+// Immediately apply saved theme to avoid FOUC
+initTheme();
+
 document.addEventListener("DOMContentLoaded", () => {
+    // 0. Initialize theme state
+    initTheme();
+
     // 1. Initialize 3D Viewports
     droneVis = new Drone3DVisualizer("drone3dContainer");
     brainVis = new Brain3DVisualizer("brain3dContainer");
