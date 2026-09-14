@@ -650,7 +650,7 @@ class Drone3DVisualizer {
 
         const modelUri = this.currentAirframe === "quad_x" ? "/static/models/quad_x.gltf" : "/static/models/drone.glb";
         const initialPos = this.getDroneCartesian();
-        const hpr = new Cesium.HeadingPitchRoll(-Math.PI / 2.0, 0, 0);
+        const hpr = new Cesium.HeadingPitchRoll(0, 0, 0);
         const initialQuat = Cesium.Transforms.headingPitchRollQuaternion(initialPos, hpr);
 
         // High-performance dynamic node transformations for spinning propellers at motor RPM
@@ -865,12 +865,11 @@ class Drone3DVisualizer {
 
         // When drone is moving with active velocity, align heading with flight trajectory vector
         const hSpeed = Math.hypot(this.droneVel[0] || 0, this.droneVel[1] || 0);
-        if (hSpeed > 0.25) {
+        if (hSpeed > 0.15) {
             yaw = Math.atan2(this.droneVel[1], this.droneVel[0]);
         }
 
-        // Apply -90 deg (-pi/2) heading correction so green arrow faces exactly along velocity vector
-        const heading = yaw - (Math.PI / 2.0);
+        const heading = yaw;
         const hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);
         const orientationQuat = Cesium.Transforms.headingPitchRollQuaternion(droneCart, hpr);
 
