@@ -37,9 +37,9 @@ const NYC_URBAN_LANDMARKS = [
         name: "Chelsea Market & Food Hall",
         lat: 40.74244,
         lng: -74.006144,
-        x: 0.0,
-        y: 0.0,
-        radius: 35.0,
+        x: 35.0,
+        y: 25.0,
+        radius: 22.0,
         height: 38.0,
         floors: 9,
         category: "restaurant",
@@ -654,9 +654,9 @@ class Drone3DVisualizer {
         const initialQuat = Cesium.Transforms.headingPitchRollQuaternion(initialPos, hpr);
 
         // High-performance dynamic node transformations for spinning propellers at motor RPM
-        const createPropNodeTransform = (hubX, hubY, hubZ, propIdx) => {
+        const createPropNodeTransform = (propIdx) => {
             return new Cesium.NodeTransformationProperty({
-                translation: new Cesium.ConstantProperty(new Cesium.Cartesian3(hubX, hubY, hubZ)),
+                translation: new Cesium.ConstantProperty(new Cesium.Cartesian3(0.0, 0.0, 0.0)),
                 rotation: new Cesium.CallbackProperty((time, result) => {
                     return Cesium.Quaternion.fromAxisAngle(Cesium.Cartesian3.UNIT_Y, this.propAngles[propIdx], result || new Cesium.Quaternion());
                 }, false),
@@ -665,10 +665,10 @@ class Drone3DVisualizer {
         };
 
         const nodeTransformations = {
-            "prop_front_right": createPropNodeTransform(2.84905, 0.45733, -1.61349, 0),
-            "prop_front_left": createPropNodeTransform(-2.77596, 0.46271, -1.57663, 1),
-            "prop_rear_left": createPropNodeTransform(-2.46222, 0.45717, 2.45253, 2),
-            "prop_rear_right": createPropNodeTransform(2.44971, 0.48172, 2.58754, 3)
+            "prop_front_right": createPropNodeTransform(0),
+            "prop_front_left": createPropNodeTransform(1),
+            "prop_rear_left": createPropNodeTransform(2),
+            "prop_rear_right": createPropNodeTransform(3)
         };
 
         this.droneEntity = this.viewer.entities.add({

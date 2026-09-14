@@ -450,11 +450,11 @@ class FruitFlyBrainAgent:
         n_fb = len(self.circuit.fb_indices)
         
         # Scent direction stimulates left/right compass shift
-        if dist_xy > 0.2:
-            if heading_err > 0.02:
+        if dist_xy > 0.6:
+            if heading_err > 0.05:
                 self.i_ext[self.circuit.pb_pen_indices[:n_pen]] += np.clip(heading_err * 22.0, 0, 26)
                 self.i_ext[self.circuit.dn_yaw_right] += np.clip(heading_err * 18.0, 0, 28)
-            elif heading_err < -0.02:
+            elif heading_err < -0.05:
                 self.i_ext[self.circuit.pb_pen_indices[n_pen:]] += np.clip((-heading_err) * 22.0, 0, 26)
                 self.i_ext[self.circuit.dn_yaw_left] += np.clip((-heading_err) * 18.0, 0, 28)
 
@@ -499,7 +499,16 @@ class FruitFlyBrainAgent:
             if drone_pos[2] > oheight + 3.0:
                 continue
 
+            # Don't avoid target waypoint destination
+            d_target_obs = math.hypot(ox - target_pos[0], oy - target_pos[1])
+            if d_target_obs < orad + 2.0:
+                continue
+
             d_obs = math.hypot(ox - drone_pos[0], oy - drone_pos[1])
+            # If inside origin/spawn area of an obstacle, ignore
+            if d_obs < 1.0:
+                continue
+
             obs_heading = math.atan2(oy - drone_pos[1], ox - drone_pos[0])
             rel_obs_ang = (obs_heading - current_heading + math.pi) % (2 * math.pi) - math.pi
             
@@ -567,30 +576,33 @@ class FruitFlyBrainAgent:
         rate_mbon_av = get_rate(self.circuit.mbon_indices[n_mbon_half:])
 
         # 1. Yaw: DNa02 left/right motor balance + LPTC HS optomotor reflex + evasion
-        raw_yaw = float(np.clip(
-            0.08 * (rate_r - rate_l) + 0.04 * (rate_hs_r - rate_hs_l) - 0.22 * wz + evasion_yaw,
-            -3.5, 3.5
-        ))
+        if dist_xy > 0.6:
+            raw_yaw = float(np.clip(
+                0.08 * (rate_r - rate_l) + 0.04 * (rate_hs_r - rate_hs_l) - 0.22 * wz + evasion_yaw,
+                -2.5, 2.5
+            ))
+        else:
+            raw_yaw = 0.0
 
         # 2. Forward speed: Decoded directly from DNp09/MN9 wingbeat power + MBON approach valence
         thrust_power = max(0.0, rate_thrust - 10.0)
         mbon_valence = rate_mbon_app - rate_mbon_av
         
-        if dist_xy > 0.3:
-            arrival_factor = min(1.0, dist_xy / 6.0)
-            raw_vx = float(max(0.0, (0.32 * thrust_power + 0.35 * mbon_valence - max_loom * 2.5) * arrival_factor))
+        if dist_xy > 0.4:
+            arrival_factor = min(1.0, dist_xy / 5.0)
+            raw_vx = float(np.clip((0.25 * thrust_power + 0.25 * mbon_valence - max_loom * 1.5) * arrival_factor, 0.0, 7.0))
         else:
             raw_vx = 0.0
 
         # 3. Lateral speed: damped by roll gyro trim
-        raw_vy = float(np.clip(-0.35 * wx, -1.2, 1.2))
+        raw_vy = float(np.clip(-0.25 * wx, -0.8, 0.8))
 
         # 4. Vertical climb velocity: Decoded directly from DN_Alt climbing motor neuron & LPTC VS
         alt_sign = 1.0 if alt_err >= 0 else -1.0
         alt_power = max(0.0, rate_alt - 11.0)
-        if abs(alt_err) > 0.2:
-            alt_arrival = min(1.0, abs(alt_err) / 4.0)
-            raw_vz = float(alt_sign * (0.24 * alt_power * alt_arrival) + 0.08 * (rate_vs_up - rate_vs_down))
+        if abs(alt_err) > 0.25:
+            alt_arrival = min(1.0, abs(alt_err) / 3.0)
+            raw_vz = float(np.clip(alt_sign * (0.18 * alt_power * alt_arrival) + 0.06 * (rate_vs_up - rate_vs_down), -2.5, 3.5))
         else:
             raw_vz = 0.0
 

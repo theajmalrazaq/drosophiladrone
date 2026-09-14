@@ -11,7 +11,7 @@ let isLearningEnabled = true;
 
 // 18 Real-World Chelsea Manhattan Landmarks & POIs
 const NYC_LANDMARKS = [
-    { id: 1, name: "Chelsea Market & Food Hall", x: 0.0, y: 0.0, z: 1.5, height: 38, cat: "Restaurant", rating: 4.7 },
+    { id: 1, name: "Chelsea Market & Food Hall", x: 35.0, y: 25.0, z: 1.5, height: 38, cat: "Restaurant", rating: 4.7 },
     { id: 2, name: "Pastis French Bistro", x: -293.0, y: 62.0, z: 25.0, height: 25, cat: "Restaurant", rating: 4.6 },
     { id: 3, name: "Catch NYC Seafood", x: -282.0, y: -55.0, z: 32.0, height: 32, cat: "Restaurant", rating: 4.5 },
     { id: 4, name: "Buddakan Manhattan", x: -38.0, y: 29.0, z: 28.0, height: 28, cat: "Restaurant", rating: 4.6 },

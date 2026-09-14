@@ -53,9 +53,9 @@ NYC_LANDMARKS = [
         "name": "Chelsea Market & Food Hall",
         "lat": 40.74244,
         "lng": -74.006144,
-        "x": 0.0,
-        "y": 0.0,
-        "radius": 35.0,
+        "x": 35.0,
+        "y": 25.0,
+        "radius": 22.0,
         "height": 38.0,
         "floors": 9,
         "category": "restaurant",
@@ -439,6 +439,7 @@ class FruitFlyPX4ROS2Node(Node if RCLPY_AVAILABLE else object):
 
     def control_loop_timer_callback(self):
         """50 Hz Closed-Loop Step."""
+        self.offboard_setpoint_counter += 1
         self.publish_offboard_control_mode()
         
         if self.offboard_setpoint_counter == 10:
