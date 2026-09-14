@@ -1,0 +1,1301 @@
+/* ==========================================================================
+   FruitDrone GCS — Drosophila Connectome Flight Deck UI Stylesheet
+   Typography: Departure Mono (SIL Open Font License)
+   Theme: Completely Square, Ultra-Transparent Glassmorphic Industrial UI
+   ========================================================================== */
+
+@font-face {
+    font-family: 'Departure Mono';
+    src: url('/static/fonts/DepartureMono-Regular.woff2') format('woff2'),
+         url('https://cdn.jsdelivr.net/gh/projectnoonnu/2409-1@1.0/DepartureMono-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    --bg-dark: #080c10;
+    --bg-glass: rgba(10, 14, 22, 0.30);
+    --bg-glass-card: rgba(10, 14, 22, 0.35);
+    --bg-glass-sub: rgba(255, 255, 255, 0.03);
+    --bg-glass-hover: rgba(0, 240, 255, 0.12);
+    
+    --border-glass: rgba(255, 255, 255, 0.14);
+    --border-highlight: rgba(0, 240, 255, 0.5);
+    
+    --text-main: #f8fafc;
+    --text-muted: #cbd5e1;
+    --text-dim: #94a3b8;
+    
+    --accent: #00f0ff;
+    --accent-glow: rgba(0, 240, 255, 0.35);
+    --success: #00ff88;
+    --destructive: #ff3366;
+    --warning: #f59e0b;
+    --purple: #a78bfa;
+    
+    --font-mono: 'Departure Mono', 'JetBrains Mono', monospace;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border-radius: 0 !important; /* Completely Square Across Entire UI */
+}
+
+html, body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    line-height: 1.4;
+    letter-spacing: 0.03em;
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+}
+
+/* ==========================================================================
+   Full-Screen 3D Cesium Map Layer (Underneath all HUD Panels)
+   ========================================================================== */
+.fullscreen-cesium-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.fullscreen-cesium-bg .cesium-viewer,
+.fullscreen-cesium-bg .cesium-viewer-cesiumWidgetContainer,
+.fullscreen-cesium-bg .cesium-widget,
+.fullscreen-cesium-bg .cesium-widget canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* App Outer Shell (Fixed Overlay directly on top of 3D Map) */
+.app-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    padding: 8px 10px;
+    gap: 8px;
+    overflow: hidden;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    pointer-events: none; /* Let clicks pass through empty spaces to Cesium 3D background */
+}
+
+/* Make all interactive HUD elements clickable */
+.hud-panel,
+.header-bar,
+.left-panel,
+.right-panel,
+.auto-orbit-control,
+.viewport-tools-bar,
+.attitude-hud-box,
+.engine-switch-bar,
+.center-floating-header,
+.modal-backdrop,
+.modal-card,
+button,
+input,
+select,
+.card,
+.poi-list-item,
+.tab-trigger,
+.action-btn,
+.vtool-btn,
+.btn {
+    pointer-events: auto;
+}
+
+/* ==========================================================================
+   Header Bar (Square & Transparent)
+   ========================================================================== */
+.header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-glass);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--border-glass);
+    padding: 6px 12px;
+    flex-shrink: 0;
+}
+
+.logo-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo-group h1 {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.badge {
+    font-size: 9px;
+    font-weight: 600;
+    padding: 2px 6px;
+    background: rgba(0, 240, 255, 0.12);
+    color: var(--accent);
+    border: 1px solid rgba(0, 240, 255, 0.35);
+    letter-spacing: 0.06em;
+}
+
+.badge.badge-disarmed {
+    background: rgba(255, 51, 102, 0.12);
+    color: var(--destructive);
+    border-color: rgba(255, 51, 102, 0.35);
+}
+
+.subtitle {
+    font-size: 9px;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+}
+
+.system-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 9.5px;
+    color: var(--text-muted);
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    background: #64748b;
+}
+
+.status-dot.active {
+    background: var(--success);
+    box-shadow: 0 0 6px var(--success);
+}
+
+.status-badge {
+    font-size: 9px;
+    padding: 3px 7px;
+    background: var(--bg-glass-sub);
+    border: 1px solid var(--border-glass);
+    color: var(--text-main);
+}
+
+.status-badge.arm-badge {
+    background: rgba(0, 255, 136, 0.12);
+    color: var(--success);
+    border-color: rgba(0, 255, 136, 0.35);
+}
+
+.status-badge.disarm-badge {
+    background: rgba(255, 51, 102, 0.12);
+    color: var(--destructive);
+    border-color: rgba(255, 51, 102, 0.35);
+}
+
+/* ==========================================================================
+   Main 3-Column Grid Layout
+   ========================================================================== */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 290px 1fr 310px;
+    gap: 8px;
+    flex: 1;
+    min-height: 0;
+}
+
+/* Card Shell (Square & Transparent Glass) */
+.card {
+    background: var(--bg-glass-card);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--border-glass);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--border-glass);
+    background: rgba(255, 255, 255, 0.02);
+    flex-shrink: 0;
+}
+
+.card-header h2 {
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--text-main);
+    letter-spacing: 0.06em;
+}
+
+.card-tag {
+    font-size: 8.5px;
+    padding: 2px 6px;
+    background: var(--bg-glass-sub);
+    border: 1px solid var(--border-glass);
+    color: var(--text-muted);
+}
+
+.card-tag.target-tag {
+    background: rgba(0, 255, 136, 0.12);
+    color: var(--success);
+    border-color: rgba(0, 255, 136, 0.3);
+}
+
+/* ==========================================================================
+   Left Column: Solid Retro Chassis (#eaeaea) & Avionics
+   ========================================================================== */
+.left-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow-y: auto;
+    min-height: 0;
+}
+
+.left-panel .card {
+    background: #eaeaea !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid #b0b0b0 !important;
+    color: #111827 !important;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+}
+
+.left-panel .card-header {
+    background: #d4d4d4;
+    border-bottom: 1px solid #b0b0b0;
+}
+
+.left-panel .card-header h2 {
+    color: #0f172a;
+    font-weight: 700;
+}
+
+.left-panel .card-tag {
+    background: #ffffff;
+    border: 1px solid #94a3b8;
+    color: #0f172a;
+    font-weight: 600;
+}
+
+.brain-card {
+    height: 230px;
+    flex-shrink: 0;
+}
+
+.viewport-brain {
+    width: 100%;
+    height: 155px;
+    position: relative;
+    background: #0a0f18; /* Embedded Dark CRT Screen */
+    border-top: 1px solid #777777;
+    border-bottom: 1px solid #777777;
+}
+
+.circuit-legend {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+    padding: 5px 8px;
+    background: #dfdfdf;
+    border-top: 1px solid #b0b0b0;
+    font-size: 8px;
+}
+
+.circuit-legend .legend-item {
+    color: #334155;
+    font-weight: 600;
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+}
+.dot-retina { background: #00f0ff; }
+.dot-cx { background: #f59e0b; }
+.dot-kc { background: #d946ef; }
+.dot-pam { background: #00ff88; }
+.dot-ppl { background: #ff3366; }
+.dot-dn { background: #38bdf8; }
+
+.telemetry-card {
+    flex: 1;
+    padding: 6px 10px;
+    gap: 5px;
+    overflow-y: auto;
+}
+
+/* ==========================================================================
+   Retro Space Shuttle & CRT Style Block Bar Gauges (Departure Mono on #eaeaea)
+   ========================================================================== */
+.retro-gauges-group {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 2px 0;
+}
+
+.retro-gauge-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    line-height: 1;
+}
+
+.retro-gauge-name {
+    width: 68px;
+    flex-shrink: 0;
+    color: #334155;
+    font-weight: 600;
+    font-size: 8px;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.retro-gauge-bar-track {
+    flex: 1;
+    height: 9px;
+    background: #ffffff;
+    border: 1px solid #64748b;
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.retro-gauge-bar-fill {
+    height: 100%;
+    background-color: #334155;
+    transition: width 0.08s linear;
+    /* Space shuttle style discrete block segments */
+    background-image: repeating-linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.4) 0px,
+        rgba(0, 0, 0, 0.4) 2px,
+        transparent 2px,
+        transparent 7px
+    );
+}
+
+/* Split Avionics Container: Horizontal Gauges + Vertical Altitude Tape */
+.avionics-split-container {
+    display: flex;
+    gap: 6px;
+    align-items: stretch;
+}
+
+.retro-gauges-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+/* ==========================================================================
+   Vertical Altitude Tape / Ladder Gauge (Departure Mono Scrolling HUD)
+   ========================================================================== */
+.altitude-tape-col {
+    width: 68px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    background: #dfdfdf;
+    border: 1px solid #b0b0b0;
+    box-sizing: border-box;
+    padding: 3px 2px;
+}
+
+.tape-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 8px;
+    font-weight: 700;
+    color: #334155;
+    line-height: 1.1;
+    margin-bottom: 2px;
+    border-bottom: 1px solid #c0c0c0;
+    padding-bottom: 2px;
+}
+
+.tape-viewport {
+    position: relative;
+    flex: 1;
+    min-height: 120px;
+    height: 135px;
+    overflow: hidden;
+    background: #eaeaea;
+    display: flex;
+    justify-content: center;
+    border: 1px solid #c8c8c8;
+}
+
+.tape-center-marker {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 3px;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.tape-active-val {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-right: 2px;
+    background: #ffffff;
+    padding: 1px 3px;
+    border: 1px solid #0f172a;
+}
+
+.tape-pointer-icon {
+    font-size: 8px;
+    color: #0f172a;
+    line-height: 1;
+}
+
+.tape-ladder {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 4px;
+    transition: transform 0.08s linear;
+    will-change: transform;
+    pointer-events: none;
+}
+
+.tape-tick-row {
+    height: 18px;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    color: #64748b;
+    line-height: 1;
+    box-sizing: border-box;
+    white-space: nowrap;
+}
+
+.tape-tick-row.major {
+    color: #0f172a;
+    font-weight: 700;
+}
+
+.tape-tick-mark {
+    width: 4px;
+    height: 1px;
+    background: #94a3b8;
+}
+
+.tape-tick-mark.major {
+    width: 7px;
+    height: 1.5px;
+    background: #0f172a;
+}
+
+.tape-fade-overlay {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 28px;
+    pointer-events: none;
+    z-index: 4;
+}
+
+.tape-fade-overlay.top {
+    top: 0;
+    background: linear-gradient(to bottom, #eaeaea 0%, rgba(234, 234, 234, 0) 100%);
+}
+
+.tape-fade-overlay.bottom {
+    bottom: 0;
+    background: linear-gradient(to top, #eaeaea 0%, rgba(234, 234, 234, 0) 100%);
+}
+
+.retro-gauge-bar-fill.fill-cyan,
+.retro-gauge-bar-fill.fill-cyan {
+    background-color: #0284c7;
+}
+
+.retro-gauge-bar-fill.fill-green {
+    background-color: #16a34a;
+}
+
+.retro-gauge-bar-fill.fill-red {
+    background-color: #dc2626;
+}
+
+.retro-gauge-bar-fill.fill-orange {
+    background-color: #d97706;
+}
+
+.retro-gauge-bar-fill.fill-purple {
+    background-color: #7c3aed;
+}
+
+.retro-gauge-val {
+    width: 52px;
+    flex-shrink: 0;
+    text-align: right;
+    font-size: 8.5px;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: 0.02em;
+    font-variant-numeric: tabular-nums;
+}
+
+.section-title {
+    font-size: 8.5px;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: 0.05em;
+    margin-top: 4px;
+    padding-top: 3px;
+    border-top: 1px dashed #94a3b8;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* ==========================================================================
+   Center Column: Floating Viewport Controls & Overlays
+   ========================================================================== */
+.center-viewport {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    pointer-events: none;
+}
+
+.center-floating-header {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+}
+
+.center-header-tags {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+/* Top-Right: Auto Orbit Control */
+.auto-orbit-control {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--bg-glass);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--border-glass);
+    padding: 4px 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    z-index: 10;
+}
+
+.orbit-label {
+    font-size: 9px;
+    color: var(--text-main);
+    letter-spacing: 0.05em;
+}
+
+/* Switch Toggle (Square) */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 24px;
+    height: 12px;
+}
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+    position: absolute; cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(255, 255, 255, 0.15);
+    transition: .15s;
+}
+.slider:before {
+    position: absolute; content: "";
+    height: 8px; width: 8px;
+    left: 2px; bottom: 2px;
+    background-color: white;
+    transition: .15s;
+}
+input:checked + .slider { background-color: var(--accent); }
+input:checked + .slider:before { transform: translateX(12px); }
+
+/* Top-Left: Viewport Tools */
+.viewport-tools-bar {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    gap: 4px;
+    z-index: 10;
+}
+
+.vtool-btn {
+    background: var(--bg-glass);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--border-glass);
+    color: var(--text-main);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    padding: 4px 7px;
+    cursor: pointer;
+    transition: all 0.08s ease;
+    letter-spacing: 0.04em;
+}
+
+.vtool-btn:hover {
+    background: var(--bg-glass-hover);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.vtool-btn.active {
+    background: rgba(0, 240, 255, 0.2);
+    border-color: var(--accent);
+    color: var(--accent);
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   Center HUD Vertical Altitude Tape (Space Shuttle & Fighter HUD Style)
+   ========================================================================== */
+.hud-altitude-tape {
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 92px;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: none !important;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 15;
+    box-shadow: none !important;
+    pointer-events: none;
+    user-select: none;
+}
+
+.hud-tape-header {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 800;
+    color: #ffffff;
+    text-align: center;
+    line-height: 1;
+    margin-bottom: 8px;
+    letter-spacing: 0.14em;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+    width: 100%;
+    padding-bottom: 4px;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 4px;
+    text-shadow: 0 0 6px #000000, 0 1px 3px #000000, 0 2px 5px rgba(0, 0, 0, 0.9);
+}
+
+.hud-tape-sub {
+    font-size: 10.5px;
+    font-weight: 700;
+    color: #00f0ff;
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.8), 0 1px 3px #000000;
+}
+
+.hud-tape-window {
+    position: relative;
+    width: 100%;
+    height: 380px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 1) 12%, rgba(0, 0, 0, 1) 88%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 1) 12%, rgba(0, 0, 0, 1) 88%, transparent 100%);
+}
+
+.hud-tape-pointer {
+    position: absolute;
+    top: 50%;
+    right: 2px;
+    transform: translateY(-50%);
+    font-size: 17px;
+    font-weight: 900;
+    color: #00f0ff;
+    z-index: 5;
+    pointer-events: none;
+    line-height: 1;
+    filter: drop-shadow(0 0 6px #00f0ff) drop-shadow(0 1px 3px #000000);
+}
+
+.hud-tape-ladder {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    transition: transform 0.08s linear;
+    will-change: transform;
+    pointer-events: none;
+}
+
+.hud-tape-row {
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 22px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: rgba(226, 232, 240, 0.75);
+    line-height: 1;
+    box-sizing: border-box;
+    letter-spacing: 0.06em;
+    width: 100%;
+    text-shadow: 0 0 4px #000000, 0 1px 3px #000000, 0 2px 4px #000000;
+}
+
+.hud-tape-row.major {
+    color: #ffffff;
+    font-size: 16.5px;
+    font-weight: 800;
+    text-shadow: 0 0 6px #000000, 0 1px 3px #000000, 0 0 12px rgba(0, 240, 255, 0.5);
+}
+
+.hud-tape-num {
+    display: inline-block;
+    min-width: 38px;
+    text-align: right;
+}
+
+.hud-tape-tick {
+    display: inline-block;
+    width: 8px;
+    height: 1.5px;
+    background: rgba(255, 255, 255, 0.6);
+    margin-left: 6px;
+    box-shadow: 0 0 3px #000000;
+}
+
+.hud-tape-tick.major {
+    width: 14px;
+    height: 2px;
+    background: #00f0ff;
+    box-shadow: 0 0 6px rgba(0, 240, 255, 0.8), 0 0 3px #000000;
+}
+
+/* Bottom-Left: Attitude HUD Box */
+.attitude-hud-box {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: var(--bg-glass);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--border-glass);
+    padding: 6px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 10;
+}
+
+.attitude-hud-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 8px;
+    color: var(--text-dim);
+    margin-bottom: 2px;
+}
+
+.attitude-hud-svg {
+    width: 76px;
+    height: 76px;
+}
+
+.attitude-readouts {
+    display: flex;
+    gap: 8px;
+    font-size: 8px;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.attitude-readouts b {
+    color: var(--accent);
+}
+
+/* Bottom-Right: 3D Engine Selector */
+.engine-switch-bar {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    display: flex;
+    gap: 4px;
+    z-index: 10;
+}
+
+.engine-select {
+    background: var(--bg-glass);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--border-glass);
+    color: var(--text-main);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    padding: 3px 6px;
+    outline: none;
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   Right Column: Solid Retro Chassis (#eaeaea) & Mission Deck
+   ========================================================================== */
+.right-panel {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.right-panel .card {
+    background: #eaeaea !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 1px solid #b0b0b0 !important;
+    color: #111827 !important;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+}
+
+.control-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.right-panel .tabs-header-bar {
+    background: #d4d4d4;
+    border-bottom: 1px solid #b0b0b0;
+    padding: 4px 6px;
+}
+
+.tabs-list {
+    display: flex;
+    gap: 3px;
+}
+
+.right-panel .tab-trigger {
+    flex: 1;
+    background: #e2e2e2;
+    border: 1px solid #b8b8b8;
+    color: #475569;
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    padding: 4px 6px;
+    cursor: pointer;
+    transition: all 0.08s ease;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+}
+
+.right-panel .tab-trigger:hover {
+    color: #0f172a;
+    background: #ffffff;
+}
+
+.right-panel .tab-trigger.active {
+    background: #0f172a;
+    border-color: #0f172a;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.tabs-content-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+    min-height: 0;
+}
+
+.tab-content {
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.tab-content.active {
+    display: flex;
+}
+
+.right-panel .section-box {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    padding: 7px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.right-panel .section-title {
+    color: #0f172a;
+    font-weight: 700;
+    font-size: 8.5px;
+    letter-spacing: 0.04em;
+}
+
+.slider-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 3px;
+}
+
+.slider-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 8.5px;
+}
+
+.right-panel .slider-row label {
+    width: 95px;
+    color: #334155;
+    font-weight: 600;
+}
+
+.right-panel .slider-row input[type="range"] {
+    flex: 1;
+    accent-color: #0284c7;
+    cursor: pointer;
+    background: #cbd5e1;
+}
+
+.right-panel .slider-val {
+    width: 48px;
+    text-align: right;
+    font-weight: 700;
+    color: #0284c7;
+}
+
+.preset-btn-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3px;
+}
+
+.right-panel .action-btn {
+    background: #ffffff;
+    border: 1px solid #94a3b8;
+    padding: 5px 8px;
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    color: #0f172a;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.08s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: 0.03em;
+    font-weight: 600;
+}
+
+.right-panel .action-btn:hover {
+    background: #0284c7;
+    border-color: #0284c7;
+    color: #ffffff;
+}
+
+.right-panel .action-btn-accent {
+    background: #fee2e2;
+    border-color: #ef4444;
+    color: #dc2626;
+    text-align: center;
+    font-weight: 700;
+    margin-top: 2px;
+}
+
+.right-panel .action-btn-accent:hover {
+    background: #dc2626;
+    border-color: #dc2626;
+    color: #ffffff;
+}
+
+.poi-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.right-panel .poi-list-item {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    padding: 5px 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.08s ease;
+}
+
+.right-panel .poi-list-item:hover {
+    border-color: #0284c7;
+    background: #f0f9ff;
+}
+
+.poi-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.right-panel .poi-name {
+    font-size: 8.5px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.right-panel .poi-meta {
+    font-size: 7.5px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.right-panel .poi-list-item .badge {
+    background: #e0f2fe;
+    color: #0284c7;
+    border-color: #7dd3fc;
+    font-weight: 700;
+}
+
+/* Flight Controls Deck in Solid Chassis */
+.right-panel .flight-controls-deck {
+    background: #d4d4d4;
+    border-top: 1px solid #b0b0b0;
+    padding: 8px;
+    flex-shrink: 0;
+}
+
+.control-btn-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+}
+
+.btn {
+    padding: 6px 4px;
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    font-weight: 700;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.08s ease;
+    letter-spacing: 0.04em;
+    text-align: center;
+}
+
+.right-panel .btn-primary {
+    background: #0284c7;
+    border-color: #0369a1;
+    color: #ffffff;
+}
+.right-panel .btn-primary:hover {
+    background: #0369a1;
+    color: #ffffff;
+}
+
+.right-panel .btn-danger {
+    background: #e11d48;
+    border-color: #be123c;
+    color: #ffffff;
+}
+.right-panel .btn-danger:hover {
+    background: #be123c;
+    color: #ffffff;
+}
+
+.right-panel .btn-action {
+    background: #16a34a;
+    border-color: #15803d;
+    color: #ffffff;
+}
+.right-panel .btn-action:hover {
+    background: #15803d;
+    color: #ffffff;
+}
+
+.right-panel .btn-reward {
+    background: #dcfce7;
+    border-color: #22c55e;
+    color: #15803d;
+}
+.right-panel .btn-reward:hover {
+    background: #16a34a;
+    color: #ffffff;
+}
+
+.right-panel .btn-penalty {
+    background: #fee2e2;
+    border-color: #ef4444;
+    color: #dc2626;
+}
+.right-panel .btn-penalty:hover {
+    background: #dc2626;
+    color: #ffffff;
+}
+
+.right-panel .btn-secondary {
+    background: #ffffff;
+    border-color: #94a3b8;
+    color: #0f172a;
+}
+.right-panel .btn-secondary:hover {
+    background: #f1f5f9;
+    border-color: #0284c7;
+    color: #0284c7;
+}
+
+/* ==========================================================================
+   Modal Dialog (Square & Transparent Glass)
+   ========================================================================== */
+.modal-backdrop {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(8, 12, 16, 0.65);
+    backdrop-filter: blur(12px);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-card {
+    background: rgba(10, 14, 22, 0.85);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--accent);
+    width: 440px;
+    max-width: 90%;
+    padding: 16px;
+    box-shadow: 0 0 24px rgba(0, 240, 255, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    font-size: 11px;
+    color: var(--text-main);
+    letter-spacing: 0.06em;
+}
+
+.modal-close-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 11px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+}
+
+.modal-input {
+    width: 100%;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-glass);
+    padding: 0 8px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-main);
+    outline: none;
+}
+
+.modal-input:focus {
+    border-color: var(--accent);
+}

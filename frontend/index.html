@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FruitDrone GCS — Google 3D Area Explorer & Drosophila Connectome</title>
+    <link rel="stylesheet" href="/static/css/style.css?v=30.0">
+    <!-- CesiumJS Photorealistic 3D Globe -->
+    <link href="https://cesium.com/downloads/cesiumjs/releases/1.125/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.125/Build/Cesium/Cesium.js"></script>
+    <!-- Three.js + GLTFLoader (for 3D Biological Connectome somas) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+    <!-- ==========================================================================
+         Full-Screen 3D Cesium Map Layer (Underneath all HUD Panels)
+         ========================================================================== -->
+    <div id="drone3dContainer" class="fullscreen-cesium-bg"></div>
+
+    <!-- ==========================================================================
+         Transparent Glassmorphic HUD Application Layer
+         ========================================================================== -->
+    <div class="app-container">
+        <!-- Top Header Bar -->
+        <header class="header-bar hud-panel">
+            <div class="logo-group">
+                <div>
+                    <h1>FRUITDRONE <span class="badge">ROS 2 + MALE-CNS</span></h1>
+                </div>
+            </div>
+
+            <div class="system-status">
+                <div class="status-indicator">
+                    <span class="status-dot active" id="wsStatusDot"></span>
+                    <span id="wsStatusText">ROS 2 / WS CONNECTED</span>
+                </div>
+                <div class="status-badge" id="flightModeBadge">OFFBOARD</div>
+                <div class="status-badge arm-badge" id="armStateBadge">ARMED</div>
+                <div class="status-badge" id="gpsStatusBadge">GPS: 3D FIX (18 SV)</div>
+                <div class="status-badge" id="batteryBadge">PWR: 98% 16.4V</div>
+            </div>
+        </header>
+
+        <!-- Main 3-Column Glassmorphic HUD Grid -->
+        <main class="dashboard-grid">
+            <!-- Left Column: 3D Brain Connectome & Avionics Telemetry -->
+            <aside class="left-panel">
+                <!-- 3D Connectome Spiking Activity -->
+                <div class="card brain-card hud-panel">
+                    <div class="card-header">
+                        <h2>CONNECTOME DYNAMICS</h2>
+                        <span class="card-tag" id="neuronCountTag">1,398 SOMAS</span>
+                    </div>
+                    <div id="brain3dContainer" class="viewport-brain"></div>
+                    <div class="circuit-legend">
+                        <div class="legend-item"><span class="dot dot-retina"></span> Retina / LPTC</div>
+                        <div class="legend-item"><span class="dot dot-cx"></span> Central Complex</div>
+                        <div class="legend-item"><span class="dot dot-kc"></span> Kenyon Cells</div>
+                        <div class="legend-item"><span class="dot dot-pam"></span> PAM11 Reward</div>
+                        <div class="legend-item"><span class="dot dot-ppl"></span> PPL101 Penalty</div>
+                        <div class="legend-item"><span class="dot dot-dn"></span> Descending DNs</div>
+                    </div>
+                </div>
+
+                <!-- Real-Time Drone Avionics Telemetry (Retro Space Shuttle / Aircraft Style Bars) -->
+                <div class="card telemetry-card hud-panel">
+                    <div class="card-header">
+                        <h2>┌── FLIGHT AVIONICS ──┐</h2>
+                        <span class="card-tag" id="valSimTime">0.0s</span>
+                    </div>
+
+                    <!-- Avionics Retro Block Gauges -->
+                    <div class="retro-gauges-group">
+                        <div class="retro-gauge-row">
+                            <span class="retro-gauge-name">POS X</span>
+                            <div class="retro-gauge-bar-track">
+                                <div class="retro-gauge-bar-fill fill-cyan" id="barFillPosX" style="width: 50%;"></div>
+                            </div>
+                            <span class="retro-gauge-val" id="telemetryX">+0.0m</span>
+                        </div>
+                        <div class="retro-gauge-row">
+                            <span class="retro-gauge-name">POS Y</span>
+                            <div class="retro-gauge-bar-track">
+                                <div class="retro-gauge-bar-fill fill-cyan" id="barFillPosY" style="width: 50%;"></div>
+                            </div>
+                            <span class="retro-gauge-val" id="telemetryY">+0.0m</span>
+                        </div>
+                        <div class="retro-gauge-row">
+                            <span class="retro-gauge-name">ALT Z</span>
+                            <div class="retro-gauge-bar-track">
+                                <div class="retro-gauge-bar-fill fill-cyan" id="barFillPosZ" style="width: 15%;"></div>
+                            </div>
+                            <span class="retro-gauge-val" id="telemetryZ">1.5m</span>
+                        </div>
+                        <div class="retro-gauge-row">
+                            <span class="retro-gauge-name">VEL VX</span>
+                            <div class="retro-gauge-bar-track">
+                                <div class="retro-gauge-bar-fill fill-cyan" id="barFillVelX" style="width: 50%;"></div>
+                            </div>
+                            <span class="retro-gauge-val" id="valVx">+0.00</span>
+                        </div>
+                        <div class="retro-gauge-row">
+                            <span class="retro-gauge-name">VEL VY</span>
+                            <div class="retro-gauge-bar-track">
+                                <div class="retro-gauge-bar-fill fill-cyan" id="barFillVelY" style="width: 50%;"></div>
+                            </div>
+                            <span class="retro-gauge-val" id="valVy">+0.00</span>
+                        </div>
+                        <div class="retro-gauge-row">
+                            <span class="retro-gauge-name">CLIMB VZ</span>
+                            <div class="retro-gauge-bar-track">
+                                <div class="retro-gauge-bar-fill fill-cyan" id="barFillVelZ" style="width: 50%;"></div>
+                            </div>
+                            <span class="retro-gauge-val" id="valVz">+0.00</span>
+                        </div>
+                        <div class="retro-gauge-row">
+                            <span class="retro-gauge-name">ROLL</span>
+                            <div class="retro-gauge-bar-track">
+                                <div class="retro-gauge-bar-fill fill-cyan" id="barFillRoll" style="width: 50%;"></div>
+                            </div>
+                            <span class="retro-gauge-val" id="telemetryRoll">0.0°</span>
+                        </div>
+                        <div class="retro-gauge-row">
+                            <span class="retro-gauge-name">PITCH</span>
+                            <div class="retro-gauge-bar-track">
+                                <div class="retro-gauge-bar-fill fill-cyan" id="barFillPitch" style="width: 50%;"></div>
+                            </div>
+                            <span class="retro-gauge-val" id="telemetryPitch">0.0°</span>
+                        </div>
+                        <div class="retro-gauge-row">
+                            <span class="retro-gauge-name">YAW</span>
+                            <div class="retro-gauge-bar-track">
+                                <div class="retro-gauge-bar-fill fill-cyan" id="barFillYaw" style="width: 0%;"></div>
+                            </div>
+                            <span class="retro-gauge-val" id="valYawRate">0.0°</span>
+                        </div>
+                    </div>
+
+                    <!-- Biological Descending Motor Rates -->
+                    <div class="section-title">┌── DESCENDING MOTORS ──┐</div>
+                    <div class="retro-gauges-group">
+                        <div class="retro-gauge-row" title="Forward wingbeat power descending neuron">
+                            <span class="retro-gauge-name">DNp09 THRUST</span>
+                            <div class="retro-gauge-bar-track">
+                                <div class="retro-gauge-bar-fill fill-orange" id="barFillDnp09" style="width: 35%;"></div>
+                            </div>
+                            <span class="retro-gauge-val" id="valDnp09">0.0 Hz</span>
+                        </div>
+                        <div class="retro-gauge-row" title="Climbing / elevation descending neuron">
+                            <span class="retro-gauge-name">DN_ALT CLIMB</span>
+                            <div class="retro-gauge-bar-track">
+                                <div class="retro-gauge-bar-fill fill-orange" id="barFillDnAlt" style="width: 10%;"></div>
+                            </div>
+                            <span class="retro-gauge-val" id="valDnAlt">0.0 Hz</span>
+                        </div>
+                        <div class="retro-gauge-row" title="Steering descending neurons (Left vs Right)">
+                            <span class="retro-gauge-name">DNa02 L / R</span>
+                            <div class="retro-gauge-bar-track">
+                                <div class="retro-gauge-bar-fill fill-orange" id="barFillDna02" style="width: 50%;"></div>
+                            </div>
+                            <span class="retro-gauge-val" id="valDna02">0 / 0 Hz</span>
+                        </div>
+                        <div class="retro-gauge-row" title="Olfactory sugar concentration gradient">
+                            <span class="retro-gauge-name">ODOR PLUME</span>
+                            <div class="retro-gauge-bar-track">
+                                <div class="retro-gauge-bar-fill fill-green" id="barFillOdor" style="width: 28%;"></div>
+                            </div>
+                            <span class="retro-gauge-val" id="valOdorPlume">1.00x</span>
+                        </div>
+                    </div>
+
+                    <!-- Dopaminergic Activity Progress Bars -->
+                    <div class="section-title">┌── DOPAMINERGIC PLASTICITY ──┐</div>
+                    <div class="retro-gauges-group">
+                        <div class="retro-gauge-row">
+                            <span class="retro-gauge-name" style="color: var(--success);">PAM11 REWARD</span>
+                            <div class="retro-gauge-bar-track">
+                                <div class="retro-gauge-bar-fill fill-green" id="pamBar" style="width: 50%;"></div>
+                            </div>
+                            <span class="retro-gauge-val" id="pamHzVal" style="color: var(--success);">0.0 Hz</span>
+                        </div>
+                        <div class="retro-gauge-row">
+                            <span class="retro-gauge-name" style="color: var(--destructive);">PPL101 AVERS</span>
+                            <div class="retro-gauge-bar-track">
+                                <div class="retro-gauge-bar-fill fill-red" id="pplBar" style="width: 25%;"></div>
+                            </div>
+                            <span class="retro-gauge-val" id="pplHzVal" style="color: var(--destructive);">0.0 Hz</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Center Column: Floating Viewport Controls & Attitude HUD -->
+            <section class="center-viewport">
+                <!-- Top Center Floating Info Tag -->
+                <div class="center-floating-header">
+                    <div class="center-header-tags">
+                        <span class="card-tag target-tag hud-panel" id="targetPosTag">TARGET: X: 5.0 Y: 0.0 Z: 1.5M</span>
+                        <span class="card-tag hud-panel" id="dronePosTag">X: 0.0 Y: 0.0 Z: 1.5M</span>
+                    </div>
+                </div>
+
+                <!-- Top-Right: Auto Orbit & Camera Controls -->
+                <div class="auto-orbit-control hud-panel">
+                    <label class="switch" for="toggle-auto-orbit">
+                        <input type="checkbox" id="toggle-auto-orbit" checked onchange="onAutoOrbitToggle(this.checked)" />
+                        <span class="slider"></span>
+                    </label>
+                    <span class="orbit-label">AUTO ORBIT</span>
+                </div>
+
+                <!-- Top-Left: Viewport & Navigation Tools -->
+                <div class="viewport-tools-bar">
+                    <button class="vtool-btn hud-panel" id="btnFollowDrone" onclick="toggleFollowDrone()">FOLLOW DRONE</button>
+                    <button class="vtool-btn hud-panel" onclick="centerOnHome()">CENTER CHELSEA</button>
+                    <button class="vtool-btn hud-panel" onclick="resetDronePosition()">RESET ORIGIN</button>
+                </div>
+
+                <!-- Center Viewport Vertical Altitude Tape (Right Side Floating HUD Tape) -->
+                <div class="hud-altitude-tape" id="hudAltitudeTape" title="Vertical Altitude Tape Gauge">
+                    <div class="hud-tape-header">
+                        <span>ALT</span> <span class="hud-tape-sub">M</span>
+                    </div>
+                    <div class="hud-tape-window">
+                        <div class="hud-tape-pointer">
+                            <span class="hud-tape-pointer-icon">◄</span>
+                        </div>
+                        <div class="hud-tape-ladder" id="hudAltitudeLadder"></div>
+                    </div>
+                </div>
+
+                <!-- Attitude Horizon HUD Overlay (Bottom-Left of Map) -->
+                <div class="attitude-hud-box hud-panel">
+                    <div class="attitude-hud-header">
+                        <span>ATTITUDE</span>
+                        <span id="attitudeHeadingVal">HDG: 000°</span>
+                    </div>
+                    <svg class="attitude-hud-svg" viewBox="0 0 180 180">
+                        <!-- Outer Horizon Frame -->
+                        <rect x="10" y="10" width="160" height="160" fill="rgba(10, 14, 20, 0.45)" stroke="rgba(255, 255, 255, 0.25)" stroke-width="1.5" />
+                        <!-- Dynamic Pitch & Roll Horizon Group -->
+                        <g id="attitudeHorizon">
+                            <rect x="15" y="90" width="150" height="75" fill="rgba(245, 158, 11, 0.2)" />
+                            <rect x="15" y="15" width="150" height="75" fill="rgba(0, 240, 255, 0.2)" />
+                            <line x1="15" y1="90" x2="165" y2="90" stroke="#00f0ff" stroke-width="1.5" />
+                            <line x1="60" y1="70" x2="120" y2="70" stroke="#ffffff" stroke-width="1" opacity="0.6" />
+                            <line x1="70" y1="50" x2="110" y2="50" stroke="#ffffff" stroke-width="1" opacity="0.6" />
+                            <line x1="60" y1="110" x2="120" y2="110" stroke="#ffffff" stroke-width="1" opacity="0.6" />
+                            <line x1="70" y1="130" x2="110" y2="130" stroke="#ffffff" stroke-width="1" opacity="0.6" />
+                        </g>
+                        <!-- Center Fixed Aircraft Crosshair Reference -->
+                        <line x1="50" y1="90" x2="80" y2="90" stroke="#ff3366" stroke-width="2" />
+                        <line x1="100" y1="90" x2="130" y2="90" stroke="#ff3366" stroke-width="2" />
+                        <rect x="88" y="88" width="4" height="4" fill="#ff3366" />
+                    </svg>
+                    <div class="attitude-readouts">
+                        <span>R: <b id="attitudeRollVal">0.0°</b></span>
+                        <span>P: <b id="attitudePitchVal">0.0°</b></span>
+                    </div>
+                </div>
+
+                <!-- Bottom-Right: 3D Engine & Google Key Switcher -->
+                <div class="engine-switch-bar">
+                    <select class="engine-select hud-panel" id="engineSelect" onchange="change3DEngine(this.value)">
+                        <option value="satellite">SATELLITE + 3D BUILDINGS</option>
+                        <option value="google_3d">GOOGLE 3D TILES</option>
+                    </select>
+                    <button class="vtool-btn hud-panel" onclick="openApiKeyModal()">API KEY</button>
+                </div>
+            </section>
+
+            <!-- Right Column: Mission Control, POIs & Pilot Deck -->
+            <aside class="right-panel">
+                <div class="card control-card hud-panel">
+                    <!-- Tab Navigation Header -->
+                    <div class="tabs-header-bar">
+                        <nav class="tabs-list">
+                            <button class="tab-trigger active" id="tabNav-mission" onclick="switchTab('mission')">MISSION</button>
+                            <button class="tab-trigger" id="tabNav-pois" onclick="switchTab('pois')">POIS (1KM)</button>
+                            <button class="tab-trigger" id="tabNav-synapses" onclick="switchTab('synapses')">SYNAPSES</button>
+                        </nav>
+                    </div>
+
+                    <div class="tabs-content-area">
+                        <!-- Tab 1: Mission Control & Manhattan Scent Presets -->
+                        <div class="tab-content active" id="tabContent-mission">
+                            <div class="section-box">
+                                <div class="section-title">
+                                    <span>TARGET COORDINATES</span>
+                                    <span class="badge" id="targetStatusTag">NAVIGATING</span>
+                                </div>
+
+                                <div class="slider-group">
+                                    <div class="slider-row">
+                                        <label>TARGET X (N/S):</label>
+                                        <input type="range" id="sliderTargetX" min="-500" max="1000" step="5" value="5" oninput="onTargetSliderChange()" />
+                                        <span class="slider-val" id="valSliderX">+5.0m</span>
+                                    </div>
+                                    <div class="slider-row">
+                                        <label>TARGET Y (E/W):</label>
+                                        <input type="range" id="sliderTargetY" min="-500" max="1000" step="5" value="0" oninput="onTargetSliderChange()" />
+                                        <span class="slider-val" id="valSliderY">+0.0m</span>
+                                    </div>
+                                    <div class="slider-row">
+                                        <label>TARGET Z (ALT):</label>
+                                        <input type="range" id="sliderTargetZ" min="1" max="150" step="1" value="1.5" oninput="onTargetSliderChange()" />
+                                        <span class="slider-val" id="valSliderZ">1.5m</span>
+                                    </div>
+                                </div>
+
+                                <div class="section-title" style="margin-top: 10px;">WAYPOINT SCENT BEACONS</div>
+                                <div class="preset-btn-grid">
+                                    <button class="action-btn" onclick="setPresetTarget(0, 0, 1.5)">CHELSEA MARKET (0, 0, 1.5M)</button>
+                                    <button class="action-btn" onclick="setPresetTarget(-182, 340, 55.0)">GOOGLE NYC HQ (111 8TH)</button>
+                                    <button class="action-btn" onclick="setPresetTarget(-171, -148, 45.0)">THE STANDARD / LE BAIN</button>
+                                    <button class="action-btn" onclick="setPresetTarget(340, -72, 35.0)">IAC GEHRY SAILBOAT</button>
+                                    <button class="action-btn" onclick="setPresetTarget(-49, -308, 25.0)">LITTLE ISLAND WATERFRONT</button>
+                                    <button class="action-btn" onclick="setPresetTarget(196, 812, 30.0)">WHOLE FOODS CHELSEA</button>
+                                    <button class="action-btn" onclick="setPresetTarget(840, 265, 120.0)">30 HUDSON YARDS (THE EDGE)</button>
+                                    <button class="action-btn action-btn-accent" onclick="sendCmd('sugar_odor')">RELEASE SUGAR BURST</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab 2: Real-World 1000m POIs (Chelsea Manhattan) -->
+                        <div class="tab-content" id="tabContent-pois">
+                            <div class="section-box">
+                                <div class="section-title">
+                                    <span>CHELSEA POIS & OBSTACLES</span>
+                                    <span class="badge" id="poiCountTag">18 POIS (1KM)</span>
+                                </div>
+                                <div class="poi-list-container" id="poiListContainer">
+                                    <!-- Populated dynamically via JS -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab 3: Synaptic Plasticity & STDP Parameters -->
+                        <div class="tab-content" id="tabContent-synapses">
+                            <div class="section-box">
+                                <div class="section-title">SYNAPTIC PLASTICITY STATE</div>
+                                <div class="telemetry-mini-grid" style="grid-template-columns: 1fr 1fr;">
+                                    <div class="stat-cell">
+                                        <span class="stat-cell-label">TOTAL SPIKES</span>
+                                        <span class="stat-cell-val" id="synTotalSpikes">0</span>
+                                    </div>
+                                    <div class="stat-cell">
+                                        <span class="stat-cell-label">MEAN FIRING RATE</span>
+                                        <span class="stat-cell-val" id="synMeanRate">0.0 Hz</span>
+                                    </div>
+                                    <div class="stat-cell">
+                                        <span class="stat-cell-label">KC ACTIVE</span>
+                                        <span class="stat-cell-val" id="synKcRate">0.0 Hz</span>
+                                    </div>
+                                    <div class="stat-cell">
+                                        <span class="stat-cell-label">WEIGHT DRIFT</span>
+                                        <span class="stat-cell-val" id="synWeightDrift">0.000</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Flight Control Deck (Always Visible at Bottom of Right Card) -->
+                    <div class="flight-controls-deck">
+                        <div class="section-title" style="margin-bottom: 6px;">PILOT FLIGHT CONTROLS</div>
+                        <div class="control-btn-grid">
+                            <button class="btn btn-primary" id="btnArm" onclick="sendCmd('arm')">ARM DRONE</button>
+                            <button class="btn btn-danger" id="btnDisarm" onclick="sendCmd('disarm')">DISARM</button>
+                            <button class="btn btn-action" id="btnOffboard" onclick="sendCmd('offboard')">OFFBOARD MODE</button>
+                            <button class="btn btn-reward" onclick="sendCmd('stimulate_reward')">REWARD (PAM11)</button>
+                            <button class="btn btn-penalty" onclick="sendCmd('stimulate_aversive')">PENALTY (PPL101)</button>
+                            <button class="btn btn-secondary" id="btnLearning" onclick="toggleLearning()">FREEZE SYNAPSES</button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <!-- Google 3D API Key Modal -->
+    <div class="modal-backdrop" id="apiKeyModal" style="display: none;">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>GOOGLE MAPS PLATFORM 3D API KEY</h3>
+                <button class="modal-close-btn" onclick="closeApiKeyModal()">[X]</button>
+            </div>
+            <p style="font-size: 10px; color: var(--text-muted); line-height: 1.4;">
+                Enter Google Maps Platform API key with Map Tiles API enabled to load 100% Google Photorealistic 3D Tiles.
+            </p>
+            <input type="text" id="googleApiKeyInput" class="modal-input" placeholder="AIzaSy..." />
+            <div style="display: flex; justify-content: flex-end; gap: 6px; margin-top: 10px;">
+                <button class="btn btn-secondary" onclick="closeApiKeyModal()">CANCEL</button>
+                <button class="btn btn-primary" onclick="saveGoogleApiKey()">SAVE KEY</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/static/js/brain3d.js?v=30.0"></script>
+    <script src="/static/js/drone3d.js?v=30.0"></script>
+    <script src="/static/js/app.js?v=30.0"></script>
+</body>
+</html>

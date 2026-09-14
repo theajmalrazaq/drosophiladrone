@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  fruitdrone-real:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: fruitdrone-real-px4:latest
+    container_name: fruitdrone_real_px4
+    privileged: true
+    network_mode: host
+    volumes:
+      - ..:/fruitdrone
+    environment:
+      - HEADLESS=1
+      - PX4_SYS_AUTOSTART=4001
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
