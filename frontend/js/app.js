@@ -340,10 +340,6 @@ function populatePoiList() {
 // =========================================================================
 // Viewport & Camera Tools
 // =========================================================================
-function onAutoOrbitToggle(checked) {
-    if (droneVis) droneVis.setAutoOrbit(checked);
-}
-
 function toggleFollowDrone() {
     if (droneVis) {
         const active = droneVis.toggleFollow();

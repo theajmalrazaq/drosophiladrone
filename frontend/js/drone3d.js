@@ -330,8 +330,8 @@ class Drone3DVisualizer {
         this.currentEngine = "satellite"; // Default to Satellite so map is ALWAYS bright & immediate
         this.followDrone = false;
 
-        // Dynamic-Orbit Camera Controller (Config: speed=1, orbitType="dynamic-orbit")
-        this.isAutoOrbiting = true; // Auto-Orbit enabled by default per config
+        // Camera Controller
+        this.isAutoOrbiting = false; // Auto-Orbit disabled
         this.orbitSpeed = USER_CONFIG.camera.speed || 1.0;
         this.orbitType = USER_CONFIG.camera.orbitType || "dynamic-orbit";
         this.orbitHeading = 0.0;
@@ -1008,13 +1008,7 @@ class Drone3DVisualizer {
                 pitch: Cesium.Math.toRadians(-24.0),
                 roll: 0.0
             },
-            duration: 1.8,
-            complete: () => {
-                const switchEl = document.getElementById("toggle-auto-orbit");
-                if (switchEl && switchEl.checked) {
-                    this.startDynamicOrbit(landmarkCart, lm.height + 110.0);
-                }
-            }
+            duration: 1.8
         });
     }
 }
