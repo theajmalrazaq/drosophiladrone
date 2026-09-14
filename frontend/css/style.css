@@ -1,7 +1,7 @@
 /* ==========================================================================
    DrosophilaDrone GCS — Drosophila Connectome Flight Deck UI Stylesheet
    Typography: Departure Mono (SIL Open Font License)
-   Theme: Square Industrial Instrumentation (Light / Dark Mode Supported)
+   Theme: Square Industrial Instrumentation (Light & Dark Black/White Monochrome)
    ========================================================================== */
 
 @font-face {
@@ -14,7 +14,7 @@
 }
 
 /* ==========================================================================
-   CSS Custom Properties (Light vs Dark Themes)
+   CSS Custom Properties (Light vs Pure Black/White Dark Theme)
    ========================================================================== */
 :root,
 body[data-theme="light"],
@@ -141,135 +141,139 @@ body[data-theme="light"],
     --hud-modal-input-border: #111111;
     --hud-modal-input-text: #0f172a;
     
-    --accent: #00f0ff;
+    --accent: #000000;
     --font-mono: 'Departure Mono', 'JetBrains Mono', monospace;
 }
 
+/* ==========================================================================
+   Dark Theme: Pure Black Backgrounds & Crisp White Instrumentation
+   (No blues, no navies)
+   ========================================================================== */
 body[data-theme="dark"],
 [data-theme="dark"] {
     --theme-name: 'dark';
-    --bg-dark: #080c10;
+    --bg-dark: #000000;
     
-    /* Panel Surfaces */
-    --hud-panel-bg: rgba(13, 17, 23, 0.95);
-    --hud-panel-header-bg: #182232;
-    --hud-panel-border: #26354a;
-    --hud-panel-subtle-border: #1e293b;
-    --hud-panel-text: #f1f5f9;
-    --hud-panel-text-muted: #94a3b8;
-    --hud-panel-text-dim: #64748b;
+    /* Panel Surfaces (Pure Black Chassis) */
+    --hud-panel-bg: #000000;
+    --hud-panel-header-bg: #000000;
+    --hud-panel-border: #333333;
+    --hud-panel-subtle-border: #222222;
+    --hud-panel-text: #ffffff;
+    --hud-panel-text-muted: #cccccc;
+    --hud-panel-text-dim: #888888;
     
     /* Inner Box Surfaces & Modules */
-    --hud-module-header: #38bdf8;
-    --hud-sublabel: #94a3b8;
-    --hud-box-bg: #131b28;
-    --hud-box-border: #26354a;
+    --hud-module-header: #ffffff;
+    --hud-sublabel: #aaaaaa;
+    --hud-box-bg: #000000;
+    --hud-box-border: #ffffff;
     
     /* Meters & Chunky Progress Bars */
-    --hud-bar-track-bg: #0d131d;
-    --hud-bar-track-border: #26354a;
-    --hud-bar-fill: #00f0ff;
-    --hud-bar-num: #f1f5f9;
-    --hud-balance-center-line: #00f0ff;
+    --hud-bar-track-bg: #000000;
+    --hud-bar-track-border: #ffffff;
+    --hud-bar-fill: #ffffff;
+    --hud-bar-num: #ffffff;
+    --hud-balance-center-line: #ffffff;
     
     /* Attitude Gyro Dial */
-    --hud-dial-bg: #0d131d;
-    --hud-dial-border: #26354a;
-    --hud-dial-stroke: #475569;
-    --hud-dial-needle: #00f0ff;
-    --hud-dial-val: #f1f5f9;
-    --hud-dial-subval: #94a3b8;
+    --hud-dial-bg: #000000;
+    --hud-dial-border: #333333;
+    --hud-dial-stroke: #888888;
+    --hud-dial-needle: #ffffff;
+    --hud-dial-val: #ffffff;
+    --hud-dial-subval: #aaaaaa;
     
     /* Buttons & Interactive Elements */
-    --hud-btn-bg: #151e2c;
-    --hud-btn-text: #f1f5f9;
-    --hud-btn-border: #26354a;
-    --hud-btn-hover-bg: #00f0ff;
-    --hud-btn-hover-text: #050b14;
-    --hud-btn-active-bg: #00f0ff;
-    --hud-btn-active-text: #050b14;
+    --hud-btn-bg: #000000;
+    --hud-btn-text: #ffffff;
+    --hud-btn-border: #ffffff;
+    --hud-btn-hover-bg: #ffffff;
+    --hud-btn-hover-text: #000000;
+    --hud-btn-active-bg: #ffffff;
+    --hud-btn-active-text: #000000;
     
     /* Square Toggle Buttons (e.g. Neural Gates) */
-    --hud-square-btn-bg: #1a2433;
-    --hud-square-btn-text: #cbd5e1;
-    --hud-square-btn-border: #26354a;
-    --hud-square-btn-hover: #26354a;
-    --hud-square-btn-active: #00f0ff;
-    --hud-square-btn-active-text: #050b14;
+    --hud-square-btn-bg: #111111;
+    --hud-square-btn-text: #ffffff;
+    --hud-square-btn-border: #444444;
+    --hud-square-btn-hover: #333333;
+    --hud-square-btn-active: #ffffff;
+    --hud-square-btn-active-text: #000000;
     
     /* Badges & Tags */
-    --hud-badge-bg: #0f172a;
-    --hud-badge-text: #38bdf8;
-    --hud-badge-border: #0284c7;
-    --hud-status-badge-bg: #151e2c;
-    --hud-status-badge-text: #f1f5f9;
-    --hud-status-badge-border: #26354a;
-    --hud-arm-badge-bg: #052e16;
-    --hud-arm-badge-text: #00ff88;
-    --hud-arm-badge-border: #10b981;
-    --hud-disarm-badge-bg: #450a0a;
-    --hud-disarm-badge-text: #f87171;
-    --hud-disarm-badge-border: #dc2626;
+    --hud-badge-bg: #000000;
+    --hud-badge-text: #ffffff;
+    --hud-badge-border: #ffffff;
+    --hud-status-badge-bg: #000000;
+    --hud-status-badge-text: #ffffff;
+    --hud-status-badge-border: #ffffff;
+    --hud-arm-badge-bg: #ffffff;
+    --hud-arm-badge-text: #000000;
+    --hud-arm-badge-border: #ffffff;
+    --hud-disarm-badge-bg: #000000;
+    --hud-disarm-badge-text: #ff4444;
+    --hud-disarm-badge-border: #ff4444;
     
     /* Range Sliders */
-    --hud-slider-track-bg: #0d131d;
-    --hud-slider-track-border: #26354a;
-    --hud-slider-thumb-bg: #00f0ff;
-    --hud-slider-thumb-border: #00f0ff;
-    --hud-slider-val: #00f0ff;
+    --hud-slider-track-bg: #000000;
+    --hud-slider-track-border: #ffffff;
+    --hud-slider-thumb-bg: #ffffff;
+    --hud-slider-thumb-border: #ffffff;
+    --hud-slider-val: #ffffff;
     
     /* Altitude Tape */
-    --hud-tape-bg: rgba(13, 17, 23, 0.95);
-    --hud-tape-border: #26354a;
-    --hud-tape-header: #00f0ff;
-    --hud-tape-sub: #94a3b8;
-    --hud-tape-window-bg: #090d16;
-    --hud-tape-pointer: #00f0ff;
-    --hud-tape-major-text: #00f0ff;
-    --hud-tape-minor-text: #64748b;
-    --hud-tape-tick-major: #00f0ff;
-    --hud-tape-tick-minor: #26354a;
+    --hud-tape-bg: #000000;
+    --hud-tape-border: #ffffff;
+    --hud-tape-header: #ffffff;
+    --hud-tape-sub: #aaaaaa;
+    --hud-tape-window-bg: #000000;
+    --hud-tape-pointer: #ffffff;
+    --hud-tape-major-text: #ffffff;
+    --hud-tape-minor-text: #888888;
+    --hud-tape-tick-major: #ffffff;
+    --hud-tape-tick-minor: #444444;
     
     /* POI List */
-    --hud-poi-bg: #131b28;
-    --hud-poi-border: #1e293b;
-    --hud-poi-name: #f1f5f9;
-    --hud-poi-meta: #94a3b8;
-    --hud-poi-hover-bg: #1e293b;
-    --hud-poi-hover-border: #00f0ff;
-    --hud-poi-hover-name: #00f0ff;
-    --hud-poi-hover-meta: #cbd5e1;
+    --hud-poi-bg: #000000;
+    --hud-poi-border: #333333;
+    --hud-poi-name: #ffffff;
+    --hud-poi-meta: #aaaaaa;
+    --hud-poi-hover-bg: #ffffff;
+    --hud-poi-hover-border: #ffffff;
+    --hud-poi-hover-name: #000000;
+    --hud-poi-hover-meta: #333333;
     
     /* Connectome Inspector & Circuit Legend */
-    --hud-brain-viewport-bg: #090d16;
-    --hud-legend-bg: #131b28;
-    --hud-legend-border: #26354a;
-    --hud-stat-cell-bg: #131b28;
-    --hud-stat-cell-border: #1e293b;
-    --hud-stat-cell-label: #94a3b8;
-    --hud-stat-cell-val: #00f0ff;
+    --hud-brain-viewport-bg: #000000;
+    --hud-legend-bg: #000000;
+    --hud-legend-border: #333333;
+    --hud-stat-cell-bg: #000000;
+    --hud-stat-cell-border: #333333;
+    --hud-stat-cell-label: #aaaaaa;
+    --hud-stat-cell-val: #ffffff;
     
     /* Pilot Deck Buttons */
-    --hud-deck-btn-bg: #1e293b;
-    --hud-deck-btn-text: #f1f5f9;
-    --hud-deck-btn-border: #334155;
-    --hud-deck-btn-primary-bg: #0284c7;
-    --hud-deck-btn-danger-bg: #b91c1c;
-    --hud-deck-btn-action-bg: #334155;
-    --hud-deck-btn-reward-bg: #059669;
-    --hud-deck-btn-penalty-bg: #dc2626;
-    --hud-deck-btn-secondary-bg: #151e2c;
-    --hud-deck-btn-secondary-text: #38bdf8;
+    --hud-deck-btn-bg: #111111;
+    --hud-deck-btn-text: #ffffff;
+    --hud-deck-btn-border: #ffffff;
+    --hud-deck-btn-primary-bg: #222222;
+    --hud-deck-btn-danger-bg: #222222;
+    --hud-deck-btn-action-bg: #222222;
+    --hud-deck-btn-reward-bg: #222222;
+    --hud-deck-btn-penalty-bg: #222222;
+    --hud-deck-btn-secondary-bg: #000000;
+    --hud-deck-btn-secondary-text: #ffffff;
     
     /* Modals */
-    --hud-modal-bg: #0f172a;
-    --hud-modal-border: #38bdf8;
-    --hud-modal-header: #f1f5f9;
-    --hud-modal-input-bg: #1e293b;
-    --hud-modal-input-border: #334155;
-    --hud-modal-input-text: #f1f5f9;
+    --hud-modal-bg: #000000;
+    --hud-modal-border: #ffffff;
+    --hud-modal-header: #ffffff;
+    --hud-modal-input-bg: #111111;
+    --hud-modal-input-border: #ffffff;
+    --hud-modal-input-text: #ffffff;
     
-    --accent: #00f0ff;
+    --accent: #ffffff;
     --font-mono: 'Departure Mono', 'JetBrains Mono', monospace;
 }
 
@@ -563,9 +567,9 @@ select,
 }
 
 .card-tag.target-tag {
-    background: #000000;
-    color: #00ff88;
-    border: 1px solid #000000;
+    background: var(--hud-btn-hover-bg);
+    color: var(--hud-btn-hover-text);
+    border: 1px solid var(--hud-btn-hover-bg);
 }
 
 /* ==========================================================================
@@ -886,7 +890,7 @@ select,
     position: absolute; content: "";
     height: 6px; width: 6px;
     left: 2px; bottom: 2px;
-    background-color: #ffffff;
+    background-color: var(--hud-bar-fill);
     transition: .15s;
 }
 input:checked + .slider { background-color: var(--hud-box-border); }
@@ -1322,9 +1326,9 @@ input:checked + .slider:before { transform: translateX(12px); background-color: 
 }
 
 .right-panel .action-btn-accent {
-    background: var(--hud-box-border);
-    border: 1px solid var(--hud-box-border);
-    color: #ffffff;
+    background: var(--hud-btn-text);
+    border: 1px solid var(--hud-btn-text);
+    color: var(--hud-btn-bg);
     text-align: center;
     font-weight: 700;
     margin-top: 3px;
@@ -1332,9 +1336,9 @@ input:checked + .slider:before { transform: translateX(12px); background-color: 
 }
 
 .right-panel .action-btn-accent:hover {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #000000;
+    background: var(--hud-btn-hover-bg);
+    border-color: var(--hud-btn-hover-bg);
+    color: var(--hud-btn-hover-text);
 }
 
 /* POIs List */
@@ -1451,7 +1455,7 @@ input:checked + .slider:before { transform: translateX(12px); background-color: 
     width: 8px;
     height: 8px;
     flex-shrink: 0;
-    border: 1px solid #000000;
+    border: 1px solid var(--hud-btn-border);
     box-sizing: border-box;
 }
 
@@ -1472,6 +1476,11 @@ input:checked + .slider:before { transform: translateX(12px); background-color: 
 
 .dot-dn { background: #3b82f6; }
 .item-dn .legend-label { color: #2563eb; }
+
+/* Dark mode overrides for circuit legend labels to keep clean monochrome text */
+body[data-theme="dark"] .circuit-legend .legend-label {
+    color: #ffffff !important;
+}
 
 .legend-count {
     margin-left: auto;
@@ -1558,8 +1567,8 @@ input:checked + .slider:before { transform: translateX(12px); background-color: 
     color: #ffffff;
 }
 .right-panel .btn-primary:hover {
-    background: var(--accent);
-    color: #000000;
+    background: var(--hud-btn-hover-bg);
+    color: var(--hud-btn-hover-text);
 }
 
 .right-panel .btn-danger {
@@ -1578,8 +1587,8 @@ input:checked + .slider:before { transform: translateX(12px); background-color: 
     color: #ffffff;
 }
 .right-panel .btn-action:hover {
-    background: var(--accent);
-    color: #000000;
+    background: var(--hud-btn-hover-bg);
+    color: var(--hud-btn-hover-text);
 }
 
 .right-panel .btn-reward {
@@ -1608,8 +1617,8 @@ input:checked + .slider:before { transform: translateX(12px); background-color: 
     color: var(--hud-deck-btn-secondary-text);
 }
 .right-panel .btn-secondary:hover {
-    background: var(--accent);
-    color: #000000;
+    background: var(--hud-btn-hover-bg);
+    color: var(--hud-btn-hover-text);
 }
 
 /* ==========================================================================
