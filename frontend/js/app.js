@@ -157,7 +157,7 @@ function updateTelemetryUI(data) {
         setText("valSimTime", `${(data.sim_time_ms / 1000).toFixed(1)}s`);
     }
 
-    // 4. Orientation & Attitude Horizon
+    // 4. Orientation
     if (data.euler) {
         const rollDeg = (data.euler[0] * 180) / Math.PI;
         const pitchDeg = (data.euler[1] * 180) / Math.PI;
@@ -166,20 +166,10 @@ function updateTelemetryUI(data) {
         setText("telemetryRoll", `${rollDeg.toFixed(1)}°`);
         setText("telemetryPitch", `${pitchDeg.toFixed(1)}°`);
         setText("valYawRate", `${yawDeg.toFixed(0)}°`);
-        setText("attitudeRollVal", `${rollDeg.toFixed(1)}°`);
-        setText("attitudePitchVal", `${pitchDeg.toFixed(1)}°`);
-        setText("attitudeHeadingVal", `HDG: ${String(Math.round(yawDeg)).padStart(3, "0")}°`);
 
         setBar("barFillRoll", rollDeg, -45, 45);
         setBar("barFillPitch", pitchDeg, -45, 45);
         setBar("barFillYaw", yawDeg, 0, 360);
-
-        const horizon = document.getElementById("attitudeHorizon");
-        if (horizon) {
-            const clampedPitch = Math.max(-45, Math.min(45, pitchDeg));
-            const pitchPx = (clampedPitch / 45) * 35;
-            horizon.setAttribute("transform", `rotate(${-rollDeg.toFixed(1)}, 90, 90) translate(0, ${pitchPx.toFixed(1)})`);
-        }
     }
 
     // 5. Descending Motor Neurons

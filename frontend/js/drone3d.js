@@ -797,7 +797,6 @@ class Drone3DVisualizer {
             this.trailHistory.shift();
         }
 
-        this.updateAttitudeHorizon(this.droneEuler);
         this.updateLandmarkProximities();
 
         // Follow Drone Camera update (if not auto-orbiting)
@@ -836,28 +835,7 @@ class Drone3DVisualizer {
         });
     }
 
-    updateAttitudeHorizon(euler) {
-        const horizon = document.getElementById("attitudeHorizon");
-        const headingText = document.getElementById("attitudeHeadingVal");
-        if (!horizon) return;
 
-        const rollDeg = ((euler[0] || 0) * 180) / Math.PI;
-        const pitchDeg = ((euler[1] || 0) * 180) / Math.PI;
-        const yawDeg = ((euler[2] || 0) * 180) / Math.PI;
-
-        const clampedPitch = Math.max(-45, Math.min(45, pitchDeg));
-        const pitchPx = (clampedPitch / 45) * 40;
-
-        horizon.setAttribute(
-            "transform",
-            `rotate(${-rollDeg.toFixed(1)}, 90, 90) translate(0, ${pitchPx.toFixed(1)})`
-        );
-
-        if (headingText) {
-            const normalizedHeading = ((yawDeg % 360) + 360) % 360;
-            headingText.textContent = `${Math.round(normalizedHeading).toString().padStart(3, "0")}°`;
-        }
-    }
 
     updateTarget(pos) {
         if (!pos) return;

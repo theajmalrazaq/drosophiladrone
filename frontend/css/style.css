@@ -121,7 +121,6 @@ html, body {
 .right-panel,
 .auto-orbit-control,
 .viewport-tools-bar,
-.attitude-hud-box,
 .engine-switch-bar,
 .center-floating-header,
 .modal-backdrop,
@@ -696,47 +695,7 @@ input:checked + .slider:before { transform: translateX(12px); }
     box-shadow: 0 0 6px rgba(0, 240, 255, 0.8), 0 0 3px #000000;
 }
 
-/* Bottom-Left: Attitude HUD Box */
-.attitude-hud-box {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    background: var(--bg-glass);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border: 1px solid var(--border-glass);
-    padding: 6px 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    z-index: 10;
-}
 
-.attitude-hud-header {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    font-size: 8px;
-    color: var(--text-dim);
-    margin-bottom: 2px;
-}
-
-.attitude-hud-svg {
-    width: 76px;
-    height: 76px;
-}
-
-.attitude-readouts {
-    display: flex;
-    gap: 8px;
-    font-size: 8px;
-    color: var(--text-muted);
-    margin-top: 2px;
-}
-
-.attitude-readouts b {
-    color: var(--accent);
-}
 
 /* Bottom-Right: 3D Engine Selector */
 .engine-switch-bar {
