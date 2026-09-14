@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DrosophilaDrone GCS — Google 3D Area Explorer & Drosophila Connectome</title>
-    <link rel="stylesheet" href="/static/css/style.css?v=36.0">
+    <link rel="stylesheet" href="/static/css/style.css?v=37.0">
     <!-- CesiumJS Photorealistic 3D Globe -->
     <link href="https://cesium.com/downloads/cesiumjs/releases/1.125/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
     <script src="https://cesium.com/downloads/cesiumjs/releases/1.125/Build/Cesium/Cesium.js"></script>
@@ -275,7 +275,7 @@
                         <div class="tab-content active" id="tabContent-mission">
                             <div class="section-box">
                                 <div class="section-title">
-                                    <span>TARGET COORDINATES</span>
+                                    <span>┌── TARGET COORDINATES ──┐</span>
                                     <span class="badge" id="targetStatusTag">NAVIGATING</span>
                                 </div>
 
@@ -297,7 +297,7 @@
                                     </div>
                                 </div>
 
-                                <div class="section-title" style="margin-top: 10px;">WAYPOINT SCENT BEACONS</div>
+                                <div class="section-title" style="margin-top: 10px;">┌── WAYPOINT SCENT BEACONS ──┐</div>
                                 <div class="preset-btn-grid">
                                     <button class="action-btn" onclick="setPresetTarget(0, 0, 1.5)">CHELSEA MARKET (0, 0, 1.5M)</button>
                                     <button class="action-btn" onclick="setPresetTarget(-182, 340, 55.0)">GOOGLE NYC HQ (111 8TH)</button>
@@ -315,7 +315,7 @@
                         <div class="tab-content" id="tabContent-pois">
                             <div class="section-box">
                                 <div class="section-title">
-                                    <span>CHELSEA POIS & OBSTACLES</span>
+                                    <span>┌── CHELSEA POIS & OBSTACLES ──┐</span>
                                     <span class="badge" id="poiCountTag">18 POIS (1KM)</span>
                                 </div>
                                 <div class="poi-list-container" id="poiListContainer">
@@ -329,7 +329,7 @@
                             <!-- 3D Connectome Dynamics Viewport Box -->
                             <div class="section-box connectome-section-box">
                                 <div class="section-title">
-                                    <span>CONNECTOME DYNAMICS</span>
+                                    <span>┌── CONNECTOME DYNAMICS ──┐</span>
                                     <span class="badge" id="neuronCountTag">1,398 SOMAS</span>
                                 </div>
                                 <div id="brain3dContainer" class="viewport-brain"></div>
@@ -370,7 +370,7 @@
                             <!-- Synaptic Plasticity State Metrics -->
                             <div class="section-box">
                                 <div class="section-title">
-                                    <span>SYNAPTIC PLASTICITY STATE</span>
+                                    <span>┌── SYNAPTIC PLASTICITY ──┐</span>
                                     <span class="badge" id="synLearningBadge">STDP ACTIVE</span>
                                 </div>
                                 <div class="telemetry-mini-grid" style="grid-template-columns: 1fr 1fr;">
@@ -397,7 +397,7 @@
 
                     <!-- Interactive Flight Control Deck (Always Visible at Bottom of Right Card) -->
                     <div class="flight-controls-deck">
-                        <div class="section-title" style="margin-bottom: 6px;">PILOT FLIGHT CONTROLS</div>
+                        <div class="section-title" style="margin-bottom: 6px;">┌── PILOT FLIGHT CONTROLS ──┐</div>
                         <div class="control-btn-grid">
                             <button class="btn btn-primary" id="btnArm" onclick="sendCmd('arm')">ARM DRONE</button>
                             <button class="btn btn-danger" id="btnDisarm" onclick="sendCmd('disarm')">DISARM</button>
