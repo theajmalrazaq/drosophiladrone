@@ -861,8 +861,15 @@ class Drone3DVisualizer {
         const droneCart = this.getDroneCartesian();
         const roll = this.droneEuler[0] || 0;
         const pitch = this.droneEuler[1] || 0;
-        const yaw = this.droneEuler[2] || 0;
-        const heading = Cesium.Math.toRadians(Cesium.Math.toDegrees(yaw));
+        let yaw = this.droneEuler[2] || 0;
+
+        // When drone is moving with active velocity, align heading with flight trajectory vector
+        const hSpeed = Math.hypot(this.droneVel[0] || 0, this.droneVel[1] || 0);
+        if (hSpeed > 0.25) {
+            yaw = Math.atan2(this.droneVel[1], this.droneVel[0]);
+        }
+
+        const heading = yaw;
         const hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);
         const orientationQuat = Cesium.Transforms.headingPitchRollQuaternion(droneCart, hpr);
 
