@@ -768,26 +768,26 @@ input:checked + .slider:before { transform: translateX(12px); background-color: 
     font-family: var(--font-mono);
     font-size: 14px;
     font-weight: 800;
-    color: #ffffff;
+    color: #000000;
     text-align: center;
     line-height: 1;
     margin-bottom: 8px;
     letter-spacing: 0.14em;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 2px solid #000000;
     width: 100%;
     padding-bottom: 4px;
     display: flex;
     align-items: baseline;
     justify-content: center;
     gap: 4px;
-    text-shadow: 0 0 6px #000000, 0 1px 3px #000000, 0 2px 5px rgba(0, 0, 0, 0.9);
+    text-shadow: none;
 }
 
 .hud-tape-sub {
     font-size: 10.5px;
     font-weight: 800;
     color: #000000;
-    text-shadow: 0 0 3px #ffffff, 0 0 1px #ffffff;
+    text-shadow: none;
 }
 
 .hud-tape-window {
@@ -812,7 +812,7 @@ input:checked + .slider:before { transform: translateX(12px); background-color: 
     z-index: 5;
     pointer-events: none;
     line-height: 1;
-    filter: drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 4px #ffffff);
+    filter: none;
 }
 
 .hud-tape-ladder {
@@ -836,19 +836,20 @@ input:checked + .slider:before { transform: translateX(12px); background-color: 
     padding-right: 22px;
     font-family: var(--font-mono);
     font-size: 14px;
-    color: rgba(226, 232, 240, 0.75);
+    font-weight: 700;
+    color: #4b5563;
     line-height: 1;
     box-sizing: border-box;
     letter-spacing: 0.06em;
     width: 100%;
-    text-shadow: 0 0 4px #000000, 0 1px 3px #000000, 0 2px 4px #000000;
+    text-shadow: none;
 }
 
 .hud-tape-row.major {
-    color: #ffffff;
+    color: #000000;
     font-size: 16.5px;
-    font-weight: 800;
-    text-shadow: 0 0 6px #000000, 0 1px 3px #000000, 0 2px 4px #000000;
+    font-weight: 900;
+    text-shadow: none;
 }
 
 .hud-tape-num {
@@ -861,16 +862,16 @@ input:checked + .slider:before { transform: translateX(12px); background-color: 
     display: inline-block;
     width: 8px;
     height: 1.5px;
-    background: rgba(255, 255, 255, 0.6);
+    background: #6b7280;
     margin-left: 6px;
-    box-shadow: 0 0 3px #000000;
+    box-shadow: none;
 }
 
 .hud-tape-tick.major {
     width: 14px;
     height: 2.5px;
     background: #000000;
-    box-shadow: 0 0 2px #ffffff, 0 0 4px #ffffff;
+    box-shadow: none;
 }
 
 
