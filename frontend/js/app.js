@@ -387,63 +387,34 @@ function saveGoogleApiKey() {
 }
 
 // =========================================================================
-// Vertical Scrolling Altitude Tape (Ladder Gauge with Cursor)
+// Center Viewport Vertical Altitude Tape (Ladder Gauge with Dynamic Cursor)
 // =========================================================================
 const TAPE_STEP = 5;
-const TAPE_TICK_HEIGHT = 18;     // Left Panel step height (legacy fallback)
 const HUD_TAPE_TICK_HEIGHT = 32; // Center HUD step height (matches 32px CSS row)
 const TAPE_MAX_ALT = 1000;
 const TAPE_MIN_ALT = -50;
 
 function initAltitudeTape() {
-    // 1. Left Panel Altitude Tape Ladder (if present)
-    const leftLadder = document.getElementById("altitudeTapeLadder");
-    if (leftLadder) {
-        leftLadder.innerHTML = "";
-        for (let alt = TAPE_MAX_ALT; alt >= TAPE_MIN_ALT; alt -= TAPE_STEP) {
-            const row = document.createElement("div");
-            row.className = `tape-tick-row ${alt % 10 === 0 ? "major" : ""}`;
-            row.setAttribute("data-alt", alt);
-            const sign = alt < 0 ? "-" : "";
-            const absVal = Math.abs(alt);
-            const strVal = `${sign}${absVal < 10 ? "0" + absVal : absVal}`;
-            row.innerHTML = `<span class="tape-tick-mark ${alt % 10 === 0 ? "major" : ""}"></span><span>${strVal}</span>`;
-            leftLadder.appendChild(row);
-        }
-    }
-
-    // 2. Center Viewport HUD Altitude Tape Ladder
     const hudLadder = document.getElementById("hudAltitudeLadder");
-    if (hudLadder) {
-        hudLadder.innerHTML = "";
-        for (let alt = TAPE_MAX_ALT; alt >= TAPE_MIN_ALT; alt -= TAPE_STEP) {
-            const row = document.createElement("div");
-            const isMajor = (alt % 10 === 0);
-            row.className = `hud-tape-row ${isMajor ? "major" : ""}`;
-            row.setAttribute("data-alt", alt);
-            const sign = alt < 0 ? "-" : "";
-            const absVal = Math.abs(alt);
-            const strVal = `${sign}${absVal < 10 ? "0" + absVal : absVal}`;
-            row.innerHTML = `<span class="hud-tape-num">${strVal}</span><span class="hud-tape-tick ${isMajor ? "major" : ""}"></span>`;
-            hudLadder.appendChild(row);
-        }
+    if (!hudLadder) return;
+
+    hudLadder.innerHTML = "";
+    for (let alt = TAPE_MAX_ALT; alt >= TAPE_MIN_ALT; alt -= TAPE_STEP) {
+        const row = document.createElement("div");
+        const isMajor = (alt % 10 === 0);
+        row.className = `hud-tape-row ${isMajor ? "major" : ""}`;
+        row.setAttribute("data-alt", alt);
+        const sign = alt < 0 ? "-" : "";
+        const absVal = Math.abs(alt);
+        const strVal = `${sign}${absVal < 10 ? "0" + absVal : absVal}`;
+        row.innerHTML = `<span class="hud-tape-num">${strVal}</span><span class="hud-tape-tick ${isMajor ? "major" : ""}"></span>`;
+        hudLadder.appendChild(row);
     }
 
     updateAltitudeTape(1.5);
 }
 
 function updateAltitudeTape(alt) {
-    const valEl = document.getElementById("tapeAltVal");
-    if (valEl) {
-        valEl.textContent = `${alt.toFixed(1)}`;
-    }
-
-    const leftLadder = document.getElementById("altitudeTapeLadder");
-    if (leftLadder) {
-        const targetOffset = -((TAPE_MAX_ALT - alt) / TAPE_STEP) * TAPE_TICK_HEIGHT;
-        leftLadder.style.transform = `translateY(${targetOffset.toFixed(2)}px)`;
-    }
-
     const hudLadder = document.getElementById("hudAltitudeLadder");
     if (hudLadder) {
         const hudTargetOffset = -((TAPE_MAX_ALT - alt) / TAPE_STEP) * HUD_TAPE_TICK_HEIGHT;
