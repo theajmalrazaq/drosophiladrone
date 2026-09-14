@@ -105,8 +105,9 @@ html, body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    padding: 8px 10px;
-    gap: 8px;
+    padding: 0;
+    margin: 0;
+    gap: 0;
     overflow: hidden;
     z-index: 10;
     display: flex;
@@ -147,9 +148,12 @@ select,
     background: var(--bg-glass);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
-    border: 1px solid var(--border-glass);
-    padding: 6px 12px;
+    border: none;
+    border-bottom: 1px solid var(--border-glass);
+    padding: 6px 14px;
     flex-shrink: 0;
+    width: 100vw;
+    box-sizing: border-box;
 }
 
 .logo-group {
@@ -241,9 +245,10 @@ select,
 .dashboard-grid {
     display: grid;
     grid-template-columns: 290px 1fr 310px;
-    gap: 8px;
+    gap: 0;
     flex: 1;
     min-height: 0;
+    width: 100vw;
 }
 
 /* Card Shell (Square & Transparent Glass) */
@@ -294,8 +299,9 @@ select,
 .left-panel {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    overflow-y: auto;
+    gap: 0;
+    overflow: hidden;
+    height: 100%;
     min-height: 0;
 }
 
@@ -303,9 +309,11 @@ select,
     background: #eaeaea !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    border: 1px solid #b0b0b0 !important;
+    border: none !important;
+    border-right: 1px solid #b0b0b0 !important;
     color: #111827 !important;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+    box-shadow: none !important;
+    height: 100%;
 }
 
 .left-panel .card-header {
@@ -884,6 +892,9 @@ input:checked + .slider:before { transform: translateX(12px); }
 .right-panel {
     display: flex;
     flex-direction: column;
+    gap: 0;
+    overflow: hidden;
+    height: 100%;
     min-height: 0;
 }
 
@@ -891,15 +902,18 @@ input:checked + .slider:before { transform: translateX(12px); }
     background: #eaeaea !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    border: 1px solid #b0b0b0 !important;
+    border: none !important;
+    border-left: 1px solid #b0b0b0 !important;
     color: #111827 !important;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+    box-shadow: none !important;
+    height: 100%;
 }
 
 .control-card {
     height: 100%;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .right-panel .tabs-header-bar {
