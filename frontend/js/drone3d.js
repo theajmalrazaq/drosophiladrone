@@ -656,23 +656,27 @@ class Drone3DVisualizer {
         // High-performance dynamic node transformations for spinning propellers at motor RPM
         const nodeTransformations = {
             "prop_front_right": new Cesium.TranslationRotationScale({
-                rotation: new Cesium.CallbackProperty(() => {
-                    return Cesium.Quaternion.fromAxisAngle(Cesium.Cartesian3.UNIT_Y, this.propAngles[0]);
+                translation: new Cesium.Cartesian3(2.84905, 0.45733, -1.61349),
+                rotation: new Cesium.CallbackProperty((time, result) => {
+                    return Cesium.Quaternion.fromAxisAngle(Cesium.Cartesian3.UNIT_Y, this.propAngles[0], result || new Cesium.Quaternion());
                 }, false)
             }),
             "prop_front_left": new Cesium.TranslationRotationScale({
-                rotation: new Cesium.CallbackProperty(() => {
-                    return Cesium.Quaternion.fromAxisAngle(Cesium.Cartesian3.UNIT_Y, this.propAngles[1]);
+                translation: new Cesium.Cartesian3(-2.77596, 0.46271, -1.57663),
+                rotation: new Cesium.CallbackProperty((time, result) => {
+                    return Cesium.Quaternion.fromAxisAngle(Cesium.Cartesian3.UNIT_Y, this.propAngles[1], result || new Cesium.Quaternion());
                 }, false)
             }),
             "prop_rear_left": new Cesium.TranslationRotationScale({
-                rotation: new Cesium.CallbackProperty(() => {
-                    return Cesium.Quaternion.fromAxisAngle(Cesium.Cartesian3.UNIT_Y, this.propAngles[2]);
+                translation: new Cesium.Cartesian3(-2.46222, 0.45717, 2.45253),
+                rotation: new Cesium.CallbackProperty((time, result) => {
+                    return Cesium.Quaternion.fromAxisAngle(Cesium.Cartesian3.UNIT_Y, this.propAngles[2], result || new Cesium.Quaternion());
                 }, false)
             }),
             "prop_rear_right": new Cesium.TranslationRotationScale({
-                rotation: new Cesium.CallbackProperty(() => {
-                    return Cesium.Quaternion.fromAxisAngle(Cesium.Cartesian3.UNIT_Y, this.propAngles[3]);
+                translation: new Cesium.Cartesian3(2.44971, 0.48172, 2.58754),
+                rotation: new Cesium.CallbackProperty((time, result) => {
+                    return Cesium.Quaternion.fromAxisAngle(Cesium.Cartesian3.UNIT_Y, this.propAngles[3], result || new Cesium.Quaternion());
                 }, false)
             })
         };
