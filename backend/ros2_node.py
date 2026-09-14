@@ -541,8 +541,22 @@ class FruitFlyPX4ROS2Node(Node if RCLPY_AVAILABLE else object):
             else:
                 self.velocity_ned = np.zeros(3, dtype=np.float32)
             
-        self.offboard_setpoint_counter += 1
-        
+        # Real Quadcopter Quad-X Motor RPM Mixing (M1=FR, M2=FL, M3=RL, M4=RR)
+        if self.is_armed:
+            base_rpm = 2400.0 + float(telemetry.get("dn_thrust_hz", 50.0)) * 32.0 + float(max(0.0, -self.velocity_ned[2])) * 400.0 + float(np.linalg.norm(self.velocity_ned[:2])) * 160.0
+            base_rpm = max(1400.0, min(9500.0, base_rpm))
+            yaw_diff = (float(telemetry.get("dn_yaw_r_hz", 20.0)) - float(telemetry.get("dn_yaw_l_hz", 20.0))) * 0.008
+            roll_cmd = float(self.current_roll_rad)
+            pitch_cmd = float(self.current_pitch_rad)
+            
+            m1_rpm = int(base_rpm * (1.0 - roll_cmd + pitch_cmd + yaw_diff))
+            m2_rpm = int(base_rpm * (1.0 + roll_cmd + pitch_cmd - yaw_diff))
+            m3_rpm = int(base_rpm * (1.0 + roll_cmd - pitch_cmd + yaw_diff))
+            m4_rpm = int(base_rpm * (1.0 - roll_cmd - pitch_cmd - yaw_diff))
+            motor_rpm = [max(1000, min(9999, m)) for m in [m1_rpm, m2_rpm, m3_rpm, m4_rpm]]
+        else:
+            motor_rpm = [0, 0, 0, 0]
+
         if self.server:
             self.server.broadcast_telemetry({
                 "status": "WAYPOINT REACHED" if target_reached else ("FLYING" if self.is_armed else "STANDBY"),
@@ -554,6 +568,7 @@ class FruitFlyPX4ROS2Node(Node if RCLPY_AVAILABLE else object):
                 "target_position": [float(self.target_position[0]), float(self.target_position[1]), float(self.target_position[2])],
                 "dist_to_target": float(dist_to_target),
                 "target_reached": target_reached,
+                "motor_rpm": motor_rpm,
                 "obstacles": self.obstacles,
                 "sim_time_ms": telemetry["sim_time_ms"],
                 "total_spikes": telemetry["total_spikes"],

@@ -341,6 +341,13 @@ class Drone3DVisualizer {
         this.orbitCenter = null;
         this.orbitListener = null;
 
+        // Propeller Rotation & RPM State
+        this.propAngles = [0.0, 0.0, 0.0, 0.0];
+        this.motorRPM = [2400.0, 2400.0, 2400.0, 2400.0];
+        this.isArmed = true;
+        this.lastPropAnimTime = performance.now();
+        this.propellerAnimationListener = null;
+
         // Entities & Collections
         this.trailHistory = [];
         this.maxTrailPoints = 500;
@@ -430,6 +437,9 @@ class Drone3DVisualizer {
 
         // Setup 3D Drone Entity (Holybro X500 / Tactical)
         this.setupDroneEntity();
+
+        // Setup Propeller Animation Loop tied to Scene Render & Motor RPM
+        this.setupPropellerAnimationLoop();
 
         // Setup Glowing Trajectory Trail
         this.setupTrailEntity();
@@ -643,6 +653,30 @@ class Drone3DVisualizer {
         const hpr = new Cesium.HeadingPitchRoll(0, 0, 0);
         const initialQuat = Cesium.Transforms.headingPitchRollQuaternion(initialPos, hpr);
 
+        // High-performance dynamic node transformations for spinning propellers at motor RPM
+        const nodeTransformations = {
+            "prop_front_right": new Cesium.TranslationRotationScale({
+                rotation: new Cesium.CallbackProperty(() => {
+                    return Cesium.Quaternion.fromAxisAngle(Cesium.Cartesian3.UNIT_Y, this.propAngles[0]);
+                }, false)
+            }),
+            "prop_front_left": new Cesium.TranslationRotationScale({
+                rotation: new Cesium.CallbackProperty(() => {
+                    return Cesium.Quaternion.fromAxisAngle(Cesium.Cartesian3.UNIT_Y, this.propAngles[1]);
+                }, false)
+            }),
+            "prop_rear_left": new Cesium.TranslationRotationScale({
+                rotation: new Cesium.CallbackProperty(() => {
+                    return Cesium.Quaternion.fromAxisAngle(Cesium.Cartesian3.UNIT_Y, this.propAngles[2]);
+                }, false)
+            }),
+            "prop_rear_right": new Cesium.TranslationRotationScale({
+                rotation: new Cesium.CallbackProperty(() => {
+                    return Cesium.Quaternion.fromAxisAngle(Cesium.Cartesian3.UNIT_Y, this.propAngles[3]);
+                }, false)
+            })
+        };
+
         this.droneEntity = this.viewer.entities.add({
             name: "DrosophilaDrone Quadcopter",
             position: initialPos,
@@ -652,7 +686,8 @@ class Drone3DVisualizer {
                 minimumPixelSize: 64,
                 maximumScale: 80,
                 scale: this.currentAirframe === "quad_x" ? 3.0 : 3.5,
-                runAnimations: true
+                runAnimations: true,
+                nodeTransformations: nodeTransformations
             },
             point: {
                 pixelSize: 8,
@@ -663,6 +698,28 @@ class Drone3DVisualizer {
         });
 
         this.trailHistory = [initialPos];
+    }
+
+    setupPropellerAnimationLoop() {
+        if (!this.viewer || this.propellerAnimationListener) return;
+
+        this.propellerAnimationListener = () => {
+            const now = performance.now();
+            const dt = Math.min(0.1, (now - (this.lastPropAnimTime || now)) / 1000.0);
+            this.lastPropAnimTime = now;
+
+            // Rotate each propeller at its designated motor RPM (counter-rotating quad pairs)
+            for (let i = 0; i < 4; i++) {
+                const rpm = this.motorRPM[i] || 0.0;
+                if (rpm > 0) {
+                    const dir = (i === 0 || i === 2) ? 1.0 : -1.0; // FR & RL: CW (+Y), FL & RR: CCW (-Y)
+                    const radPerSec = (rpm / 60.0) * (2.0 * Math.PI);
+                    this.propAngles[i] = (this.propAngles[i] + dir * radPerSec * dt) % (2.0 * Math.PI);
+                }
+            }
+        };
+
+        this.viewer.scene.preRender.addEventListener(this.propellerAnimationListener);
     }
 
     setupTrailEntity() {
@@ -777,6 +834,34 @@ class Drone3DVisualizer {
         }
         if (data.target_position && data.target_position.length >= 3) {
             this.targetPos = [data.target_position[0], data.target_position[1], data.target_position[2]];
+        }
+
+        // Live Motor RPM calculation & sync for 4 propellers
+        if (data.motor_rpm && Array.isArray(data.motor_rpm) && data.motor_rpm.length === 4) {
+            this.motorRPM = [...data.motor_rpm];
+        } else {
+            this.isArmed = !!data.is_armed;
+            const thrustHz = data.dn_thrust_hz || 50.0;
+            const yawLHz = data.dn_yaw_l_hz || 20.0;
+            const yawRHz = data.dn_yaw_r_hz || 20.0;
+            const yawDiff = (yawRHz - yawLHz) * 0.008;
+
+            let baseRPM = 0;
+            if (this.isArmed) {
+                const vz = (data.velocity && data.velocity[2]) ? data.velocity[2] : 0;
+                const hSpeed = (data.velocity) ? Math.hypot(data.velocity[0], data.velocity[1]) : 0;
+                baseRPM = 2400 + (thrustHz * 32.0) + (Math.max(0, vz) * 400.0) + (hSpeed * 160.0);
+                baseRPM = Math.max(1400, Math.min(9500, baseRPM));
+            } else {
+                baseRPM = 0;
+            }
+
+            this.motorRPM = [
+                Math.round(baseRPM * (1.0 + yawDiff)), // FR
+                Math.round(baseRPM * (1.0 - yawDiff)), // FL
+                Math.round(baseRPM * (1.0 + yawDiff)), // RL
+                Math.round(baseRPM * (1.0 - yawDiff))  // RR
+            ];
         }
 
         const droneCart = this.getDroneCartesian();

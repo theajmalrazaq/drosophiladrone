@@ -192,6 +192,14 @@ function updateTelemetryUI(data) {
     setText("valDna02", `${yawLHz.toFixed(0)} / ${yawRHz.toFixed(0)} Hz`);
     setText("valOdorPlume", `${odorConc.toFixed(2)}x`);
 
+    if (data.motor_rpm && data.motor_rpm.length === 4) {
+        setText("valRotorFront", `${data.motor_rpm[0]} / ${data.motor_rpm[1]}`);
+        setText("valRotorRear", `${data.motor_rpm[2]} / ${data.motor_rpm[3]}`);
+    } else if (droneVis && droneVis.motorRPM) {
+        setText("valRotorFront", `${Math.round(droneVis.motorRPM[0])} / ${Math.round(droneVis.motorRPM[1])}`);
+        setText("valRotorRear", `${Math.round(droneVis.motorRPM[2])} / ${Math.round(droneVis.motorRPM[3])}`);
+    }
+
     setBar("barFillDnp09", thrustHz, 0, 100);
     setBar("barFillDnAlt", altHz, 0, 100);
     setBar("barFillDna02", 50 + ((yawRHz - yawLHz) / 40.0) * 50, 0, 100);
